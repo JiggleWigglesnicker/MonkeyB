@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MonkeyB.ViewModels;
 
 namespace MonkeyB.Views
 {
@@ -22,6 +23,7 @@ namespace MonkeyB.Views
         public BuySellView()
         {
             InitializeComponent();
+            this.DataContext = new BuySellViewModel();
         }
     }
 }
