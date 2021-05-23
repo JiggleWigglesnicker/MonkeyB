@@ -26,7 +26,7 @@ public class CryptoCurrencyModel
     public float developer_score { get; set; }
     public float community_score { get; set; }
     public float liquidity_score { get; set; }
-    public int public_interest_score { get; set; }
+    public float public_interest_score { get; set; }
     public Market_Data market_data { get; set; }
     public Public_Interest_Stats public_interest_stats { get; set; }
     public object[] status_updates { get; set; }
@@ -111,9 +111,9 @@ public class Market_Data
     public Price_Change_Percentage_1Y_In_Currency price_change_percentage_1y_in_currency { get; set; }
     public Market_Cap_Change_24H_In_Currency market_cap_change_24h_in_currency { get; set; }
     public Market_Cap_Change_Percentage_24H_In_Currency market_cap_change_percentage_24h_in_currency { get; set; }
-    public int total_supply { get; set; }
-    public int max_supply { get; set; }
-    public int circulating_supply { get; set; }
+    public float total_supply { get; set; }
+    public float max_supply { get; set; }
+    public float circulating_supply { get; set; }
     public DateTime last_updated { get; set; }
 }
 
@@ -128,7 +128,7 @@ public class Current_Price
     public int bmd { get; set; }
     public float bnb { get; set; }
     public int brl { get; set; }
-    public int btc { get; set; }
+    public float btc { get; set; }
     public int cad { get; set; }
     public int chf { get; set; }
     public int clp { get; set; }
@@ -583,7 +583,7 @@ public class Market_Cap
     public long bmd { get; set; }
     public long bnb { get; set; }
     public long brl { get; set; }
-    public int btc { get; set; }
+    public float btc { get; set; }
     public long cad { get; set; }
     public long chf { get; set; }
     public long clp { get; set; }
@@ -648,7 +648,7 @@ public class Fully_Diluted_Valuation
     public long bmd { get; set; }
     public long bnb { get; set; }
     public long brl { get; set; }
-    public int btc { get; set; }
+    public float btc { get; set; }
     public long cad { get; set; }
     public long chf { get; set; }
     public long clp { get; set; }
@@ -713,7 +713,7 @@ public class Total_Volume
     public long bmd { get; set; }
     public int bnb { get; set; }
     public long brl { get; set; }
-    public int btc { get; set; }
+    public float btc { get; set; }
     public long cad { get; set; }
     public long chf { get; set; }
     public long clp { get; set; }
@@ -778,7 +778,7 @@ public class High_24H
     public int bmd { get; set; }
     public float bnb { get; set; }
     public int brl { get; set; }
-    public int btc { get; set; }
+    public float btc { get; set; }
     public int cad { get; set; }
     public int chf { get; set; }
     public int clp { get; set; }
@@ -843,7 +843,7 @@ public class Low_24H
     public int bmd { get; set; }
     public float bnb { get; set; }
     public int brl { get; set; }
-    public int btc { get; set; }
+    public float btc { get; set; }
     public int cad { get; set; }
     public int chf { get; set; }
     public int clp { get; set; }
@@ -908,7 +908,7 @@ public class Price_Change_24H_In_Currency
     public float bmd { get; set; }
     public float bnb { get; set; }
     public float brl { get; set; }
-    public int btc { get; set; }
+    public float btc { get; set; }
     public float cad { get; set; }
     public float chf { get; set; }
     public float clp { get; set; }
@@ -973,7 +973,7 @@ public class Price_Change_Percentage_1H_In_Currency
     public float bmd { get; set; }
     public float bnb { get; set; }
     public float brl { get; set; }
-    public int btc { get; set; }
+    public float btc { get; set; }
     public float cad { get; set; }
     public float chf { get; set; }
     public float clp { get; set; }
@@ -1038,7 +1038,7 @@ public class Price_Change_Percentage_24H_In_Currency
     public float bmd { get; set; }
     public float bnb { get; set; }
     public float brl { get; set; }
-    public int btc { get; set; }
+    public float btc { get; set; }
     public float cad { get; set; }
     public float chf { get; set; }
     public float clp { get; set; }
@@ -1103,7 +1103,7 @@ public class Price_Change_Percentage_7D_In_Currency
     public float bmd { get; set; }
     public float bnb { get; set; }
     public float brl { get; set; }
-    public int btc { get; set; }
+    public float btc { get; set; }
     public float cad { get; set; }
     public float chf { get; set; }
     public float clp { get; set; }
@@ -1168,7 +1168,7 @@ public class Price_Change_Percentage_14D_In_Currency
     public float bmd { get; set; }
     public float bnb { get; set; }
     public float brl { get; set; }
-    public int btc { get; set; }
+    public float btc { get; set; }
     public float cad { get; set; }
     public float chf { get; set; }
     public float clp { get; set; }
@@ -1233,7 +1233,7 @@ public class Price_Change_Percentage_30D_In_Currency
     public float bmd { get; set; }
     public float bnb { get; set; }
     public float brl { get; set; }
-    public int btc { get; set; }
+    public float btc { get; set; }
     public float cad { get; set; }
     public float chf { get; set; }
     public float clp { get; set; }
@@ -1298,7 +1298,7 @@ public class Price_Change_Percentage_60D_In_Currency
     public float bmd { get; set; }
     public float bnb { get; set; }
     public float brl { get; set; }
-    public int btc { get; set; }
+    public float btc { get; set; }
     public float cad { get; set; }
     public float chf { get; set; }
     public float clp { get; set; }
@@ -1363,7 +1363,7 @@ public class Price_Change_Percentage_200D_In_Currency
     public float bmd { get; set; }
     public float bnb { get; set; }
     public float brl { get; set; }
-    public int btc { get; set; }
+    public float btc { get; set; }
     public float cad { get; set; }
     public float chf { get; set; }
     public float clp { get; set; }
@@ -1428,7 +1428,7 @@ public class Price_Change_Percentage_1Y_In_Currency
     public float bmd { get; set; }
     public float bnb { get; set; }
     public float brl { get; set; }
-    public int btc { get; set; }
+    public float btc { get; set; }
     public float cad { get; set; }
     public float chf { get; set; }
     public float clp { get; set; }
@@ -1491,7 +1491,7 @@ public class Market_Cap_Change_24H_In_Currency
     public float bmd { get; set; }
     public int bnb { get; set; }
     public float brl { get; set; }
-    public int btc { get; set; }
+    public float btc { get; set; }
     public float cad { get; set; }
     public float chf { get; set; }
     public float clp { get; set; }
@@ -1556,7 +1556,7 @@ public class Market_Cap_Change_Percentage_24H_In_Currency
     public float bmd { get; set; }
     public float bnb { get; set; }
     public float brl { get; set; }
-    public int btc { get; set; }
+    public float btc { get; set; }
     public float cad { get; set; }
     public float chf { get; set; }
     public float clp { get; set; }

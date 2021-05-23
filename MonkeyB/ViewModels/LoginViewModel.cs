@@ -8,5 +8,11 @@ namespace MonkeyB.ViewModels
 {
     class LoginViewModel
     {
+        public ApiHandler api = new ApiHandler();
+
+        public LoginViewModel() {
+            api.GetApiData();
+        }
+
     }
 }
