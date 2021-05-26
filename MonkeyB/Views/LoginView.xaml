@@ -6,31 +6,7 @@
         xmlns:local="clr-namespace:MonkeyB.Views"
         mc:Ignorable="d"
         Title="Login - MonkeyBusiness" Height="450" Width="800" Background="Gray">
-    <StackPanel>
-
-        <Label Content="Login" 
-               Background="LightGray"
-               Margin="0,100,0,20" 
-               HorizontalAlignment="Center" 
-               Width="100" 
-               Height="30" 
-               FontSize="15"/>
-
-        <TextBox Background="LightGray"
-               Margin="0,0,0,20" 
-               HorizontalAlignment="Center" 
-               Width="100" 
-               Height="30" 
-               FontSize="15"/>
-
-        <Button Background="LightGray"
-               Content="Login"
-               Margin="0,0,0,20" 
-               HorizontalAlignment="Center" 
-               Width="100" 
-               Height="30" 
-               FontSize="15" 
-               Command="{Binding LoginCommand}"/>
-
-    </StackPanel>
+    <Grid>
+        
+    </Grid>
 </Window>
