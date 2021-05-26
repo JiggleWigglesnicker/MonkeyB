@@ -23,7 +23,7 @@ namespace MonkeyB.Views
         public DashboardView()
         {
             InitializeComponent();
-            this.DataContext = new DashBoardViewModel();
+            this.DataContext = new DashBoardViewModel(this);
         }
     }
 }

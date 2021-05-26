@@ -5,8 +5,62 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MonkeyB.Views"
         mc:Ignorable="d"
-        Title="DashboardView" Height="450" Width="800" Background="Gray">
+        Title="Dashboard - MonkeyBusiness" Height="450" Width="800" Background="Gray">
+    
     <Grid>
-        
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0">
+            
+            <Image Source= "/Views/MonkyBLogo.png"
+                   Height="150" 
+                   Margin="0,20,0,40"/>
+
+            <Button Background="LightGray"
+               Content="Indexes"
+               Margin="0,0,0,20" 
+               HorizontalAlignment="Center" 
+               Width="100" 
+               Height="30" 
+               FontSize="15" 
+               Command="{Binding IndexCommand}"/>
+
+            <Button Background="LightGray"
+               Content="Buy/Sell"
+               Margin="0,0,0,20" 
+               HorizontalAlignment="Center" 
+               Width="100" 
+               Height="30" 
+               FontSize="15" 
+               Command="{Binding BuySellCommand}"/>
+
+            <Button Background="LightGray"
+               Content="News"
+               Margin="0,0,0,20" 
+               HorizontalAlignment="Center" 
+               Width="100" 
+               Height="30" 
+               FontSize="15" 
+               Command="{Binding NewsCommand}"/>
+
+            <Button Background="LightGray"
+               Content="Exit"
+               Margin="0,0,0,20" 
+               HorizontalAlignment="Center" 
+               Width="100" 
+               Height="30" 
+               FontSize="15" 
+               Command="{Binding ExitCommand}"/>
+
+        </StackPanel>
+
+        <StackPanel Grid.Column="1">
+
+        </StackPanel>
+
     </Grid>
 </Window>
