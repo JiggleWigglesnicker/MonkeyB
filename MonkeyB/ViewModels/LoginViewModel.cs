@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MonkeyB.ViewModels
 {
-    class LoginViewModel
+    class LoginViewModel : BaseViewModel
     {
         public ApiHandler api = new ApiHandler();
 
