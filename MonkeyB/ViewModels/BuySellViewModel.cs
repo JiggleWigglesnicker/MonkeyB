@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MonkeyB.ViewModels
 {
-    class BuySellViewModel
+    class BuySellViewModel : BaseViewModel
     {
     }
 }
