@@ -10,20 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using MonkeyB.ViewModels;
 
 namespace MonkeyB.Views
 {
     /// <summary>
     /// Interaction logic for BuySellView.xaml
     /// </summary>
-    public partial class BuySellView : Window
+    public partial class BuySellView : UserControl
     {
         public BuySellView()
         {
             InitializeComponent();
-            this.DataContext = new BuySellViewModel();
         }
     }
 }
