@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MonkeyB.Views"
         mc:Ignorable="d"
-        Title="Login - MonkeyBusiness" Height="450" Width="800" Background="Gray">
+        Title="Login - MonkeyBusiness" Height="450" Width="800" Background="Gray"
+        WindowStartupLocation="CenterScreen">
+    
     <StackPanel>
 
         <Label Content="Login" 
