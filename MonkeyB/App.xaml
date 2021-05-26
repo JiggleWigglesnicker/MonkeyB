@@ -7,11 +7,20 @@
              StartupUri="MainWindow.xaml">
 
     <Application.Resources>
+        <DataTemplate DataType="{x:Type viewmodels:BuySellViewModel}">
+            <views:BuySellView/>
+        </DataTemplate>
         <DataTemplate DataType="{x:Type viewmodels:DashBoardViewModel}">
             <views:DashboardView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:IndexViewModel}">
+            <views:IndexView/>
+        </DataTemplate>
         <DataTemplate DataType="{x:Type viewmodels:LoginViewModel}">
             <views:LoginView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:NewsViewModel}">
+            <views:NewsView/>
         </DataTemplate>
     </Application.Resources>
 </Application>
