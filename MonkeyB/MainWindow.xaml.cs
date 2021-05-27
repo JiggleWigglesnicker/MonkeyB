@@ -10,19 +10,21 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MonkeyB.ViewModels;
 
-namespace MonkeyB.Views
+namespace MonkeyB
 {
     /// <summary>
-    /// Interaction logic for NewsView.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class NewsView : UserControl
+    public partial class MainWindow : Window
     {
-        public NewsView()
+        public MainWindow()
         {
             InitializeComponent();
+
+            DataContext = new MainViewModel();
         }
     }
 }
