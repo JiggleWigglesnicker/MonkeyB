@@ -6,7 +6,25 @@
              xmlns:local="clr-namespace:MonkeyB.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Background="White">
+
     <Grid>
-        <Label FontSize="36" HorizontalAlignment="Center" Content="Dashboard"/>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0">
+
+            <Label Content="Monkey" FontSize="40" HorizontalContentAlignment="Center" />
+            <Label Content="Business" FontSize="40" HorizontalContentAlignment="Center"/>
+
+            <Button Content="Indexes" Command="{Binding IndexCommand}" HorizontalAlignment="Center" Margin="0,20,0,10" Height="30" Width="200"/>
+            <Button Content="Buy/Sell" Command="{Binding BuySellCommand}" HorizontalAlignment="Center" Margin="0,20,0,10" Height="30" Width="200"/>
+            <Button Content="News" Command="{Binding NewsCommand}" HorizontalAlignment="Center" Margin="0,20,0,10" Height="30" Width="200"/>
+
+        </StackPanel>
+
     </Grid>
+
 </UserControl>
