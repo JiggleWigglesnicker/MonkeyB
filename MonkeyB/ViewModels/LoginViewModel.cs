@@ -13,7 +13,8 @@ namespace MonkeyB.ViewModels
 
         public ICommand LoginCommand { get; set; }
 
-        public LoginViewModel(NavigationStore navigationStore) {
+        public LoginViewModel(NavigationStore navigationStore)
+        {
             LoginCommand = new NavigateDashBoardCommand(navigationStore);
         }
 

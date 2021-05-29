@@ -1,25 +1,24 @@
-﻿using MonkeyB.ViewModels;
-using System;
+﻿using System;
+using MonkeyB.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace MonkeyB.Commands
 {
-    class NavigateDashBoardCommand : BaseCommand
+    class NavigateIndexesCommand : BaseCommand
     {
         private NavigationStore navigationStore;
 
-        public NavigateDashBoardCommand(NavigationStore navigationStore)
+        public NavigateIndexesCommand(NavigationStore navigationStore)
         {
             this.navigationStore = navigationStore;
         }
 
         public override void Execute(object parameter)
         {
-            navigationStore.SelectedViewModel = new DashBoardViewModel(navigationStore);
+            navigationStore.SelectedViewModel = new IndexViewModel(navigationStore);
         }
     }
 }
