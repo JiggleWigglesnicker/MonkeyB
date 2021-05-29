@@ -10,22 +10,22 @@ namespace MonkeyB.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        private BaseViewModel _selectedViewModel;
-        public BaseViewModel SelectedViewModel
+
+        private NavigationStore navigationStore;
+
+        public BaseViewModel SelectedViewModel => navigationStore.SelectedViewModel;
+
+
+        public MainViewModel(NavigationStore navigationStore)
         {
-            get { return _selectedViewModel; }
-            set
-            {
-                _selectedViewModel = value;
-                OnPropertyChanged(nameof(SelectedViewModel));
-            }
+            this.navigationStore = navigationStore;
+            this.navigationStore.SelectedViewModelChanged += OnSelectedViewModelChanged;
         }
 
-        public ICommand UpdateViewCommand { get; set; }
-
-        public MainViewModel()
+        private void OnSelectedViewModelChanged()
         {
-            UpdateViewCommand = new UpdateViewCommand(this);
+            OnPropertyChanged(nameof(SelectedViewModel));
         }
+
     }
 }

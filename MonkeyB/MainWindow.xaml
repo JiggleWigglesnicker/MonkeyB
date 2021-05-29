@@ -4,19 +4,31 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MonkeyB"
+        xmlns:views="clr-namespace:MonkeyB.Views"
+        xmlns:viewmodels="clr-namespace:MonkeyB.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
 
-        <ContentControl Content="{Binding SelectedViewModel}"/>
+        <ContentControl Content="{Binding SelectedViewModel}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type viewmodels:BuySellViewModel}">
+                    <views:BuySellView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:DashBoardViewModel}">
+                    <views:DashboardView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:IndexViewModel}">
+                    <views:IndexView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:LoginViewModel}">
+                    <views:LoginView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:NewsViewModel}">
+                    <views:NewsView/>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Margin="10" Width="200" Content="Home" Command="{Binding UpdateViewCommand}" CommandParameter="Dashboard"/>
-            <Button Margin="10" Width="200" Content="Login" Command="{Binding UpdateViewCommand}" CommandParameter="Login"/>
-        </StackPanel>
     </Grid>
 </Window>

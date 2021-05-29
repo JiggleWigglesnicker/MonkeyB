@@ -28,11 +28,11 @@ namespace MonkeyB.Commands
         {
             if (parameter.ToString() == "Dashboard")
             {
-                viewModel.SelectedViewModel = new DashBoardViewModel();
+                //viewModel.SelectedViewModel = new DashBoardViewModel();
             }
             else if (parameter.ToString() == "Login")
             {
-                viewModel.SelectedViewModel = new LoginViewModel();
+                //viewModel.SelectedViewModel = new LoginViewModel();
             }
         }
     }
