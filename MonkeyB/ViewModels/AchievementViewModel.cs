@@ -1,6 +1,7 @@
 ﻿using MonkeyB.Commands;
+using MonkeyB.Models;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,9 +13,21 @@ namespace MonkeyB.ViewModels
     {
         public ICommand DashBoardCommand { get; set; }
 
+        public ObservableCollection<AchievementModel> AchievementList { get; set; }
+
         public AchievementViewModel(NavigationStore navigationStore)
         {
             DashBoardCommand = new NavigateDashBoardCommand(navigationStore);
+            addAchievementsToList();
+        }
+
+        public void addAchievementsToList()
+        {
+            AchievementList = new ObservableCollection<AchievementModel>();
+            AchievementList.Add(new AchievementModel("First Bitcoin", "Buying your first bitcoin",false));
+            AchievementList.Add(new AchievementModel("First Ethereum", "Buying your first Ethereum",false));
+            AchievementList.Add(new AchievementModel("First Dogecoin", "buying your first Dogecoin", false));
+            AchievementList.Add(new AchievementModel("Make Profit", "Making profit on a stock", true));
         }
     }
 }

@@ -6,11 +6,22 @@
              xmlns:local="clr-namespace:MonkeyB.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Background="White">
-    <Grid>
-        <StackPanel>
+    
+    <StackPanel>
+        
+        <ItemsControl Name="icTodoList" ItemsSource="{Binding AchievementList}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="0,0,0,5">
+                        <TextBlock Text="{Binding Name}" />
+                        <TextBlock Text="{Binding Description}" />
+                        <CheckBox IsChecked="{Binding IsCompleted}" IsEnabled="False"  />
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
-            <Button Content="Back" Command="{Binding DashBoardCommand}" HorizontalAlignment="left" Margin="20,300,0,10" Height="30" Width="200"/>
+        <Button Content="Back" Command="{Binding DashBoardCommand}" HorizontalAlignment="left" Margin="20,300,0,10" Height="30" Width="200"/>
 
-        </StackPanel>
-    </Grid>
+    </StackPanel>
 </UserControl>
