@@ -24,10 +24,16 @@ namespace MonkeyB.ViewModels
         public void addAchievementsToList()
         {
             AchievementList = new ObservableCollection<AchievementModel>();
-            AchievementList.Add(new AchievementModel("First Bitcoin", "Buying your first bitcoin",false));
-            AchievementList.Add(new AchievementModel("First Ethereum", "Buying your first Ethereum",false));
+            AchievementList.Add(new AchievementModel("First Bitcoin", "Buying your first bitcoin", false));
+            AchievementList.Add(new AchievementModel("First Ethereum", "Buying your first Ethereum", false));
             AchievementList.Add(new AchievementModel("First Dogecoin", "buying your first Dogecoin", false));
             AchievementList.Add(new AchievementModel("Make Profit", "Making profit on a stock", true));
         }
+
+        public void checkIfAchievementCompleted()
+        {
+            
+        }
+
     }
 }
