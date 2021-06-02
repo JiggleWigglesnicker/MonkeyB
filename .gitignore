@@ -540,4 +540,7 @@ obj/
 # Additional files built by Visual Studio
 *.tlog
 
+### IDEA ###
+.idea
+
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,csharp,dotnetcore
