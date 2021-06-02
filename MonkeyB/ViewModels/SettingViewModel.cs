@@ -11,6 +11,8 @@ namespace MonkeyB.ViewModels
     class SettingViewModel : BaseViewModel
     {
         public ICommand DashBoardCommand { get; set; }
+        public String SettingText { get; set; }
+        public ICommand ApplyCommand { get; set; }
 
         public SettingViewModel(NavigationStore navigationStore)
         {
