@@ -11,7 +11,8 @@ namespace MonkeyB.Database
     {
         public static async void InitializeDatabase()
         {
-            String dbpath = @"C:\Users\Judicator\Documents\MonkeyB\MonkeyB\database.db";
+            String folderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            String dbpath = System.IO.Path.Combine(folderPath, "database.db");
             await Task.Run(() =>
             {
                 if (!System.IO.File.Exists(dbpath))
