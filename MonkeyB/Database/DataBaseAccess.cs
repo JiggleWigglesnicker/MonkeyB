@@ -15,13 +15,7 @@ namespace MonkeyB.Database
             String dbpath = System.IO.Path.Combine(folderPath, "database.db");
             await Task.Run(() =>
             {
-                if (!System.IO.File.Exists(dbpath))
-                {
-                    System.IO.File.Create(dbpath);
-
-                }
-                using (SqliteConnection db =
-                    new SqliteConnection($"Filename={dbpath}"))
+                using (var db = new SqliteConnection($"Data Source={dbpath}"))
                 {
                     
                     db.Open();
