@@ -17,7 +17,11 @@ namespace MonkeyB.ViewModels
 
         public AchievementViewModel(NavigationStore navigationStore)
         {
-            DashBoardCommand = new NavigateDashBoardCommand(navigationStore);
+            DashBoardCommand = new RelayCommand(o =>
+            {
+                navigationStore.SelectedViewModel = new DashBoardViewModel(navigationStore);
+            });
+
             addAchievementsToList();
         }
 

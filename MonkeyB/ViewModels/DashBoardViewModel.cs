@@ -18,11 +18,30 @@ namespace MonkeyB.ViewModels
 
         public DashBoardViewModel(NavigationStore navigationStore)
         {
-            IndexCommand = new NavigateIndexesCommand(navigationStore);
-            BuySellCommand = new NavigateBuySellCommand(navigationStore);
-            NewsCommand = new NavigateNewsCommand(navigationStore);
-            AchievementCommand = new NavigateAchievementCommand(navigationStore);
-            SettingCommand = new NavigateSettingCommand(navigationStore);
+            IndexCommand = new RelayCommand(o =>
+            {
+                navigationStore.SelectedViewModel = new IndexViewModel(navigationStore);
+            }); 
+
+            BuySellCommand = new RelayCommand(o =>
+            {
+                navigationStore.SelectedViewModel = new BuySellViewModel(navigationStore);
+            });
+
+            NewsCommand = new RelayCommand(o =>
+            {
+                navigationStore.SelectedViewModel = new NewsViewModel(navigationStore);
+            });
+
+            AchievementCommand = new RelayCommand(o =>
+            {
+                navigationStore.SelectedViewModel = new AchievementViewModel(navigationStore);
+            });
+
+            SettingCommand = new RelayCommand(o =>
+            {
+                navigationStore.SelectedViewModel = new SettingViewModel(navigationStore);
+            });
         }
 
     }
