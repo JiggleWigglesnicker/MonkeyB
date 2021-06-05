@@ -1,4 +1,6 @@
 ﻿using MonkeyB.Commands;
+using MonkeyB.Database;
+using MonkeyB.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,7 @@ namespace MonkeyB.ViewModels
     class LoginViewModel : BaseViewModel
     {
 
-        
+
         public ICommand LoginCommand { get; set; }
 
         private String username;
@@ -40,7 +42,8 @@ namespace MonkeyB.ViewModels
         {
             LoginCommand = new RelayCommand(o =>
             {
-                if (login() == true) {
+                if (login() == true)
+                {
                     navigationStore.SelectedViewModel = new DashBoardViewModel(navigationStore);
                 }
             });
@@ -48,7 +51,8 @@ namespace MonkeyB.ViewModels
 
         public bool login()
         {
-            if (Username == "bob" && Password == "bob") return true;
+            LoginModel model = DataBaseAccess.RetrieveLogin(Username);
+            if (Username == model.username && Password == model.password) return true;
             return false;
         }
 

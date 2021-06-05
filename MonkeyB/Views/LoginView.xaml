@@ -9,9 +9,8 @@
     <Grid>
         <StackPanel>
 
-            <Label Content="Login" 
-                   Background="LightGray"
-                   Margin="0,100,0,20" 
+            <Label Content="Username :" 
+                   Margin="0,100,0,5" 
                    HorizontalAlignment="Center" 
                    Width="100" 
                    Height="30" 
@@ -19,12 +18,19 @@
 
             <TextBox Background="LightGray"
                      Text="{Binding Username}"
-                     Margin="0,0,0,20" 
+                     Margin="0,0,0,10" 
                      HorizontalAlignment="Center" 
                      Width="100" 
                      Height="30" 
                      FontSize="15"/>
-            
+
+            <Label Content="Password :" 
+                   Margin="0,0,0,5" 
+                   HorizontalAlignment="Center" 
+                   Width="100" 
+                   Height="30" 
+                   FontSize="15"/>
+
             <TextBox Background="LightGray"
                      Text="{Binding Password}"
                      Margin="0,0,0,20" 
