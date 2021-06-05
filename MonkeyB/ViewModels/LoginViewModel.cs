@@ -11,14 +11,8 @@ namespace MonkeyB.ViewModels
     class LoginViewModel : BaseViewModel
     {
 
-        public ICommand loginCommand;
-        public ICommand LoginCommand
-        {
-            get
-            {
-                return loginCommand;
-            }
-        }
+        
+        public ICommand LoginCommand { get; set; }
 
         private String username;
         public String Username
@@ -44,7 +38,18 @@ namespace MonkeyB.ViewModels
 
         public LoginViewModel(NavigationStore navigationStore)
         {
-            loginCommand = new NavigateDashBoardCommand(navigationStore);
+            LoginCommand = new RelayCommand(o =>
+            {
+                if (login() == true) {
+                    navigationStore.SelectedViewModel = new DashBoardViewModel(navigationStore);
+                }
+            });
+        }
+
+        public bool login()
+        {
+            if (Username == "bob" && Password == "bob") return true;
+            return false;
         }
 
     }
