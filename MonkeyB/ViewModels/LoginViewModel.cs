@@ -11,11 +11,40 @@ namespace MonkeyB.ViewModels
     class LoginViewModel : BaseViewModel
     {
 
-        public ICommand LoginCommand { get; set; }
+        public ICommand loginCommand;
+        public ICommand LoginCommand
+        {
+            get
+            {
+                return loginCommand;
+            }
+        }
+
+        private String username;
+        public String Username
+        {
+            get => username;
+            set
+            {
+                username = value;
+                OnPropertyChanged("Username");
+            }
+        }
+
+        private String password;
+        public String Password
+        {
+            get => password;
+            set
+            {
+                password = value;
+                OnPropertyChanged("Password");
+            }
+        }
 
         public LoginViewModel(NavigationStore navigationStore)
         {
-            LoginCommand = new NavigateDashBoardCommand(navigationStore);
+            loginCommand = new NavigateDashBoardCommand(navigationStore);
         }
 
     }

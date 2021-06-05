@@ -18,6 +18,15 @@
                    FontSize="15"/>
 
             <TextBox Background="LightGray"
+                     Text="{Binding Username}"
+                     Margin="0,0,0,20" 
+                     HorizontalAlignment="Center" 
+                     Width="100" 
+                     Height="30" 
+                     FontSize="15"/>
+            
+            <TextBox Background="LightGray"
+                     Text="{Binding Password}"
                      Margin="0,0,0,20" 
                      HorizontalAlignment="Center" 
                      Width="100" 
