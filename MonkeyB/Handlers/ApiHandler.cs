@@ -32,6 +32,29 @@ namespace MonkeyB
             return await Task.FromResult(model);
 
         }
+        
+        public MarketGraph Marketgraph = new MarketGraph();
+        public async Task<MarketGraph> GetMarketData()
+        {
+            Uri url = new Uri(
+                "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=eur&from=1392577232&to=1422577232");
+            
+            HttpClient httpclient = new HttpClient();
+            var response = await httpclient.GetStringAsync(url);
+
+            try
+            {
+                Marketgraph = JsonConvert.DeserializeObject<MarketGraph>(response);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.StackTrace);
+            }
+            
+            Trace.Write(Marketgraph.prices[0][1]);
+            return await Task.FromResult(Marketgraph);
+
+        }
 
     }
 }
