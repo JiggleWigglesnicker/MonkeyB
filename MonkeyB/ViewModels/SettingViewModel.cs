@@ -8,11 +8,13 @@ using System.Windows.Input;
 
 namespace MonkeyB.ViewModels
 {
-    class NewsViewModel : BaseViewModel
+    class SettingViewModel : BaseViewModel
     {
         public ICommand DashBoardCommand { get; set; }
+        public String SettingText { get; set; }
+        public ICommand ApplyCommand { get; set; }
 
-        public NewsViewModel(NavigationStore navigationStore)
+        public SettingViewModel(NavigationStore navigationStore)
         {
             DashBoardCommand = new RelayCommand(o =>
             {

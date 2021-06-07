@@ -14,7 +14,10 @@ namespace MonkeyB.ViewModels
 
         public BuySellViewModel(NavigationStore navigationStore)
         {
-            DashBoardCommand = new NavigateDashBoardCommand(navigationStore);
+            DashBoardCommand = new RelayCommand(o =>
+            {
+                navigationStore.SelectedViewModel = new DashBoardViewModel(navigationStore);
+            });
         }
     }
 }

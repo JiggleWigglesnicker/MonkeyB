@@ -1,4 +1,5 @@
-﻿using MonkeyB.ViewModels;
+﻿using MonkeyB.Database;
+using MonkeyB.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -14,7 +15,6 @@ namespace MonkeyB
     /// </summary>
     public partial class App : Application
     {
-
         protected override void OnStartup(StartupEventArgs e)
         {
             NavigationStore navigationStore = new NavigationStore();
@@ -29,6 +29,8 @@ namespace MonkeyB
             MainWindow.Show();
 
             base.OnStartup(e);
+
+            DataBaseAccess.InitializeDatabase();
         }
     }
 }

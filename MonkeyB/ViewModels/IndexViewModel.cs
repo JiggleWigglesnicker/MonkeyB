@@ -20,7 +20,10 @@ namespace MonkeyB.ViewModels
 
         public IndexViewModel(NavigationStore navigationStore)
         {
-            DashBoardCommand = new NavigateDashBoardCommand(navigationStore);
+            DashBoardCommand = new RelayCommand(o =>
+            {
+                navigationStore.SelectedViewModel = new DashBoardViewModel(navigationStore);
+            });
             GetIndexData();
         }
         

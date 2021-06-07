@@ -27,6 +27,12 @@
                 <DataTemplate DataType="{x:Type viewmodels:NewsViewModel}">
                     <views:NewsView/>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:AchievementViewModel}">
+                    <views:AchievementView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:SettingViewModel}">
+                    <views:SettingView/>
+                </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
 
