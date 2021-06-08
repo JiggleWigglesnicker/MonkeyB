@@ -9,8 +9,53 @@
     <Grid>
         <StackPanel>
 
-            <Button Content="Back" Command="{Binding DashBoardCommand}" HorizontalAlignment="left" Margin="20,300,0,10" Height="30" Width="200"/>
-            
+            <Label Content="Currency :" 
+                   Margin="0,100,0,5" 
+                   HorizontalAlignment="Center" 
+                   Width="100" 
+                   Height="30" 
+                   FontSize="15"/>
+
+            <TextBox Background="LightGray"
+                     Text="{Binding Username}"
+                     Margin="0,0,0,10" 
+                     HorizontalAlignment="Center" 
+                     Width="100" 
+                     Height="30" 
+                     FontSize="15"/>
+
+            <Label Content="Amount :" 
+                   Margin="0,0,0,5" 
+                   HorizontalAlignment="Center" 
+                   Width="100" 
+                   Height="30" 
+                   FontSize="15"/>
+
+            <TextBox Background="LightGray"
+                     Text="{Binding Password}"
+                     Margin="0,0,0,20" 
+                     HorizontalAlignment="Center" 
+                     Width="100" 
+                     Height="30" 
+                     FontSize="15"/>
+
+            <Button Background="LightGray"
+                    Content="Buy"
+                    Margin="0,0,0,20" 
+                    HorizontalAlignment="Center" 
+                    Width="100" 
+                    Height="30" 
+                    FontSize="15" 
+                    Command="{Binding BuyCommand}"/>
+
+
         </StackPanel>
+
+        <Button Content="Back" Command="{Binding DashBoardCommand}" HorizontalAlignment="left" Margin="20,300,0,10" Height="30" Width="200"/>
+
     </Grid>
+    
+
+          
+
 </UserControl>

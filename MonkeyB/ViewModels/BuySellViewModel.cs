@@ -11,6 +11,9 @@ namespace MonkeyB.ViewModels
     class BuySellViewModel : BaseViewModel
     {
         public ICommand DashBoardCommand { get; set; }
+        public ICommand BuyCommand { get; set; }
+
+
 
         public BuySellViewModel(NavigationStore navigationStore)
         {
@@ -18,6 +21,8 @@ namespace MonkeyB.ViewModels
             {
                 navigationStore.SelectedViewModel = new DashBoardViewModel(navigationStore);
             });
+
+
         }
     }
 }
