@@ -11,11 +11,18 @@ namespace MonkeyB
 {
     class ApiHandler
     {
+        public static readonly Uri ApiEndPoint = new Uri("https://api.coingecko.com/api/v3/");
+        public static readonly string Coins = "coins";
+        public static readonly string CoinList = "coins/list";
+        public static readonly string CoinMarkets = "coins/markets";
+        public static string AddCoinsIdUrl(string id) => "coins/" + id;
+        public static string MarketChartRangeByCoinId(string id) => AddCoinsIdUrl(id) + "/market_chart/range";
 
         public CryptoCurrencyModel model = new CryptoCurrencyModel();
 
         public async Task<CryptoCurrencyModel> GetApiData()
         {
+            Uri test = new Uri(ApiEndPoint, AddCoinsIdUrl("butcoin"));
             string url = "https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false";
             HttpClient httpclient = new HttpClient();
             var response = await httpclient.GetStringAsync(url);
