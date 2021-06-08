@@ -54,8 +54,5 @@
         <Button Content="Back" Command="{Binding DashBoardCommand}" HorizontalAlignment="left" Margin="20,300,0,10" Height="30" Width="200"/>
 
     </Grid>
-    
-
-          
 
 </UserControl>

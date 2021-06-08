@@ -24,5 +24,16 @@ namespace MonkeyB.ViewModels
 
 
         }
+
+        public void BuyCrypto()
+        {
+
+        }
+
+        public void SellCrypto()
+        {
+
+        }
+
     }
 }
