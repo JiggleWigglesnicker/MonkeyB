@@ -21,16 +21,17 @@ namespace MonkeyB.Database
 
                     db.Open();
 
-                    string tableCommand =
-                        "CREATE TABLE IF NOT EXISTS Users " +
-                        "(ID INTEGER NOT NULL UNIQUE, " +
-                        "username TEXT NOT NULL, " +
-                        "password TEXT NOT NULL, " +
-                        "PRIMARY KEY(ID AUTOINCREMENT))";
+                    string tableCommand1 =
+                        "CREATE TABLE IF NOT EXISTS Users (userID INTEGER NOT NULL UNIQUE, username TEXT NOT NULL,  password TEXT NOT NULL,  PRIMARY KEY(ID AUTOINCREMENT))";
 
-                    SqliteCommand createTable = new SqliteCommand(tableCommand, db);
 
-                    createTable.ExecuteReader();
+                    string tableCommand2 = "CREATE TABLE IF NOT EXISTS Wallet(walletID INTEGER NOT NULL UNIQUE, amount_euro FLOAT NOT NULL, coin TEXT NOT NULL, coin_amount FLOAT NOT NULL, userID INTEGER NOT NULL, PRIMARY KEY(walletID AUTOINCREMENT),FOREIGN KEY (userID) REFERENCES Users(userID))";
+
+                    SqliteCommand createTable1 = new SqliteCommand(tableCommand1, db);
+                    SqliteCommand createTable2 = new SqliteCommand(tableCommand2, db);
+
+                    createTable1.ExecuteReader();
+                    createTable2.ExecuteReader();
                 }
             });
         }

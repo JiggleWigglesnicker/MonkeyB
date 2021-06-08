@@ -13,8 +13,8 @@ namespace MonkeyB.ViewModels
     class LoginViewModel : BaseViewModel
     {
 
+
         public ICommand LoginCommand { get; set; }
-        
 
         private String username;
         public String Username
@@ -52,7 +52,7 @@ namespace MonkeyB.ViewModels
         public bool login()
         {
             LoginModel model = DataBaseAccess.RetrieveLogin(Username);
-            if (Username == model.username && Password == model.password && Username != null && Password != null) return true;
+            if (Username == model.username && Password == model.password) return true;
             return false;
         }
 
