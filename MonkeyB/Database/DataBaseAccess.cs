@@ -13,14 +13,9 @@ namespace MonkeyB.Database
     {
         public static async void InitializeDatabase()
         {
-            String folderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            String fullPath = System.IO.Path.Combine(folderPath, "MonkeyB");
-            if(!Directory.Exists(fullPath)) 
-                Directory.CreateDirectory(fullPath);
-            String dbpath = System.IO.Path.Combine(fullPath, "database.db");
             await Task.Run(() =>
             {
-                using (var db = new SqliteConnection($"Data Source={dbpath}"))
+                using (var db = new SqliteConnection($"Data Source=database.db"))
                 {
 
                     db.Open();
@@ -51,8 +46,7 @@ namespace MonkeyB.Database
                     "FOREIGN KEY (userID) REFERENCES Users(userID)," +
                     "PRIMARY KEY(walletID AUTOINCREMENT))";
 
-                    string adminCommand = "INSERT INTO Users (username,password) VALUES ('admin','admin')";
-
+                    string adminCommand = "INSERT OR IGNORE INTO Users (username,password) VALUES ('admin','admin')";
 
                     SqliteCommand createTable1 = new SqliteCommand(tableCommand1, db);
                     SqliteCommand createTable2 = new SqliteCommand(tableCommand2, db);
@@ -70,11 +64,9 @@ namespace MonkeyB.Database
 
         public static LoginModel RetrieveLogin(String username)
         {
-            String folderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            String dbpath = System.IO.Path.Combine(folderPath, "database.db");
             LoginModel model = new LoginModel();
 
-            using (var db = new SqliteConnection($"Data Source={dbpath}"))
+            using (var db = new SqliteConnection($"Data Source=database.db"))
             {
 
                 db.Open();
