@@ -13,8 +13,8 @@ namespace MonkeyB.ViewModels
     class LoginViewModel : BaseViewModel
     {
 
+
         public ICommand LoginCommand { get; set; }
-        
 
         private String username;
         public String Username

@@ -22,6 +22,7 @@ namespace MonkeyB
 
         public async Task<CryptoCurrencyModel> GetApiData()
         {
+            Uri test = new Uri(ApiEndPoint, AddCoinsIdUrl("butcoin"));
             string url = "https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false";
             HttpClient httpclient = new HttpClient();
             var response = await httpclient.GetStringAsync(url);
