@@ -20,8 +20,6 @@
                 <TextBlock Text="Monkey Business" TextWrapping="WrapWithOverflow" FontSize="35" />
             </Label>
 
-
-
             <Button Content="Indexes" Command="{Binding IndexCommand}" HorizontalAlignment="Center" Margin="0,20,0,10" Height="30" Width="200"/>
             <Button Content="Buy/Sell" Command="{Binding BuySellCommand}" HorizontalAlignment="Center" Margin="0,10,0,10" Height="30" Width="200"/>
             <Button Content="News" Command="{Binding NewsCommand}" HorizontalAlignment="Center" Margin="0,10,0,10" Height="30" Width="200"/>
@@ -30,6 +28,65 @@
 
         </StackPanel>
 
+        <Grid  Grid.Column="1">
+
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="200px" />
+            </Grid.RowDefinitions>
+
+            <ScrollViewer
+            Grid.Column="0" VerticalScrollBarVisibility="Hidden">
+
+                <StackPanel Grid.Column="1" Background="LightBlue" >
+
+                    <Label Content="Latest news -" 
+                       HorizontalAlignment="Right" 
+                       FontSize="25"
+                       Foreground="White" />
+
+                    <ItemsControl ItemsSource="{Binding RSSList}" HorizontalAlignment="Left">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,5">
+
+                                    <TextBlock Text="{Binding Title}" 
+                                               FontSize="20" 
+                                               Foreground="White" 
+                                               TextWrapping="WrapWithOverflow"
+                                               TextDecorations="Underline" 
+                                               Margin="30,0,0,0"/>
+
+                                    <TextBlock Text="{Binding Description}" 
+                                               FontSize="16"
+                                               Foreground="White"
+                                               TextWrapping="WrapWithOverflow"
+                                               Margin="30,0,0,0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+
+                    <!--<TextBlock Text="{Binding RSSTitle}"  
+                           FontSize="20" 
+                           Foreground="White" 
+                           HorizontalAlignment="Left" 
+                           TextWrapping="WrapWithOverflow"
+                           TextDecorations="Underline" 
+                           Margin="30,0,0,0" />
+
+                    <TextBlock Text="{Binding RSSContent}"
+                           FontSize="16"
+                           Foreground="White"
+                           TextWrapping="WrapWithOverflow"
+                           HorizontalAlignment="Left"
+                           Margin="30,0,0,0" />-->
+
+
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 
 </UserControl>
