@@ -54,6 +54,7 @@ namespace MonkeyB.ViewModels
             LoginModel model = DataBaseAccess.RetrieveLogin(Username);
             if (Username == model.username && Password == model.password && Username != null && Password != null) return true;
             return false;
+
         }
 
     }
