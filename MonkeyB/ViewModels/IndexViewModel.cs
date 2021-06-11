@@ -16,24 +16,19 @@ namespace MonkeyB.ViewModels
     {
         public ICommand DashBoardCommand { get; set; }
         
+        public ApiHandler api = new ApiHandler();
         
-
         public IndexViewModel(NavigationStore navigationStore)
         {
             DashBoardCommand = new RelayCommand(o =>
             {
                 navigationStore.SelectedViewModel = new DashBoardViewModel(navigationStore);
             });
-            GetIndexData();
         }
         
-        public static readonly Uri BaseUri = new Uri("https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=eur&from=1392577232&to=1422577232");
-
-        
-        public MarketGraph marketmodel = new MarketGraph();
-        private void GetIndexData()
+        private async Task<MarketGraph> GetIndexData(string id)
         {
-
+            return await api.GetMarketData(id, "eur", 91);
         }
     }
 }
