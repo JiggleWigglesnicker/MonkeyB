@@ -26,6 +26,7 @@ namespace MonkeyB.Database
                     "(userID INTEGER NOT NULL UNIQUE, " +
                     "username TEXT NOT NULL UNIQUE, " +
                     "password TEXT NOT NULL, " +
+                    "euro_amount FLOAT NOT NULL, " +
                     "PRIMARY KEY(userID AUTOINCREMENT))";
 
                     string tableCommand2 =
@@ -34,23 +35,27 @@ namespace MonkeyB.Database
                     "coin TEXT NOT NULL, " +
                     "coin_amount FLOAT NOT NULL, " +
                     "userID INTEGER NOT NULL," +
-                    "FOREIGN KEY (userID) REFERENCES Users(userID),"+
+                    "FOREIGN KEY (userID) REFERENCES Users(userID)," +
                     "PRIMARY KEY(cryptowalletID AUTOINCREMENT))";
 
                     string tableCommand3 =
-                    "CREATE TABLE IF NOT EXISTS Wallet " +
-                    "(walletID INTEGER NOT NULL UNIQUE, " +
-                    "currency TEXT NOT NULL, " +
-                    "currency_amount FLOAT NOT NULL, " +
+                    "CREATE TABLE IF NOT EXISTS Orders " +
+                    "(orderID INTEGER NOT NULL UNIQUE, " +
+                    "cointype TEXT NOT NULL, " +
+                    "coin_amount FLOAT NOT NULL, " +
+                    "euro_amount FLOAT NOT NULL, " +
+                    "outstanding BOOLEAN NOT NULL, " +
                     "userID INTEGER NOT NULL," +
                     "FOREIGN KEY (userID) REFERENCES Users(userID)," +
-                    "PRIMARY KEY(walletID AUTOINCREMENT))";
+                    "PRIMARY KEY(orderID AUTOINCREMENT))";
 
-                    string adminCommand = "INSERT OR IGNORE INTO Users (username,password) VALUES ('admin','admin')";
+
+                    string adminCommand = "INSERT OR IGNORE INTO Users (username,password,euro_amount) VALUES ('admin','admin',1000)";
 
                     SqliteCommand createTable1 = new SqliteCommand(tableCommand1, db);
                     SqliteCommand createTable2 = new SqliteCommand(tableCommand2, db);
                     SqliteCommand createTable3 = new SqliteCommand(tableCommand3, db);
+
                     SqliteCommand createAdmin = new SqliteCommand(adminCommand, db);
 
                     createTable1.ExecuteReader();
@@ -73,16 +78,34 @@ namespace MonkeyB.Database
 
                 SqliteCommand selectCommand;
                 selectCommand = new SqliteCommand
-                    ($"SELECT username, password from Users WHERE username = '{username}'", db);
+                    ($"SELECT username, password, userID from Users WHERE username = '{username}'", db);
                 SqliteDataReader query = selectCommand.ExecuteReader();
                 while (query.Read())
                 {
                     model.username = query.GetString(0);
                     model.password = query.GetString(1);
+                    App.UserID = query.GetString(2);
                 }
             }
 
             return model;
+        }
+
+        public static void updateEuroAmount(float amount)
+        {
+
+            using (var db = new SqliteConnection($"Data Source=database.db"))
+            {
+                db.Open();
+
+                SqliteCommand updateCommand;
+                updateCommand = new SqliteCommand
+                    ($"UPDATE Users SET euro_amount = {amount} WHERE userID = '{App.UserID}'", db);
+                updateCommand.ExecuteReader();
+
+            }
+
+
         }
 
     }

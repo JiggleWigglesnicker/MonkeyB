@@ -26,30 +26,6 @@ namespace MonkeyB.ViewModels
         public ICommand SettingCommand { get; set; }
         public ObservableCollection<RSSModel> RSSList { get; set; }
 
-        //private string rSSTitle;
-        //public string RSSTitle
-        //{
-        //    get => rSSTitle;
-
-        //    set
-        //    {
-        //        rSSTitle = value;
-        //        OnPropertyChanged("RSSTitle");
-        //    }
-        //}
-
-        //private string rSSContent;
-        //public string RSSContent
-        //{
-        //    get => rSSContent;
-
-        //    set
-        //    {
-        //        rSSContent = value;
-        //        OnPropertyChanged("RSSContent");
-        //    }
-        //}
-
 
 
         public DashBoardViewModel(NavigationStore navigationStore)
