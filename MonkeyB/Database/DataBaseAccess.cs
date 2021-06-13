@@ -51,6 +51,9 @@ namespace MonkeyB.Database
 
 
                     string adminCommand = "INSERT OR IGNORE INTO Users (username,password,euro_amount) VALUES ('admin','admin',1000)";
+                    string addcoin1 = "INSERT OR IGNORE INTO Cryptowallet (coin,coin_amount,userID) VALUES ('bitcoin',5.0,1)";
+                    string addcoin2 = "INSERT OR IGNORE INTO Cryptowallet (coin,coin_amount,userID) VALUES ('litecoin',10.0,1)";
+                    string addcoin3 = "INSERT OR IGNORE INTO Cryptowallet (coin,coin_amount,userID) VALUES ('etherium',105000.0,1)";
 
                     SqliteCommand createTable1 = new SqliteCommand(tableCommand1, db);
                     SqliteCommand createTable2 = new SqliteCommand(tableCommand2, db);
@@ -58,10 +61,21 @@ namespace MonkeyB.Database
 
                     SqliteCommand createAdmin = new SqliteCommand(adminCommand, db);
 
+                    SqliteCommand createcoin1 = new SqliteCommand(addcoin1, db);
+                    SqliteCommand createcoin2 = new SqliteCommand(addcoin2, db);
+                    SqliteCommand createcoin3 = new SqliteCommand(addcoin3, db);
+
+
+
                     createTable1.ExecuteReader();
                     createTable2.ExecuteReader();
                     createTable3.ExecuteReader();
                     createAdmin.ExecuteReader();
+
+                    createcoin1.ExecuteReader();
+                    createcoin2.ExecuteReader();
+                    createcoin3.ExecuteReader();
+
                 }
             });
         }
@@ -109,9 +123,9 @@ namespace MonkeyB.Database
         }
 
 
-        public static Dictionary<string, float> GetCoinsInWallet(int id)
+        public static List<CryptoWalletModel> GetCoinsInWallet(int id)
         {
-            Dictionary<string, float> coinList = new Dictionary<string, float>();
+            List<CryptoWalletModel> coinList = new List<CryptoWalletModel>();
             using (var db = new SqliteConnection($"Data Source=database.db"))
             {
                 db.Open();
@@ -123,7 +137,7 @@ namespace MonkeyB.Database
                 SqliteDataReader query = selectCommand.ExecuteReader();
                 while (query.Read())
                 {
-                    coinList.Add(query.GetString(0), query.GetFloat(1));
+                    coinList.Add(new CryptoWalletModel( query.GetString(0), query.GetFloat(1)));
                 }
             }
 

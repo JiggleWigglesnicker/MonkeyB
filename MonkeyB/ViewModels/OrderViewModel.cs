@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using MonkeyB.Database;
+using MonkeyB.Models;
 
 namespace MonkeyB.ViewModels
 {
@@ -53,10 +54,11 @@ namespace MonkeyB.ViewModels
         }
 
         public void FillSelectBox() {
+
             Coins = new ObservableCollection<string>();
-            Dictionary<String,float> coinsDictonary = DataBaseAccess.GetCoinsInWallet(App.UserID);
+            List<CryptoWalletModel> coinsDictonary = DataBaseAccess.GetCoinsInWallet(App.UserID);
             foreach (var coin in coinsDictonary) {
-                Coins.Add("Type: "+coin.Key+" Amount: "+ coin.Value);
+                Coins.Add("Type: "+coin.coinName+" Amount: "+ coin.coinAmount);
             }
         }
 
