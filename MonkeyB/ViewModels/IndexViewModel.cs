@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using LiveCharts;
 
 namespace MonkeyB.ViewModels
 {
@@ -13,7 +14,15 @@ namespace MonkeyB.ViewModels
     {
         public ICommand DashBoardCommand { get; set; }
         
-        public ObservableCollection<string> CoinValue { get; }
+        public ChartValues<float> CoinValue { get; set; }
+        public DateTime[] CoinDate { get; set; }
+
+        public async Task Load()
+        {
+            // IEnumerable<Market>
+        }
+
+        // public ObservableCollection<string> CoinValue { get; }
 
         public IndexViewModel(NavigationStore navigationStore)
         {
