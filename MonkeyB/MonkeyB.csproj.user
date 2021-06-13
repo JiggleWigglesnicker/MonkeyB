@@ -28,6 +28,9 @@
     <Compile Update="Views\NewsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\OrderView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\SettingView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -52,6 +55,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\NewsView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\OrderView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SettingView.xaml">

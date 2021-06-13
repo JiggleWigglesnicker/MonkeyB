@@ -15,7 +15,7 @@ namespace MonkeyB
     /// </summary>
     public partial class App : Application
     {
-        public static string UserID { get; set; }
+        public static int UserID { get; set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {

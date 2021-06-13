@@ -84,7 +84,7 @@ namespace MonkeyB.Database
                 {
                     model.username = query.GetString(0);
                     model.password = query.GetString(1);
-                    App.UserID = query.GetString(2);
+                    App.UserID = query.GetInt32(2);
                 }
             }
 
@@ -106,6 +106,28 @@ namespace MonkeyB.Database
             }
 
 
+        }
+
+
+        public static Dictionary<string, float> GetCoinsInWallet(int id)
+        {
+            Dictionary<string, float> coinList = new Dictionary<string, float>();
+            using (var db = new SqliteConnection($"Data Source=database.db"))
+            {
+                db.Open();
+
+                SqliteCommand selectCommand;
+
+                selectCommand = new SqliteCommand
+                    ($"SELECT coin, coin_amount FROM Cryptowallet WHERE userID = {id}", db);
+                SqliteDataReader query = selectCommand.ExecuteReader();
+                while (query.Read())
+                {
+                    coinList.Add(query.GetString(0), query.GetFloat(1));
+                }
+            }
+
+            return coinList;
         }
 
     }

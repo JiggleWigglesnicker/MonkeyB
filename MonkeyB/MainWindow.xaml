@@ -33,6 +33,9 @@
                 <DataTemplate DataType="{x:Type viewmodels:SettingViewModel}">
                     <views:SettingView/>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:OrderViewModel}">
+                    <views:OrderView/>
+                </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
 

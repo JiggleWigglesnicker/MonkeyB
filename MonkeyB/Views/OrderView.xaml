@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="MonkeyB.Views.OrderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MonkeyB.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Background="White">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Grid.Column="0">
+            <Label Content="Sell orders" HorizontalAlignment="Center" FontSize="20" Margin="10"/>
+            
+            <Label Content="Coin name" HorizontalAlignment="Center" FontSize="15" Margin="10"/>
+            <ComboBox  ItemsSource="{Binding Coins}" HorizontalAlignment="Center" FontSize="15" Width="150" Height="23"/>
+
+            <Label Content="Coin amount" HorizontalAlignment="Center" FontSize="15" Margin="10"/>
+            <TextBox Text="{Binding CoinAmount}" HorizontalAlignment="Center" FontSize="15" Width="150"/>
+
+            <Label Content="Euro amount" HorizontalAlignment="Center" FontSize="15" Margin="10"/>
+            <TextBox Text="{Binding EuroAmount}" HorizontalAlignment="Center" FontSize="15" Width="150"/>
+
+            <Button Content="Sell" Command="{Binding SellCommand}" HorizontalAlignment="Center" Height="30" Width="100" Margin="10" />
+
+
+            <Button Content="Back" Command="{Binding DashBoardCommand}" HorizontalAlignment="left" Margin="20,50,0,10" Height="30" Width="200"/>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

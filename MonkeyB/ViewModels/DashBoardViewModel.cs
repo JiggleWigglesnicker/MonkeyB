@@ -24,6 +24,8 @@ namespace MonkeyB.ViewModels
         public ICommand NewsCommand { get; set; }
         public ICommand AchievementCommand { get; set; }
         public ICommand SettingCommand { get; set; }
+        public ICommand OrderCommand { get; set; }
+
         public ObservableCollection<RSSModel> RSSList { get; set; }
 
 
@@ -43,6 +45,11 @@ namespace MonkeyB.ViewModels
             NewsCommand = new RelayCommand(o =>
             {
                 navigationStore.SelectedViewModel = new NewsViewModel(navigationStore);
+            });
+
+            OrderCommand = new RelayCommand(o =>
+            {
+                navigationStore.SelectedViewModel = new OrderViewModel(navigationStore);
             });
 
             AchievementCommand = new RelayCommand(o =>
