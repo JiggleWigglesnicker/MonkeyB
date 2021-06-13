@@ -4,13 +4,23 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MonkeyB.Views"
+             xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Background="pink">
     <Grid>
         <StackPanel>
-
             <Button Content="Back" Command="{Binding DashBoardCommand}" HorizontalAlignment="left" Margin="20,300,0,10" Height="30" Width="200"/>
-
         </StackPanel>
+        <wpf:CartesianChart>
+            <wpf:CartesianChart.Series>
+                <wpf:LineSeries Title="Index" Values="{Binding CoinValue}"/>
+            </wpf:CartesianChart.Series>
+            <wpf:CartesianChart.AxisX>
+                <wpf:Axis Title="Date" Labels="{Binding CoinDate}"/>
+            </wpf:CartesianChart.AxisX>
+            <wpf:CartesianChart.AxisY>
+                <wpf:Axis Title="Value"/>
+            </wpf:CartesianChart.AxisY>
+        </wpf:CartesianChart>
     </Grid>
 </UserControl>
