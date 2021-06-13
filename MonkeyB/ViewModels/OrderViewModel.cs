@@ -58,7 +58,7 @@ namespace MonkeyB.ViewModels
             Coins = new ObservableCollection<string>();
             List<CryptoWalletModel> coinsDictonary = DataBaseAccess.GetCoinsInWallet(App.UserID);
             foreach (var coin in coinsDictonary) {
-                Coins.Add("Type: "+coin.coinName+" Amount: "+ coin.coinAmount);
+                Coins.Add("Type: "+coin.coinName+" Total amount: "+ coin.coinAmount);
             }
         }
 
