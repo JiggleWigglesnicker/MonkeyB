@@ -2,6 +2,7 @@
 using MonkeyB.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,11 +13,9 @@ namespace MonkeyB.Database
     {
         public static async void InitializeDatabase()
         {
-            String folderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            String dbpath = System.IO.Path.Combine(folderPath, "database.db");
             await Task.Run(() =>
             {
-                using (var db = new SqliteConnection($"Data Source={dbpath}"))
+                using (var db = new SqliteConnection($"Data Source=database.db"))
                 {
 
                     db.Open();
@@ -25,7 +24,7 @@ namespace MonkeyB.Database
                     string tableCommand1 =
                     "CREATE TABLE IF NOT EXISTS Users " +
                     "(userID INTEGER NOT NULL UNIQUE, " +
-                    "username TEXT NOT NULL, " +
+                    "username TEXT NOT NULL UNIQUE, " +
                     "password TEXT NOT NULL, " +
                     "PRIMARY KEY(userID AUTOINCREMENT))";
 
@@ -47,14 +46,17 @@ namespace MonkeyB.Database
                     "FOREIGN KEY (userID) REFERENCES Users(userID)," +
                     "PRIMARY KEY(walletID AUTOINCREMENT))";
 
+                    string adminCommand = "INSERT OR IGNORE INTO Users (username,password) VALUES ('admin','admin')";
 
                     SqliteCommand createTable1 = new SqliteCommand(tableCommand1, db);
                     SqliteCommand createTable2 = new SqliteCommand(tableCommand2, db);
                     SqliteCommand createTable3 = new SqliteCommand(tableCommand3, db);
+                    SqliteCommand createAdmin = new SqliteCommand(adminCommand, db);
 
                     createTable1.ExecuteReader();
                     createTable2.ExecuteReader();
                     createTable3.ExecuteReader();
+                    createAdmin.ExecuteReader();
                 }
             });
         }
@@ -62,11 +64,9 @@ namespace MonkeyB.Database
 
         public static LoginModel RetrieveLogin(String username)
         {
-            String folderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            String dbpath = System.IO.Path.Combine(folderPath, "database.db");
             LoginModel model = new LoginModel();
 
-            using (var db = new SqliteConnection($"Data Source={dbpath}"))
+            using (var db = new SqliteConnection($"Data Source=database.db"))
             {
 
                 db.Open();
