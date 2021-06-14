@@ -51,9 +51,9 @@ namespace MonkeyB.Database
 
 
                     string adminCommand = "INSERT OR IGNORE INTO Users (username,password,euro_amount) VALUES ('admin','admin',1000)";
-                    string addcoin1 = "INSERT OR IGNORE INTO Cryptowallet (coin,coin_amount,userID) VALUES ('bitcoin',5.0,1)";
-                    string addcoin2 = "INSERT OR IGNORE INTO Cryptowallet (coin,coin_amount,userID) VALUES ('litecoin',10.0,1)";
-                    string addcoin3 = "INSERT OR IGNORE INTO Cryptowallet (coin,coin_amount,userID) VALUES ('etherium',105000.0,1)";
+                    //string addcoin1 = "INSERT OR IGNORE INTO Cryptowallet (coin,coin_amount,userID) VALUES ('bitcoin',5.0,1)";
+                    //string addcoin2 = "INSERT OR IGNORE INTO Cryptowallet (coin,coin_amount,userID) VALUES ('litecoin',10.0,1)";
+                    //string addcoin3 = "INSERT OR IGNORE INTO Cryptowallet (coin,coin_amount,userID) VALUES ('etherium',105000.0,1)";
 
                     SqliteCommand createTable1 = new SqliteCommand(tableCommand1, db);
                     SqliteCommand createTable2 = new SqliteCommand(tableCommand2, db);
@@ -61,9 +61,9 @@ namespace MonkeyB.Database
 
                     SqliteCommand createAdmin = new SqliteCommand(adminCommand, db);
 
-                    SqliteCommand createcoin1 = new SqliteCommand(addcoin1, db);
-                    SqliteCommand createcoin2 = new SqliteCommand(addcoin2, db);
-                    SqliteCommand createcoin3 = new SqliteCommand(addcoin3, db);
+                    //SqliteCommand createcoin1 = new SqliteCommand(addcoin1, db);
+                    //SqliteCommand createcoin2 = new SqliteCommand(addcoin2, db);
+                    //SqliteCommand createcoin3 = new SqliteCommand(addcoin3, db);
 
 
 
@@ -72,9 +72,9 @@ namespace MonkeyB.Database
                     createTable3.ExecuteReader();
                     createAdmin.ExecuteReader();
 
-                    createcoin1.ExecuteReader();
-                    createcoin2.ExecuteReader();
-                    createcoin3.ExecuteReader();
+                    //createcoin1.ExecuteReader();
+                    //createcoin2.ExecuteReader();
+                    //createcoin3.ExecuteReader();
 
                 }
             });
@@ -143,6 +143,31 @@ namespace MonkeyB.Database
 
             return coinList;
         }
+
+        public static void CreateNewSellOrder(string type, float coinAmount, float euroAmount, int id)
+        {
+           
+            using (var db = new SqliteConnection($"Data Source=database.db"))
+            {
+                db.Open();
+
+                SqliteCommand insertCommand;
+                SqliteCommand updateCommand;
+
+                insertCommand = new SqliteCommand
+                    ($"INSERT OR IGNORE INTO Orders (cointype,coin_amount,euro_amount,outstanding,userID) VALUES ('{type}',{coinAmount},{euroAmount},true,{id})", db);
+
+                updateCommand = new SqliteCommand
+                    ($"UPDATE Cryptowallet SET coin_amount = coin_amount - {coinAmount} WHERE userID = '{id}'", db);
+
+                SqliteDataReader query1 = insertCommand.ExecuteReader();
+                SqliteDataReader query2 = updateCommand.ExecuteReader();
+
+            }
+
+          
+        }
+
 
     }
 }

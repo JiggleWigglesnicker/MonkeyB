@@ -16,9 +16,14 @@
             <Label Content="Sell orders" HorizontalAlignment="Center" FontSize="20" Margin="10"/>
             
             <Label Content="Coin name" HorizontalAlignment="Center" FontSize="15" Margin="10"/>
-            <ComboBox  ItemsSource="{Binding Coins}" HorizontalAlignment="Center" FontSize="15" Width="150" Height="23"/>
+            <ComboBox  ItemsSource="{Binding Coins,Mode=TwoWay,
+                UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="coinName" 
+                       SelectedItem="{Binding SelectedItem}"               
+                       HorizontalAlignment="Center" 
+                       FontSize="15" Width="150" Height="23">
+            </ComboBox>
 
-            <Label Content="Coin amount" HorizontalAlignment="Center" FontSize="15" Margin="10"/>
+            <Label Content="{Binding CoinAmountLabel, FallbackValue='Coin amount'}" HorizontalAlignment="Center" FontSize="15" Margin="5"/>
             <TextBox Text="{Binding CoinAmount}" HorizontalAlignment="Center" FontSize="15" Width="150"/>
 
             <Label Content="Euro amount" HorizontalAlignment="Center" FontSize="15" Margin="10"/>

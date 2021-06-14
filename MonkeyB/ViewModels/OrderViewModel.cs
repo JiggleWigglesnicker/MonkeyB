@@ -17,7 +17,31 @@ namespace MonkeyB.ViewModels
         public ICommand DashBoardCommand { get; set; }
         public ICommand SellCommand { get; set; }
 
-        public ObservableCollection<string> Coins { get; set; }
+        public ObservableCollection<CryptoWalletModel> Coins { get; set; }
+
+
+        private string coinAmountLabel;
+        public string CoinAmountLabel
+        {
+            get => coinAmountLabel;
+            set
+            {
+                coinAmountLabel = value;
+                OnPropertyChanged("CoinAmountLabel");
+            }
+        }
+
+        private CryptoWalletModel selectedItem;
+        public CryptoWalletModel SelectedItem
+        {
+            get => selectedItem;
+            set
+            {
+                selectedItem = value;
+                CoinAmountLabel = $"Total {selectedItem.coinName} in wallet: {selectedItem.coinAmount}";
+                OnPropertyChanged("SelectedItem");
+            }
+        }
 
         private float coinAmount;
         public float CoinAmount
@@ -46,6 +70,11 @@ namespace MonkeyB.ViewModels
         {
             FillSelectBox();
 
+            SellCommand = new RelayCommand(o =>
+            {
+                PlaceSellOrder(SelectedItem.coinName, CoinAmount, EuroAmount,App.UserID);
+            });
+
             DashBoardCommand = new RelayCommand(o =>
             {
                 navigationStore.SelectedViewModel = new DashBoardViewModel(navigationStore);
@@ -53,14 +82,22 @@ namespace MonkeyB.ViewModels
 
         }
 
-        public void FillSelectBox() {
+        public void FillSelectBox()
+        {
 
-            Coins = new ObservableCollection<string>();
+            Coins = new ObservableCollection<CryptoWalletModel>();
             List<CryptoWalletModel> coinsDictonary = DataBaseAccess.GetCoinsInWallet(App.UserID);
-            foreach (var coin in coinsDictonary) {
-                Coins.Add("Type: "+coin.coinName+" Total amount: "+ coin.coinAmount);
+            foreach (var coin in coinsDictonary)
+            {
+                Coins.Add(coin);
             }
         }
+
+        public void PlaceSellOrder(string type, float coinAmount, float euroAmount, int id)
+        {
+            DataBaseAccess.CreateNewSellOrder(type, coinAmount, euroAmount, id);
+        }
+
 
     }
 }
