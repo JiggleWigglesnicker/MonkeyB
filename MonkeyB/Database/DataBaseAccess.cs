@@ -33,7 +33,7 @@ namespace MonkeyB.Database
                     "CREATE TABLE IF NOT EXISTS Cryptowallet " +
                     "(cryptowalletID INTEGER NOT NULL UNIQUE, " +
                     "coin TEXT NOT NULL, " +
-                    "coin_amount FLOAT NOT NULL, " +
+                    "coin_amount  FLOAT NOT NULL, " +
                     "userID INTEGER NOT NULL," +
                     "FOREIGN KEY (userID) REFERENCES Users(userID)," +
                     "PRIMARY KEY(cryptowalletID AUTOINCREMENT))";
@@ -42,18 +42,18 @@ namespace MonkeyB.Database
                     "CREATE TABLE IF NOT EXISTS Orders " +
                     "(orderID INTEGER NOT NULL UNIQUE, " +
                     "cointype TEXT NOT NULL, " +
-                    "coin_amount FLOAT NOT NULL, " +
-                    "euro_amount FLOAT NOT NULL, " +
+                    "coin_amount  FLOAT NOT NULL, " +
+                    "euro_amount  FLOAT NOT NULL, " +
                     "outstanding BOOLEAN NOT NULL, " +
                     "userID INTEGER NOT NULL," +
                     "FOREIGN KEY (userID) REFERENCES Users(userID)," +
                     "PRIMARY KEY(orderID AUTOINCREMENT))";
 
 
-                    string adminCommand = "INSERT OR IGNORE INTO Users (username,password,euro_amount) VALUES ('admin','admin',1000)";
-                    //string addcoin1 = "INSERT OR IGNORE INTO Cryptowallet (coin,coin_amount,userID) VALUES ('bitcoin',5.0,1)";
-                    //string addcoin2 = "INSERT OR IGNORE INTO Cryptowallet (coin,coin_amount,userID) VALUES ('litecoin',10.0,1)";
-                    //string addcoin3 = "INSERT OR IGNORE INTO Cryptowallet (coin,coin_amount,userID) VALUES ('etherium',105000.0,1)";
+                    string adminCommand = "INSERT OR IGNORE INTO Users (username,password, euro_amount) VALUES ('admin','admin',1000)";
+                    //string addcoin1 = "INSERT OR IGNORE INTO Cryptowallet (coin,Amount,userID) VALUES ('bitcoin',5.0,1)";
+                    //string addcoin2 = "INSERT OR IGNORE INTO Cryptowallet (coin,Amount,userID) VALUES ('litecoin',10.0,1)";
+                    //string addcoin3 = "INSERT OR IGNORE INTO Cryptowallet (coin,Amount,userID) VALUES ('etherium',105000.0,1)";
 
                     SqliteCommand createTable1 = new SqliteCommand(tableCommand1, db);
                     SqliteCommand createTable2 = new SqliteCommand(tableCommand2, db);
@@ -123,7 +123,7 @@ namespace MonkeyB.Database
         }
 
 
-        public static List<CryptoWalletModel> GetCoinsInWallet(int id)
+        public static List<CryptoWalletModel> FetchCoinsInWallet(int id)
         {
             List<CryptoWalletModel> coinList = new List<CryptoWalletModel>();
             using (var db = new SqliteConnection($"Data Source=database.db"))
@@ -133,11 +133,11 @@ namespace MonkeyB.Database
                 SqliteCommand selectCommand;
 
                 selectCommand = new SqliteCommand
-                    ($"SELECT coin, coin_amount FROM Cryptowallet WHERE userID = {id}", db);
+                    ($"SELECT Cryptowallet.coin , Cryptowallet.coin_amount, Users.euro_amount FROM Cryptowallet INNER JOIN Users ON Cryptowallet.userID = Users.userID WHERE Users.userID = {id}", db);
                 SqliteDataReader query = selectCommand.ExecuteReader();
                 while (query.Read())
                 {
-                    coinList.Add(new CryptoWalletModel( query.GetString(0), query.GetFloat(1)));
+                    coinList.Add(new CryptoWalletModel( query.GetString(0), query.GetFloat(1), query.GetFloat(2)));
                 }
             }
 
@@ -166,6 +166,30 @@ namespace MonkeyB.Database
             }
 
           
+        }
+
+        public static List<OrderModel> FetchOrders(int id)
+        {
+            List<OrderModel> orderList = new List<OrderModel>();
+            using (var db = new SqliteConnection($"Data Source=database.db"))
+            {
+                db.Open();
+
+                SqliteCommand selectCommand;
+
+
+                selectCommand = new SqliteCommand
+                    ($"SELECT cointype, coin_amount , euro_amount , outstanding FROM Orders WHERE userID = {id}", db);
+
+                SqliteDataReader query = selectCommand.ExecuteReader();
+                while (query.Read())
+                {
+                    orderList.Add(new OrderModel(query.GetString(0), query.GetFloat(1), query.GetFloat(2), query.GetBoolean(3)));
+                }
+
+            }
+
+            return orderList;
         }
 
 

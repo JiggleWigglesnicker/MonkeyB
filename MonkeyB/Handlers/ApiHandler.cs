@@ -11,7 +11,7 @@ namespace MonkeyB
 {
     class ApiHandler
     {
-        public static readonly Uri ApiEndPoint = new Uri("https://api.coingecko.com/api/v3/");
+        public static readonly Uri ApiEndPoint = new Uri("https://api.coingecko.com/api/EuroAmount/");
         public static readonly string Coins = "coins";
         public static readonly string CoinList = "coins/list";
         public static readonly string CoinMarkets = "coins/markets";
@@ -33,7 +33,7 @@ namespace MonkeyB
 
         public async Task<CryptoCurrencyModel> GetApiData()
         {
-            string url = "https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false";
+            string url = "https://api.coingecko.com/api/EuroAmount/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false";
             HttpClient httpclient = new HttpClient();
             var response = await httpclient.GetStringAsync(url);
 

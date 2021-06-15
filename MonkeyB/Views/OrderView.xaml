@@ -13,10 +13,10 @@
         </Grid.ColumnDefinitions>
         
         <StackPanel Grid.Column="0">
-            <Label Content="Sell orders" HorizontalAlignment="Center" FontSize="20" Margin="10"/>
+            <Label Content="Create orders" HorizontalAlignment="Center" FontSize="20" Margin="10"/>
             
             <Label Content="Coin name" HorizontalAlignment="Center" FontSize="15" Margin="10"/>
-            <ComboBox  ItemsSource="{Binding Coins,Mode=TwoWay,
+            <ComboBox  ItemsSource="{Binding CryptoWalletCoins,Mode=TwoWay,
                 UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="coinName" 
                        SelectedItem="{Binding SelectedItem}"               
                        HorizontalAlignment="Center" 
@@ -26,13 +26,41 @@
             <Label Content="{Binding CoinAmountLabel, FallbackValue='Coin amount'}" HorizontalAlignment="Center" FontSize="15" Margin="5"/>
             <TextBox Text="{Binding CoinAmount}" HorizontalAlignment="Center" FontSize="15" Width="150"/>
 
-            <Label Content="Euro amount" HorizontalAlignment="Center" FontSize="15" Margin="10"/>
+            <Label Content="{Binding EuroAmountLabel, FallbackValue='Euro amount'}" HorizontalAlignment="Center" FontSize="15" Margin="10"/>
             <TextBox Text="{Binding EuroAmount}" HorizontalAlignment="Center" FontSize="15" Width="150"/>
 
             <Button Content="Sell" Command="{Binding SellCommand}" HorizontalAlignment="Center" Height="30" Width="100" Margin="10" />
 
 
             <Button Content="Back" Command="{Binding DashBoardCommand}" HorizontalAlignment="left" Margin="20,50,0,10" Height="30" Width="200"/>
+            
+        </StackPanel>
+        
+        <StackPanel Grid.Column="1">
+            
+            <Label Content="Buy orders" HorizontalAlignment="Center" FontSize="20" Margin="10"/>
+
+            <ListView Margin="10" ItemsSource="{Binding OrderList}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <WrapPanel>
+                            <TextBlock Text="CoinType: " />
+                            <TextBlock Text="{Binding Coin}" FontWeight="Bold" />
+                            <TextBlock Text=", " />
+                            <TextBlock Text="Amount: " />
+                            <TextBlock Text="{Binding Amount}"  />
+                            <TextBlock Text=" ( Euro Amount: " />
+                            <TextBlock Text="{Binding EuroAmount}" />
+                            <TextBlock Text=", " />
+                            <TextBlock Text="{Binding Outstanding}" />
+                            <TextBlock Text=")" />
+                        </WrapPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Button Content="Buy" Command="{Binding BuyCommand}" HorizontalAlignment="Center" Height="30" Width="100" Margin="10" />
+
         </StackPanel>
 
     </Grid>

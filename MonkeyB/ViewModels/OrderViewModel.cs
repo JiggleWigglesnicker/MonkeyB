@@ -16,9 +16,21 @@ namespace MonkeyB.ViewModels
 
         public ICommand DashBoardCommand { get; set; }
         public ICommand SellCommand { get; set; }
+        public ICommand BuyCommand { get; set; }
 
-        public ObservableCollection<CryptoWalletModel> Coins { get; set; }
+        public ObservableCollection<CryptoWalletModel> CryptoWalletCoins { get; set; }
+        public ObservableCollection<OrderModel> OrderList { get; set; }
 
+        private string euroAmountLabel;
+        public string EuroAmountLabel
+        {
+            get => euroAmountLabel;
+            set
+            {
+                euroAmountLabel = value;
+                OnPropertyChanged("EuroAmountLabel");
+            }
+        }
 
         private string coinAmountLabel;
         public string CoinAmountLabel
@@ -39,6 +51,7 @@ namespace MonkeyB.ViewModels
             {
                 selectedItem = value;
                 CoinAmountLabel = $"Total {selectedItem.coinName} in wallet: {selectedItem.coinAmount}";
+                EuroAmountLabel = $"Total Euro available: {selectedItem.euroAmount}";
                 OnPropertyChanged("SelectedItem");
             }
         }
@@ -69,10 +82,15 @@ namespace MonkeyB.ViewModels
         public OrderViewModel(NavigationStore navigationStore)
         {
             FillSelectBox();
+            FillListViewWithOrders();
+            BuyCommand = new RelayCommand(o =>
+            {
+
+            });
 
             SellCommand = new RelayCommand(o =>
             {
-                PlaceSellOrder(SelectedItem.coinName, CoinAmount, EuroAmount,App.UserID);
+                PlaceSellOrder(SelectedItem.coinName, CoinAmount, EuroAmount, App.UserID);
             });
 
             DashBoardCommand = new RelayCommand(o =>
@@ -85,17 +103,27 @@ namespace MonkeyB.ViewModels
         public void FillSelectBox()
         {
 
-            Coins = new ObservableCollection<CryptoWalletModel>();
-            List<CryptoWalletModel> coinsDictonary = DataBaseAccess.GetCoinsInWallet(App.UserID);
+            CryptoWalletCoins = new ObservableCollection<CryptoWalletModel>();
+            List<CryptoWalletModel> coinsDictonary = DataBaseAccess.FetchCoinsInWallet(App.UserID);
             foreach (var coin in coinsDictonary)
             {
-                Coins.Add(coin);
+                CryptoWalletCoins.Add(coin);
             }
         }
 
         public void PlaceSellOrder(string type, float coinAmount, float euroAmount, int id)
         {
             DataBaseAccess.CreateNewSellOrder(type, coinAmount, euroAmount, id);
+        }
+
+        public void FillListViewWithOrders()
+        {
+            OrderList = new ObservableCollection<OrderModel>();
+            foreach (var order in DataBaseAccess.FetchOrders(App.UserID))
+            {
+                OrderList.Add(order);
+            }
+
         }
 
 
