@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using MonkeyB.Models;
+using Microsoft.Data.Sqlite;
 
 namespace MonkeyB
 {
@@ -15,8 +17,8 @@ namespace MonkeyB
         public static readonly string Coins = "coins";
         public static readonly string CoinList = "coins/list";
         public static readonly string CoinMarkets = "coins/markets";
-        public static string AddCoinsIdUrl(string id) => "coins/" + id;
-        
+        public static string AddCoinsIdUrl(string id) => "simple/price?ids=" + id + "&vs_currencies=eur";
+
         /// <summary>
         /// MarketChart data by coin id
         /// </summary>
@@ -47,7 +49,27 @@ namespace MonkeyB
             }
 
             return await Task.FromResult(model);
+        }
 
+
+
+        public async Task<CryptoCurrencyModel> GetCoinValue(string coincode)
+        {
+            CryptoCurrencyModel ccm = new();
+
+            Uri test = new(ApiEndPoint, AddCoinsIdUrl(coincode));
+            HttpClient httpclient = new();
+            var response = await httpclient.GetStringAsync(test);
+
+            try
+            {
+                ccm = JsonConvert.DeserializeObject<CryptoCurrencyModel>(response);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.StackTrace);
+            }
+            return await Task.FromResult(ccm);
         }
         
         public MarketGraph Marketgraph = new MarketGraph();
@@ -71,6 +93,8 @@ namespace MonkeyB
             return await Task.FromResult(Marketgraph);
 
         }
+
+
 
     }
 }
