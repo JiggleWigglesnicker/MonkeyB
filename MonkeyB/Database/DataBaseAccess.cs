@@ -145,7 +145,7 @@ namespace MonkeyB.Database
 
         public static void CreateNewSellOrder(string type, float coinAmount, float euroAmount, int id)
         {
-            // doesnt check if sufficent money available and value can go into minus. that check in viewmodel
+            
             using (var db = new SqliteConnection($"Data Source=database.db"))
             {
                 db.Open();
@@ -200,7 +200,7 @@ namespace MonkeyB.Database
                 foreach (CryptoWalletModel wallet in cryptoWalletList)
                 {
                    
-                    // doesnt check if sufficent money available and value can go into minus. that check in viewmodel
+                    
                     if (wallet.coinName == orderModel.CoinName)
                     {
                         if (userID == orderModel.UserID)

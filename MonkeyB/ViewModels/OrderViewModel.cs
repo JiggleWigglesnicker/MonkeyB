@@ -62,7 +62,6 @@ namespace MonkeyB.ViewModels
             {
                 selectedItem = value;
                 CoinAmountLabel = $"Total {selectedItem.coinName} in wallet: {selectedItem.coinAmount}";
-                EuroAmountLabel = $"Total Euro available: {selectedItem.euroAmount}";
                 OnPropertyChanged("SelectedItem");
             }
         }
@@ -94,15 +93,20 @@ namespace MonkeyB.ViewModels
         {
             FillSelectBox();
             FillListViewWithOrders();
-
+            EuroAmountLabel = $"Total amount of euro: {CryptoWalletCoins[0].euroAmount}";
             BuyCommand = new RelayCommand(o =>
             {
-                DataBaseAccess.BuyOrder(App.UserID, SelectedBuyOrder.ID, SelectedBuyOrder);
+                if (CryptoWalletCoins[0].euroAmount > selectedBuyOrder.EuroAmount)
+                    BuyOrder(App.UserID, SelectedBuyOrder.ID, SelectedBuyOrder);
+
             });
 
             SellCommand = new RelayCommand(o =>
             {
-                PlaceSellOrder(SelectedItem.coinName, CoinAmount, EuroAmount, App.UserID);
+
+                if (CoinAmount <= selectedItem.coinAmount)
+                    PlaceSellOrder(SelectedItem.coinName, CoinAmount, EuroAmount, App.UserID);
+
             });
 
             DashBoardCommand = new RelayCommand(o =>
@@ -126,6 +130,11 @@ namespace MonkeyB.ViewModels
         public void PlaceSellOrder(string type, float coinAmount, float euroAmount, int id)
         {
             DataBaseAccess.CreateNewSellOrder(type, coinAmount, euroAmount, id);
+        }
+
+        public void BuyOrder(int userID, int orderID, OrderModel orderModel)
+        {
+            DataBaseAccess.BuyOrder(userID, orderID, orderModel);
         }
 
         public void FillListViewWithOrders()

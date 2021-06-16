@@ -26,7 +26,7 @@
             <Label Content="{Binding CoinAmountLabel, FallbackValue='Coin amount'}" HorizontalAlignment="Center" FontSize="15" Margin="5"/>
             <TextBox Text="{Binding CoinAmount}" HorizontalAlignment="Center" FontSize="15" Width="150"/>
 
-            <Label Content="{Binding EuroAmountLabel, FallbackValue='Euro amount'}" HorizontalAlignment="Center" FontSize="15" Margin="10"/>
+            <Label Content="Euro amount" HorizontalAlignment="Center" FontSize="15" Margin="10"/>
             <TextBox Text="{Binding EuroAmount}" HorizontalAlignment="Center" FontSize="15" Width="150"/>
 
             <Button Content="Sell" Command="{Binding SellCommand}" HorizontalAlignment="Center" Height="30" Width="100" Margin="10" />
@@ -58,7 +58,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-
+            <Label Content="{Binding EuroAmountLabel, FallbackValue= 'Total amount of euro: '}" HorizontalAlignment="Center" FontSize="15" />
             <Button Content="Buy" Command="{Binding BuyCommand}" HorizontalAlignment="Center" Height="30" Width="100" Margin="10" />
 
         </StackPanel>
