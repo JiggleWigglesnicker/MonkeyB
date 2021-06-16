@@ -40,12 +40,12 @@
             
             <Label Content="Buy orders" HorizontalAlignment="Center" FontSize="20" Margin="10"/>
 
-            <ListView Margin="10" ItemsSource="{Binding OrderList}" SelectionMode="Single">
+            <ListView Margin="10" ItemsSource="{Binding OrderList}" SelectedItem="{Binding SelectedBuyOrder}" SelectionMode="Single">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <WrapPanel>
                             <TextBlock Text="CoinType: " />
-                            <TextBlock Text="{Binding Coin}" FontWeight="Bold" />
+                            <TextBlock Text="{Binding CoinName}" FontWeight="Bold" />
                             <TextBlock Text=", " />
                             <TextBlock Text="Amount: " />
                             <TextBlock Text="{Binding Amount}"  />

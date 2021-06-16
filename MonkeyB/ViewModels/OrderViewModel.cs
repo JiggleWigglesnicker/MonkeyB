@@ -21,6 +21,17 @@ namespace MonkeyB.ViewModels
         public ObservableCollection<CryptoWalletModel> CryptoWalletCoins { get; set; }
         public ObservableCollection<OrderModel> OrderList { get; set; }
 
+        private OrderModel selectedBuyOrder;
+        public OrderModel SelectedBuyOrder
+        {
+            get => selectedBuyOrder;
+            set
+            {
+                selectedBuyOrder = value;
+                OnPropertyChanged("SelectedBuyOrder");
+            }
+        }
+
         private string euroAmountLabel;
         public string EuroAmountLabel
         {
@@ -83,9 +94,10 @@ namespace MonkeyB.ViewModels
         {
             FillSelectBox();
             FillListViewWithOrders();
+
             BuyCommand = new RelayCommand(o =>
             {
-
+                DataBaseAccess.BuyOrder(App.UserID, SelectedBuyOrder.ID, SelectedBuyOrder);
             });
 
             SellCommand = new RelayCommand(o =>
