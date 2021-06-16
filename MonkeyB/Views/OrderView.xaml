@@ -40,7 +40,7 @@
             
             <Label Content="Buy orders" HorizontalAlignment="Center" FontSize="20" Margin="10"/>
 
-            <ListView Margin="10" ItemsSource="{Binding OrderList}">
+            <ListView Margin="10" ItemsSource="{Binding OrderList}" SelectionMode="Single">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <WrapPanel>
