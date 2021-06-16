@@ -11,7 +11,7 @@ namespace MonkeyB
 {
     class ApiHandler
     {
-        public static readonly Uri ApiEndPoint = new Uri("https://api.coingecko.com/api/EuroAmount/");
+        public static readonly Uri ApiEndPoint = new Uri("https://api.coingecko.com/api/v3/");
         public static readonly string Coins = "coins";
         public static readonly string CoinList = "coins/list";
         public static readonly string CoinMarkets = "coins/markets";
