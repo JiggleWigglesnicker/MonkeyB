@@ -1,4 +1,5 @@
 ﻿using MonkeyB.Commands;
+using MonkeyB.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,37 @@ namespace MonkeyB.ViewModels
     class SettingViewModel : BaseViewModel
     {
         public ICommand DashBoardCommand { get; set; }
+        public ICommand ApplyCommand { get; set; }
+
+        public float settingText;
+        public float SettingText
+        {
+            get => settingText;
+            set
+            {
+                settingText = value;
+                OnPropertyChanged("SettingText");
+            }
+        }
 
         public SettingViewModel(NavigationStore navigationStore)
         {
-            DashBoardCommand = new NavigateDashBoardCommand(navigationStore);
+            DashBoardCommand = new RelayCommand(o =>
+            {
+                navigationStore.SelectedViewModel = new DashBoardViewModel(navigationStore);
+            });
+
+            ApplyCommand = new RelayCommand(o =>
+            {
+
+                if (SettingText >=0)
+                {
+                    DataBaseAccess.updateEuroAmount(SettingText);
+                }
+
+            });
         }
+
+
     }
 }

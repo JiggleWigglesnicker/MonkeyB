@@ -11,10 +11,29 @@ namespace MonkeyB.ViewModels
     class BuySellViewModel : BaseViewModel
     {
         public ICommand DashBoardCommand { get; set; }
+        public ICommand BuyCommand { get; set; }
+
+
 
         public BuySellViewModel(NavigationStore navigationStore)
         {
-            DashBoardCommand = new NavigateDashBoardCommand(navigationStore);
+            DashBoardCommand = new RelayCommand(o =>
+            {
+                navigationStore.SelectedViewModel = new DashBoardViewModel(navigationStore);
+            });
+
+
         }
+
+        public void BuyCrypto()
+        {
+
+        }
+
+        public void SellCrypto()
+        {
+
+        }
+
     }
 }
