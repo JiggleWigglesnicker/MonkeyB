@@ -115,8 +115,8 @@ namespace MonkeyB.ViewModels
 
 
             BitcoinRate = GetCoinAmount("bitcoin");
-            DogeCoinRate = dogeCoinModel.dogecoin.eur;
-            LiteCoinRate = liteCoinModel.litecoin.eur;
+            DogeCoinRate = GetCoinAmount("dogecoin");
+            LiteCoinRate = GetCoinAmount("litecoin");
         }
 
         
@@ -142,16 +142,37 @@ namespace MonkeyB.ViewModels
             }
         }
 
-        public static void BuyCrypto(string currency, float amount)
+        public static async bool BuyCrypto(string currency, float amount)
         {
-            int userId = App.UserID;
-            DataBaseAccess.BuyCoin(currency, amount, userId);
+            if (CheckIfTransactionIsValid() == true){
+                DataBaseAccess.SellCoin("eur", amount, App.UserID);
+                DataBaseAccess.BuyCoin(currency, amount, App.UserID);
+
+                return true;
+            } else
+            {
+                return false;
+            }
         }
 
-        public static void SellCrypto(string currency, float amount)
+        private static bool CheckIfTransactionIsValid()
         {
-            int userId = App.UserID;
-            DataBaseAccess.SellCoin(currency, amount, userId);
+            return true;
+        }
+
+        public static bool SellCrypto(string currency, float amount)
+        {
+            if (CheckIfTransactionIsValid() == true)
+            {
+                DataBaseAccess.SellCoin(currency, amount, App.UserID);
+                DataBaseAccess.BuyCoin("eur", amount, App.UserID);
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public static float GetCoinAmount(string currency)
