@@ -25,7 +25,6 @@ namespace MonkeyB.Database
 
                     db.Open();
 
-
                     string tableCommand1 =
                     "CREATE TABLE IF NOT EXISTS Users " +
                     "(userID INTEGER NOT NULL UNIQUE, " +
@@ -51,13 +50,23 @@ namespace MonkeyB.Database
                     "FOREIGN KEY (userID) REFERENCES Users(userID)," +
                     "PRIMARY KEY(walletID AUTOINCREMENT))";
 
-                    string adminCommand = "INSERT OR IGNORE INTO Users (username,password) VALUES ('admin','admin')";
+                    string tableCommand4 =
+                    "CREATE TABLE IF NOT EXISTS Transactions " +
+                    "(ID INTEGER NOT NULL UNIQUE, " +
+                    "currency_name STRING NOT NULL, " +
+                    "currency_amount FLOAT NOT NULL, " +
+                    "currency_value FLOAT NOT NULL, " +
+                    "userID INTEGER NOT NULL," +
+                    "FOREIGN KEY (userID) REFERENCES Users(userID))";
+
+                    string adminCommand = "INSERT OR IGNORE INTO Users (username,password, euro_amount) VALUES ('admin','admin',1000)";
                     string bitcoinCommand ="INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES ('bitcoin', 20, 1)";
 
 
                     SqliteCommand createTable1 = new SqliteCommand(tableCommand1, db);
                     SqliteCommand createTable2 = new SqliteCommand(tableCommand2, db);
                     SqliteCommand createTable3 = new SqliteCommand(tableCommand3, db);
+                    SqliteCommand createTable4 = new SqliteCommand(tableCommand4, db);
                     SqliteCommand createAdmin = new SqliteCommand(adminCommand, db);
                     SqliteCommand addBitcoin = new SqliteCommand(bitcoinCommand, db);
 
@@ -65,6 +74,7 @@ namespace MonkeyB.Database
                     createTable1.ExecuteReader();
                     createTable2.ExecuteReader();
                     createTable3.ExecuteReader();
+                    createTable4.ExecuteReader();
                     createAdmin.ExecuteReader();
                     addBitcoin.ExecuteReader();
                 }
@@ -95,10 +105,10 @@ namespace MonkeyB.Database
             return model;
         }
 
-
-
-
-
+        internal static float checkWalletAmount(string v)
+        {
+            throw new NotImplementedException();
+        }
 
         public static void SellCoin(string currency, float amount, int userID)
         {

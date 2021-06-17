@@ -27,20 +27,17 @@
                    Width="100" 
                    Height="30" 
                    FontSize="15"/>
-            <ListBox  
+            <ListBox  x:Name="listBox"
+                
+                SelectedItem="{Binding CurrencyName}"
+                ItemsSource="{Binding CurrencyNames}"
                 Margin="0,0,0,5" 
                 HorizontalAlignment="Center"
                 Width="100"
                 Height="100"
                 FontSize="15" 
-                Background="PaleVioletRed"
+                Background="PaleVioletRed" IsTextSearchEnabled="True"
                       >
-                
-                <ListBoxItem>Bitcoin</ListBoxItem>
-                <ListBoxItem>Ethereum</ListBoxItem>
-                <ListBoxItem>Dogecoin</ListBoxItem>
-                <ListBoxItem>Litecoin</ListBoxItem>
-                <ListBoxItem>Ripple</ListBoxItem>
 
             </ListBox>
 
@@ -51,7 +48,7 @@
                    Height="30" 
                    FontSize="15"/>
 
-            <TextBlock Background="LightGray"
+            <TextBox Background="LightGray"
                      Text="{Binding Amount}"
                      Margin="0,0,0,20" 
                      HorizontalAlignment="Center" 

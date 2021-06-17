@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MonkeyB.Database;
+using System.Collections.ObjectModel;
 
 namespace MonkeyB.ViewModels
 {
@@ -14,6 +15,9 @@ namespace MonkeyB.ViewModels
         public ICommand DashBoardCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand BuyCoinCommand { get; set; }
+        public ICommand SellCoinCommand { get; set; }
+
+        public ObservableCollection<string> CurrencyNames { get; set; }
 
         public string currencyName;
         public string CurrencyName
@@ -87,9 +91,16 @@ namespace MonkeyB.ViewModels
             BuyCoinCommand = new RelayCommand(o =>
             {
                 RefreshCoinRatesAsync();
-                //BuyCrypto("bitcoin", Amount);
+                BuyCrypto(CurrencyName, Amount);
             });
 
+            SellCoinCommand = new RelayCommand(o =>
+            {
+                RefreshCoinRatesAsync();
+                SellCrypto("bitcoin", Amount);
+            });
+
+            CurrencyNames = new ObservableCollection<string>() { "bitcoin", "dogecoin", "litecoin" };
             RefreshCoinRatesAsync();
         }
 
@@ -102,11 +113,11 @@ namespace MonkeyB.ViewModels
             CryptoCurrencyModel liteCoinModel = await apiHandler.GetCoinValue("liteCoin");
 
 
+
             BitcoinRate = GetCoinAmount("bitcoin");
             DogeCoinRate = dogeCoinModel.dogecoin.eur;
             LiteCoinRate = liteCoinModel.litecoin.eur;
         }
-
 
         
         public float GetCoinRate(string CoinName)
@@ -130,8 +141,6 @@ namespace MonkeyB.ViewModels
                 return 0;
             }
         }
-
-
 
         public static void BuyCrypto(string currency, float amount)
         {
