@@ -20,15 +20,14 @@ namespace MonkeyB.ViewModels
         public ChartValues<double> CoinValue { get; set; }
         public ObservableCollection<string> CoinDate { get; set; }
 
-        // public ObservableCollection<string> CoinValue { get; }
-
-
+        public ObservableCollection<string> CurrencyNames { get; set; }
+        
         private ApiHandler api = new ApiHandler();
 
         public IndexViewModel(NavigationStore navigationStore)
         {
             
-            // api.GetMarketData("bitcoin", "eur", 91);
+            CurrencyNames = new ObservableCollection<string>() { "bitcoin", "dogecoin", "litecoin" };
             getMarketData();
             DashBoardCommand = new RelayCommand(o =>
             {
