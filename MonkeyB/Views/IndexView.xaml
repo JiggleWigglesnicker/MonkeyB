@@ -17,13 +17,13 @@
             <RowDefinition Height="100" />
         </Grid.RowDefinitions>
         <ListBox Grid.Row="0" Grid.Column="0"  x:Name="listBox"
-                 SelectedItem="{Binding CurrencyName}"
-                  ItemsSource="{Binding CurrencyNames}"
-                  Margin="0,0,0,5" 
-                  Width="250"
-                  Height="100"
-                  FontSize="15" 
-                  Background="PaleVioletRed" IsTextSearchEnabled="True"
+                 SelectedItem="{Binding SelectedCurrencyName}"
+                 ItemsSource="{Binding CurrencyNames}"
+                 Margin="0,0,0,5" 
+                 Width="250"
+                 Height="100"
+                 FontSize="15" 
+                 Background="PaleVioletRed" IsTextSearchEnabled="True"
         />
         <StackPanel Grid.Row="1" Grid.Column="0">
             <Button
