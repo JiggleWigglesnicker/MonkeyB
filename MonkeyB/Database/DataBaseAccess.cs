@@ -2,6 +2,7 @@
 using MonkeyB.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -103,6 +104,23 @@ namespace MonkeyB.Database
             }
 
             return model;
+        }
+
+        public static bool RegisterUser(string username, string password)
+        {
+            string registerCommand = ($"INSERT OR IGNORE INTO Users (username,password, euro_amount) VALUES ('{username}','{password}',1000)");
+            using (var db = new SqliteConnection($"Data Source=database.db"))
+            {
+                db.Open();
+                SqliteCommand selectCommand;
+                selectCommand = new SqliteCommand
+                    ($"SELECT username, password, userID from Users WHERE username = '{username}'", db);
+                var result = selectCommand.ExecuteReader();
+                if (result.HasRows || username == String.Empty || password == String.Empty) return false;
+                SqliteCommand createTable1 = new SqliteCommand(registerCommand, db);
+                createTable1.ExecuteReader();
+                return true;
+            }
         }
 
         public static void updateEuroAmount(float amount)
