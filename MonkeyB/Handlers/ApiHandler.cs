@@ -1,17 +1,14 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MonkeyB
 {
     class ApiHandler
     {
-        public static readonly Uri ApiEndPoint = new Uri("https://api.coingecko.com/api/v3/");
+        public static readonly Uri ApiEndPoint = new("https://api.coingecko.com/api/v3/");
         public static readonly string Coins = "coins";
         public static readonly string CoinList = "coins/list";
         public static readonly string CoinMarkets = "coins/markets";
