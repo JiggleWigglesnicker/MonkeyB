@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace MonkeyB.Views
 {
     /// <summary>
-    /// Interaction logic for NewsView.xaml
+    /// Interaction logic for WalletView.xaml
     /// </summary>
-    public partial class NewsView : UserControl
+    public partial class WalletView : UserControl
     {
-        public NewsView()
+        public WalletView()
         {
             InitializeComponent();
         }

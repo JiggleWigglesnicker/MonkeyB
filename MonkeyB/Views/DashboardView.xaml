@@ -22,7 +22,7 @@
 
             <Button Content="Indexes" Command="{Binding IndexCommand}" HorizontalAlignment="Center" Margin="0,20,0,10" Height="30" Width="200"/>
             <Button Content="Buy/Sell" Command="{Binding BuySellCommand}" HorizontalAlignment="Center" Margin="0,10,0,10" Height="30" Width="200"/>
-            <Button Content="News" Command="{Binding NewsCommand}" HorizontalAlignment="Center" Margin="0,10,0,10" Height="30" Width="200"/>
+            <Button Content="Wallet" Command="{Binding WalletCommand}" HorizontalAlignment="Center" Margin="0,10,0,10" Height="30" Width="200"/>
             <Button Content="Orders" Command="{Binding OrderCommand}" HorizontalAlignment="Center" Margin="0,10,0,10" Height="30" Width="200"/>
             <Button Content="Achievements" Command="{Binding AchievementCommand}" HorizontalAlignment="Center" Margin="0,10,0,10" Height="30" Width="200"/>
             <Button Content="Settings" Command="{Binding SettingCommand}" HorizontalAlignment="Center" Margin="0,10,0,10" Height="30" Width="200"/>

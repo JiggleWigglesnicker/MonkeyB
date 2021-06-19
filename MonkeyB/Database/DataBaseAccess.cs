@@ -262,7 +262,7 @@ namespace MonkeyB.Database
                     ($"INSERT OR IGNORE INTO Orders (cointype,coin_amount,euro_amount,outstanding,userID) VALUES ('{type}',{coinAmount},{euroAmount},true,{id})", db);
 
                 updateCommand = new SqliteCommand
-                    ($"UPDATE Cryptowallet SET coin_amount = coin_amount - {coinAmount} WHERE userID = '{id}'", db);
+                    ($"UPDATE Cryptowallet SET coin_amount = coin_amount - {coinAmount} WHERE userID = '{id}' AND coin = '{type}'", db);
 
                 SqliteDataReader query1 = insertCommand.ExecuteReader();
                 SqliteDataReader query2 = updateCommand.ExecuteReader();
