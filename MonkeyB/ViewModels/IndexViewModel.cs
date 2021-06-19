@@ -10,10 +10,10 @@ namespace MonkeyB.ViewModels
 {
     class IndexViewModel : BaseViewModel
     {
-        private ICommand DashBoardCommand { get; set; }
+        public ICommand DashBoardCommand { get; set; }
         public ChartValues<double> CoinValue { get; set; }
-        private ObservableCollection<string> CoinDate { get; set; }
-        private ObservableCollection<string> CurrencyNames { get; set; }
+        public ObservableCollection<string> CoinDate { get; set; }
+        public ObservableCollection<string> CurrencyNames { get; set; }
 
         private ApiHandler api = new ApiHandler();
         
