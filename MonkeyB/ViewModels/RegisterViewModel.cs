@@ -44,6 +44,7 @@ namespace MonkeyB.ViewModels
                 if (DataBaseAccess.RegisterUser(username, password))
                 {
                     MessageBox.Show("User created!");
+                    navigationStore.SelectedViewModel = new LoginViewModel(navigationStore);
                     return;
                 }
                 MessageBox.Show("Invalid input, try again!");
