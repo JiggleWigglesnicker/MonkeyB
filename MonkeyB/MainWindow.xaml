@@ -24,8 +24,8 @@
                 <DataTemplate DataType="{x:Type viewmodels:LoginViewModel}">
                     <views:LoginView/>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type viewmodels:NewsViewModel}">
-                    <views:NewsView/>
+                <DataTemplate DataType="{x:Type viewmodels:WalletViewModel}">
+                    <views:WalletView/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:AchievementViewModel}">
                     <views:AchievementView/>

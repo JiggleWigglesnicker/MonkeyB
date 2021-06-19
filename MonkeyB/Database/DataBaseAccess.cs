@@ -51,9 +51,9 @@ namespace MonkeyB.Database
 
 
                     string adminCommand = "INSERT OR IGNORE INTO Users (username,password, euro_amount) VALUES ('admin','admin',1000)";
-                    //string addcoin1 = "INSERT OR IGNORE INTO Cryptowallet (coin,Amount,userID) VALUES ('bitcoin',5.0,1)";
-                    //string addcoin2 = "INSERT OR IGNORE INTO Cryptowallet (coin,Amount,userID) VALUES ('litecoin',10.0,1)";
-                    //string addcoin3 = "INSERT OR IGNORE INTO Cryptowallet (coin,Amount,userID) VALUES ('etherium',105000.0,1)";
+                    //string addcoin1 = "INSERT OR IGNORE INTO Cryptowallet (coin,coin_amount,userID) VALUES ('bitcoin',5.0,1)";
+                    //string addcoin2 = "INSERT OR IGNORE INTO Cryptowallet (coin,coin_amount,userID) VALUES ('litecoin',10.0,1)";
+                    //string addcoin3 = "INSERT OR IGNORE INTO Cryptowallet (coin,coin_amount,userID) VALUES ('etherium',105.0,1)";
 
                     SqliteCommand createTable1 = new SqliteCommand(tableCommand1, db);
                     SqliteCommand createTable2 = new SqliteCommand(tableCommand2, db);
@@ -157,7 +157,7 @@ namespace MonkeyB.Database
                     ($"INSERT OR IGNORE INTO Orders (cointype,coin_amount,euro_amount,outstanding,userID) VALUES ('{type}',{coinAmount},{euroAmount},true,{id})", db);
 
                 updateCommand = new SqliteCommand
-                    ($"UPDATE Cryptowallet SET coin_amount = coin_amount - {coinAmount} WHERE userID = '{id}'", db);
+                    ($"UPDATE Cryptowallet SET coin_amount = coin_amount - {coinAmount} WHERE userID = '{id}' AND coin = '{type}'", db);
 
                 SqliteDataReader query1 = insertCommand.ExecuteReader();
                 SqliteDataReader query2 = updateCommand.ExecuteReader();
