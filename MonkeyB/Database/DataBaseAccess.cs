@@ -2,6 +2,7 @@
 using MonkeyB.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -105,20 +106,20 @@ namespace MonkeyB.Database
             return model;
         }
 
-        public static void RegisterUser(string username, string password)
+        public static bool RegisterUser(string username, string password)
         {
-            string registerCommand = "INSERT OR IGNORE INTO Users (username,password, euro_amount) VALUES (username,password,1000)";
+            string registerCommand = ($"INSERT OR IGNORE INTO Users (username,password, euro_amount) VALUES ('{username}','{password}',1000)");
             using (var db = new SqliteConnection($"Data Source=database.db"))
             {
-                // db.Open();
-                // string cmd = "SELECT FROM Users WHERE username = " + username;
-                // cmd = new Sqlcommand($@"SELECT COUNT(1) FROM [Table1] WHERE barcode = {bar}",con);
-                // var result = cmd.ExecuteReader();
-                // if(result == "1"){ 
-                //     //do generate new barcode
-                // }
+                db.Open();
+                SqliteCommand selectCommand;
+                selectCommand = new SqliteCommand
+                    ($"SELECT username, password, userID from Users WHERE username = '{username}'", db);
+                var result = selectCommand.ExecuteReader();
+                if (result.HasRows || username == String.Empty || password == String.Empty) return false;
                 SqliteCommand createTable1 = new SqliteCommand(registerCommand, db);
                 createTable1.ExecuteReader();
+                return true;
             }
         }
 
