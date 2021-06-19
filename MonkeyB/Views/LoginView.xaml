@@ -8,6 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800" Background="White">
     <Grid>
         <StackPanel>
+
             <Label Content="Username :" 
                    Margin="0,100,0,5" 
                    HorizontalAlignment="Center" 
@@ -46,6 +47,7 @@
                     Height="30" 
                     FontSize="15" 
                     Command="{Binding LoginCommand}"/>
+
         </StackPanel>
     </Grid>
 </UserControl>
