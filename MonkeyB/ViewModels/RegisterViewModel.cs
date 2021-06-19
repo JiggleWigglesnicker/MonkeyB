@@ -43,11 +43,11 @@ namespace MonkeyB.ViewModels
             {
                 if (DataBaseAccess.RegisterUser(username, password))
                 {
-                    MessageBox.Show("User created!");
+                    MessageBox.Show("User created!", "Success!", MessageBoxButton.OK, MessageBoxImage.Information);
                     navigationStore.SelectedViewModel = new LoginViewModel(navigationStore);
                     return;
                 }
-                MessageBox.Show("Invalid input, try again!");
+                MessageBox.Show("Invalid input, try again!", "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
             });
 
         }
