@@ -105,6 +105,23 @@ namespace MonkeyB.Database
             return model;
         }
 
+        public static void RegisterUser(string username, string password)
+        {
+            string registerCommand = "INSERT OR IGNORE INTO Users (username,password, euro_amount) VALUES (username,password,1000)";
+            using (var db = new SqliteConnection($"Data Source=database.db"))
+            {
+                // db.Open();
+                // string cmd = "SELECT FROM Users WHERE username = " + username;
+                // cmd = new Sqlcommand($@"SELECT COUNT(1) FROM [Table1] WHERE barcode = {bar}",con);
+                // var result = cmd.ExecuteReader();
+                // if(result == "1"){ 
+                //     //do generate new barcode
+                // }
+                SqliteCommand createTable1 = new SqliteCommand(registerCommand, db);
+                createTable1.ExecuteReader();
+            }
+        }
+
         public static void updateEuroAmount(float amount)
         {
 

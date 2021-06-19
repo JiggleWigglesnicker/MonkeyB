@@ -15,6 +15,8 @@ namespace MonkeyB.ViewModels
 
 
         public ICommand LoginCommand { get; set; }
+        
+        public ICommand RegisterCommand { get; set; }
 
         private String username;
         public String Username
@@ -46,6 +48,11 @@ namespace MonkeyB.ViewModels
                 {
                     navigationStore.SelectedViewModel = new DashBoardViewModel(navigationStore);
                 }
+            });
+            
+            RegisterCommand = new RelayCommand(o =>
+            {
+                navigationStore.SelectedViewModel = new RegisterViewModel(navigationStore);
             });
         }
 
