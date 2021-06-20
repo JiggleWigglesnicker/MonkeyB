@@ -156,6 +156,33 @@ namespace MonkeyB.Database
 
         }
 
+        public static void BuyEuro(float amount)
+        {
+            using (var db = new SqliteConnection($"Data Source=database.db"))
+            {
+                db.Open();
+
+                SqliteCommand updateCommand;
+                updateCommand = new SqliteCommand($"UPDATE users SET euro_amount = euro_amount + '{amount}'   WHERE userID = '{App.UserID}'", db);
+                updateCommand.ExecuteNonQuery();
+            }
+
+        }
+
+
+        public static void SellEuro(float amount)
+        {
+            using (var db = new SqliteConnection($"Data Source=database.db"))
+            {
+                db.Open();
+
+                SqliteCommand updateCommand;
+                updateCommand = new SqliteCommand($"UPDATE users SET euro_amount = euro_amount - '{amount}'   WHERE userID = '{App.UserID}'", db);
+                updateCommand.ExecuteNonQuery();
+            }
+
+        }
+
         public static float GetCoinAmount(string currency, int userID)
         {
             using (var db = new SqliteConnection($"Data Source=database.db"))
@@ -224,6 +251,32 @@ namespace MonkeyB.Database
 
             }
 
+        }
+
+
+        /// <summary>
+        /// Returns the amount of euro's a user has
+        /// </summary>
+        /// <returns>Euro amount</returns>
+        public static float GetEuroAmount()
+        {
+            using (var db = new SqliteConnection($"Data Source=database.db"))
+            {
+                db.Open();
+
+                SqliteCommand selectCommand;
+                selectCommand = new SqliteCommand($"SELECT euro_amount from users WHERE userID = '{App.UserID}' ", db);
+                SqliteDataReader query = selectCommand.ExecuteReader();
+
+
+                float amount = 0;
+                while (query.Read())
+                {
+                    amount = query.GetFloat(0);
+                }
+
+                return amount;
+            }
         }
 
 
