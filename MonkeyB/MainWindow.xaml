@@ -10,55 +10,69 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
-        <Style TargetType="{x:Type Button}">
 
+        <Style TargetType="{x:Type UserControl}" x:Key="UserControleStyle">
             <Style.Triggers>
-
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Dark">
-
                     <Setter Property="Background" Value="Black" />
-                    <Setter Property="Foreground" Value="White" />
-
+                   
                 </DataTrigger>
-
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Light">
+                    <Setter Property="Background" Value="White" />
+                   
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="LGBTQ">
+                    <Setter Property="Background" Value="Pink" />
+                    
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
 
+        <Style TargetType="{x:Type Button}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Dark">
+                    <Setter Property="Background" Value="Gray" />
+                    <Setter Property="Foreground" Value="White" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Light">
                     <Setter Property="Background" Value="White" />
                     <Setter Property="Foreground" Value="Black" />
-
                 </DataTrigger>
-
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="LGBTQ">
+                    <Setter Property="Background" Value="LightCoral" />
+                    <Setter Property="Foreground" Value="Black" />
+                </DataTrigger>
             </Style.Triggers>
-
         </Style>
+        
     </Window.Resources>
     <Grid>
 
         <ContentControl Content="{Binding SelectedViewModel}">
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type viewmodels:BuySellViewModel}">
-                    <views:BuySellView/>
+                    <views:BuySellView Style="{StaticResource UserControleStyle}"/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:DashBoardViewModel}">
-                    <views:DashboardView/>
+                    <views:DashboardView Style="{StaticResource UserControleStyle}"/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:IndexViewModel}">
-                    <views:IndexView/>
+                    <views:IndexView Style="{StaticResource UserControleStyle}"/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:LoginViewModel}">
-                    <views:LoginView/>
+                    <views:LoginView Style="{StaticResource UserControleStyle}"/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:WalletViewModel}">
-                    <views:WalletView/>
+                    <views:WalletView Style="{StaticResource UserControleStyle}"/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:AchievementViewModel}">
-                    <views:AchievementView/>
+                    <views:AchievementView Style="{StaticResource UserControleStyle}"/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:SettingViewModel}">
-                    <views:SettingView/>
+                    <views:SettingView Style="{StaticResource UserControleStyle}"/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:OrderViewModel}">
-                    <views:OrderView/>
+                    <views:OrderView Style="{StaticResource UserControleStyle}"/>
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
