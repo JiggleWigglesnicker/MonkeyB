@@ -122,7 +122,7 @@ namespace MonkeyB.Database
 
         public static void SellCoin(string currency, float amount, int userID)
         {
-            using (var db = new SqliteConnection($"Data Source={DbPath}"))
+            using (var db = new SqliteConnection($"Data Source=database.db"))
             {
                 db.Open();
 
@@ -135,7 +135,7 @@ namespace MonkeyB.Database
 
         public static void BuyCoin(string currency, float amount, int userID)
         {
-            using (var db = new SqliteConnection($"Data Source={DbPath}"))
+            using (var db = new SqliteConnection($"Data Source=database.db"))
             {
                 db.Open();
 
@@ -148,7 +148,7 @@ namespace MonkeyB.Database
 
         public static float GetCoinAmount(string currency, int userID)
         {
-            using (var db = new SqliteConnection($"Data Source={DbPath}"))
+            using (var db = new SqliteConnection($"Data Source=database.db"))
             {
                 db.Open();
 
@@ -171,7 +171,7 @@ namespace MonkeyB.Database
 
         private static void addCurrency(string currency, int userID)
         {
-            using (var db = new SqliteConnection($"Data Source={DbPath}"))
+            using (var db = new SqliteConnection($"Data Source=database.db"))
             {
                 db.Open();
 

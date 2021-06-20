@@ -149,7 +149,7 @@ namespace MonkeyB.ViewModels
 
         public static bool BuyCrypto(string currency, float amount)
         {
-            if (CheckIfTransactionIsValid() == true)
+            if (CheckIfTransactionIsValid(currency) == true)
             {
                 DataBaseAccess.SellCoin("eur", amount, App.UserID);
                 DataBaseAccess.BuyCoin(currency, amount, App.UserID);
@@ -163,7 +163,7 @@ namespace MonkeyB.ViewModels
 
         public static bool SellCrypto(string currency, float amount)
         {
-            if (CheckIfTransactionIsValid() == true)
+            if (CheckIfTransactionIsValid(currency) == true)
             {
                 DataBaseAccess.SellCoin(currency, amount, App.UserID);
                 DataBaseAccess.BuyCoin("eur", amount, App.UserID);
@@ -176,9 +176,18 @@ namespace MonkeyB.ViewModels
             }
         }
 
-        private static bool CheckIfTransactionIsValid()
+        private static bool CheckIfTransactionIsValid(string fromCurrency, string toCurrency = "eur")
         {
-            return true;
+            float fromAmount = DataBaseAccess.GetCoinAmount(fromCurrency, App.UserID);
+            float toAmount = DataBaseAccess.GetCoinAmount(toCurrency, App.UserID);
+
+            if(fromAmount >= toAmount)
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
         }
 
         public static float GetCoinAmount(string currency)
