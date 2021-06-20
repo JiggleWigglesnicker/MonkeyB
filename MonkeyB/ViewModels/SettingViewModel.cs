@@ -13,6 +13,7 @@ namespace MonkeyB.ViewModels
     {
         public ICommand DashBoardCommand { get; set; }
         public ICommand ApplyCommand { get; set; }
+        public ICommand ThemeCommand { get; set; }
 
         public float settingText;
         public float SettingText
@@ -27,6 +28,8 @@ namespace MonkeyB.ViewModels
 
         public SettingViewModel(NavigationStore navigationStore)
         {
+            ThemeCommand = new RelayCommand(UpdateAppTheme);
+
             DashBoardCommand = new RelayCommand(o =>
             {
                 navigationStore.SelectedViewModel = new DashBoardViewModel(navigationStore);
@@ -35,12 +38,18 @@ namespace MonkeyB.ViewModels
             ApplyCommand = new RelayCommand(o =>
             {
 
-                if (SettingText >=0)
+                if (SettingText >= 0)
                 {
                     DataBaseAccess.updateEuroAmount(SettingText);
                 }
 
             });
+        }
+
+        public void UpdateAppTheme(object parameter)
+        {
+           string themename =  (string)parameter;
+           
         }
 
 
