@@ -8,6 +8,7 @@ using System.Windows.Input;
 using MonkeyB.Database;
 using System.Collections.ObjectModel;
 using MonkeyB.Models;
+using System.Diagnostics;
 
 namespace MonkeyB.ViewModels
 {
@@ -105,19 +106,19 @@ namespace MonkeyB.ViewModels
 
             RefreshCommand = new RelayCommand(o =>
             {
-                RefreshCoinRates();
+                RefreshCoinRates(); 
             });
 
             BuyCoinCommand = new RelayCommand(o =>
             {
-                RefreshCoinRates();
                 BuyCrypto(CurrencyName, Amount);
+                RefreshCoinRates();
             });
 
             SellCoinCommand = new RelayCommand(o =>
             {
-                RefreshCoinRates();
                 SellCrypto("bitcoin", Amount);
+                RefreshCoinRates();
             });
 
             DataBaseAccess.InitializeCoins();
@@ -142,28 +143,26 @@ namespace MonkeyB.ViewModels
             liteCoinModel = await apiHandler.GetCoinValue("liteCoin");
         }
 
-        public Task<float> GetCoinRateInEuro(string CoinName)
+        public float GetCoinRateInEuro(string CoinName)
         {
             switch (CoinName)
             {
                 case "bitcoin":
-                    return Task.FromResult(bitCoinModel.bitcoin.eur);
+                    return bitCoinModel.bitcoin.eur;
                 case "dogecoin":
-                    return Task.FromResult(bitCoinModel.bitcoin.eur);
+                    return dogeCoinModel.dogecoin.eur;
                 case "litecoin":
-                    return Task.FromResult(bitCoinModel.bitcoin.eur);
-                case "ethereum":
-                    return Task.FromResult(bitCoinModel.bitcoin.eur);
+                    return liteCoinModel.litecoin.eur;
                 default:
-                    return Task.FromResult(bitCoinModel.bitcoin.eur);
+                    return 0;
             }
         }
 
         public bool BuyCrypto(string currency, float amount)
         {
-            if (CheckIfTransactionIsValid(currency) == true)
+            if (CheckIfBuyTransactionIsValid(currency, amount) == true)
             {
-                DataBaseAccess.SellCoin("eur", amount, App.UserID);
+                DataBaseAccess.SellEuro(amount * GetCoinRateInEuro(currency));
                 DataBaseAccess.BuyCoin(currency, amount, App.UserID);
 
                 return true;
@@ -173,12 +172,12 @@ namespace MonkeyB.ViewModels
             }
         }
 
-        public static bool SellCrypto(string currency, float amount)
+        public bool SellCrypto(string currency, float amount)
         {
-            if (CheckIfTransactionIsValid(currency) == true)
+            if (CheckIfSellTransactionIsValid(currency, amount) == true)
             {
                 DataBaseAccess.SellCoin(currency, amount, App.UserID);
-                DataBaseAccess.BuyCoin("eur", amount, App.UserID);
+                DataBaseAccess.BuyEuro(amount * GetCoinRateInEuro(currency));
 
                 return true;
             }
@@ -188,28 +187,48 @@ namespace MonkeyB.ViewModels
             }
         }
 
-        private static bool CheckIfTransactionIsValid(string fromCurrency, string toCurrency = "eur")
+        private bool CheckIfBuyTransactionIsValid(string ToCurrency, float amount)
         {
-            float fromAmount = DataBaseAccess.GetCoinAmount(fromCurrency, App.UserID);
-            float toAmount = DataBaseAccess.GetCoinAmount(toCurrency, App.UserID);
+            float euroAmount = DataBaseAccess.GetEuroAmount();
+            
 
-            //float coinRate = GetCoinRateInEuro(fromCurrency);
+            float rate = GetCoinRateInEuro(ToCurrency);
 
-            //toAmount *= coinRate;
+            float cost = amount * rate;
 
-            if (fromAmount >= toAmount)
+            if (euroAmount >= cost)
             {
                 return true;
             } else
             {
+                return false;
+            }
+        }
+
+        private static bool CheckIfSellTransactionIsValid(string FromCurrency, float amount)
+        {
+            float CryptoAmount = DataBaseAccess.GetCoinAmount(FromCurrency, App.UserID);
+
+            if (CryptoAmount >= amount)
+            {
                 return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
         public static float GetCoinAmount(string currency)
         {
-            int userId = App.UserID;
-            return DataBaseAccess.GetCoinAmount(currency, userId);
+            if (currency == "eur")
+            {
+                return DataBaseAccess.GetEuroAmount();
+            }
+            else
+            {
+                return DataBaseAccess.GetCoinAmount(currency, App.UserID);
+            }
         }
 
     }

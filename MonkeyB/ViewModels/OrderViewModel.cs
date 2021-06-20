@@ -153,7 +153,6 @@ namespace MonkeyB.ViewModels
             {
                 OrderList.Add(order);
             }
-
         }
 
 
