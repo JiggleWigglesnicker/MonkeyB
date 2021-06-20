@@ -86,6 +86,14 @@ namespace MonkeyB.ViewModels
             }
         }
 
+
+        private ApiHandler apiHandler = new ApiHandler();
+
+        private CryptoCurrencyModel eurModel = new();
+        private CryptoCurrencyModel bitCoinModel = new();
+        private  CryptoCurrencyModel dogeCoinModel = new();
+        private CryptoCurrencyModel liteCoinModel = new();
+
         // Constructor
         public BuySellViewModel(NavigationStore navigationStore)
         {
@@ -96,63 +104,48 @@ namespace MonkeyB.ViewModels
 
             RefreshCommand = new RelayCommand(o =>
             {
-                RefreshCoinRatesAsync();
+                RefreshCoinRates();
             });
 
             BuyCoinCommand = new RelayCommand(o =>
             {
-                RefreshCoinRatesAsync();
+                RefreshCoinRates();
                 BuyCrypto(CurrencyName, Amount);
             });
 
             SellCoinCommand = new RelayCommand(o =>
             {
-                RefreshCoinRatesAsync();
+                RefreshCoinRates();
                 SellCrypto("bitcoin", Amount);
             });
 
             CurrencyNames = new ObservableCollection<string>() { "bitcoin", "dogecoin", "litecoin" };
-            RefreshCoinRatesAsync();
+            RefreshCoinRates();
+            RefreshCryptoToEuro();
         }
 
-        private async void RefreshCoinRatesAsync()
+        private void RefreshCoinRates()
         {
-            ApiHandler apiHandler = new ApiHandler();
-
-            CryptoCurrencyModel eurModel = await apiHandler.GetCoinValue("eur");
-            CryptoCurrencyModel bitCoinModel = await apiHandler.GetCoinValue("bitcoin");
-            CryptoCurrencyModel dogeCoinModel = await apiHandler.GetCoinValue("dogecoin");
-            CryptoCurrencyModel liteCoinModel = await apiHandler.GetCoinValue("liteCoin");
-
-
             EurRate             = GetCoinAmount("eur");
             BitcoinRate         = GetCoinAmount("bitcoin");
             DogeCoinRate        = GetCoinAmount("dogecoin");
             LiteCoinRate        = GetCoinAmount("litecoin");
         }
 
-        
-        public float GetCoinRate(string CoinName)
+        private async void RefreshCryptoToEuro()
         {
-            if(CoinName == "Bitcoin")
-            {
-                return 40000;
-            }
-            else if(CoinName == "Dogecoin"){
-                return 20;
-            }
-            else if (CoinName == "Eth")
-            {
-                return 3000;
-            }
-            else if (CoinName == "Lite")
-            {
-                return 666;
-            }
-            {
-                return 0;
-            }
+            eurModel = await apiHandler.GetCoinValue("eur");
+            bitCoinModel = await apiHandler.GetCoinValue("bitcoin");
+            dogeCoinModel = await apiHandler.GetCoinValue("dogecoin");
+            liteCoinModel = await apiHandler.GetCoinValue("liteCoin");
         }
+
+        
+       // public async Task<float> GetCoinRateAsync(string CoinName)
+        //{
+            
+
+        //}
 
         public static bool BuyCrypto(string currency, float amount)
         {
