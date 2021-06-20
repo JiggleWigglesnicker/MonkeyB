@@ -12,15 +12,20 @@ namespace MonkeyB.Database
 {
     public static class DataBaseAccess
     {
+
+        private static string FolderPath { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        private static string DbPath { get; set; } = System.IO.Path.Combine(FolderPath, "database.db");
+       
+
         public static async void InitializeDatabase()
         {
             await Task.Run(() =>
             {
                 using (var db = new SqliteConnection($"Data Source=database.db"))
                 {
+                    System.Diagnostics.Debug.WriteLine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\n");
 
                     db.Open();
-
 
                     string tableCommand1 =
                     "CREATE TABLE IF NOT EXISTS Users " +
@@ -50,37 +55,54 @@ namespace MonkeyB.Database
                     "FOREIGN KEY (userID) REFERENCES Users(userID)," +
                     "PRIMARY KEY(orderID AUTOINCREMENT))";
 
+                    string tableCommand4 =
+                    "CREATE TABLE IF NOT EXISTS Transactions " +
+                    "(ID INTEGER NOT NULL UNIQUE, " +
+                    "currency_name STRING NOT NULL, " +
+                    "currency_amount FLOadAT NOT NULL, " +
+                    "currency_value FLOAT NOT NULL, " +
+                    "userID INTEGER NOT NULL," +
+                    "FOREIGN KEY (userID) REFERENCES Users(userID))";
 
-                    string adminCommand = "INSERT OR IGNORE INTO Users (username,password, euro_amount) VALUES ('admin','admin',1000)";
-                    //string addcoin1 = "INSERT OR IGNORE INTO Cryptowallet (coin,Amount,userID) VALUES ('bitcoin',5.0,1)";
-                    //string addcoin2 = "INSERT OR IGNORE INTO Cryptowallet (coin,Amount,userID) VALUES ('litecoin',10.0,1)";
-                    //string addcoin3 = "INSERT OR IGNORE INTO Cryptowallet (coin,Amount,userID) VALUES ('etherium',105000.0,1)";
+                    string adminCommand = "INSERT OR IGNORE INTO Users (username,password) VALUES ('admin','admin')";
+                    string euroCommand = "INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES ('eur', 1000, 1)";
+                    string bitcoinCommand = "INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES ('bitcoin', 0, 1)";
+                    string dogeCommand = "INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES ('dogecoin', 0, 1)";
 
                     SqliteCommand createTable1 = new SqliteCommand(tableCommand1, db);
                     SqliteCommand createTable2 = new SqliteCommand(tableCommand2, db);
                     SqliteCommand createTable3 = new SqliteCommand(tableCommand3, db);
-
                     SqliteCommand createAdmin = new SqliteCommand(adminCommand, db);
 
-                    //SqliteCommand createcoin1 = new SqliteCommand(addcoin1, db);
-                    //SqliteCommand createcoin2 = new SqliteCommand(addcoin2, db);
-                    //SqliteCommand createcoin3 = new SqliteCommand(addcoin3, db);
+
+
+                    SqliteCommand createTable1  = new SqliteCommand(tableCommand1, db);
+                    SqliteCommand createTable2  = new SqliteCommand(tableCommand2, db);
+                    SqliteCommand createTable3  = new SqliteCommand(tableCommand3, db);
+                    SqliteCommand createTable4  = new SqliteCommand(tableCommand4, db);
+                    SqliteCommand createAdmin   = new SqliteCommand(adminCommand, db);
+                    SqliteCommand addBitcoin    = new SqliteCommand(bitcoinCommand, db);
+                    SqliteCommand addEur        = new SqliteCommand(euroCommand, db);
+                    SqliteCommand addDoge       = new SqliteCommand(dogeCommand, db);
+
 
 
 
                     createTable1.ExecuteReader();
                     createTable2.ExecuteReader();
                     createTable3.ExecuteReader();
+                    createTable4.ExecuteReader();
                     createAdmin.ExecuteReader();
 
                     //createcoin1.ExecuteReader();
                     //createcoin2.ExecuteReader();
                     //createcoin3.ExecuteReader();
 
+                    addBitcoin.ExecuteReader();
+                    addEur.ExecuteReader();
                 }
             });
         }
-
 
         public static LoginModel RetrieveLogin(String username)
         {
@@ -104,6 +126,74 @@ namespace MonkeyB.Database
             }
 
             return model;
+        }
+
+        internal static float checkWalletAmount(string v)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void SellCoin(string currency, float amount, int userID)
+        {
+            using (var db = new SqliteConnection($"Data Source=database.db"))
+            {
+                db.Open();
+
+                SqliteCommand updateCommand;
+                updateCommand = new SqliteCommand($"UPDATE CryptoWallet SET coin_amount= coin_amount - '{amount}'   WHERE userID = '{userID}' AND coin = '{currency}'", db);
+                updateCommand.ExecuteNonQuery();
+            }
+
+        }
+
+        public static void BuyCoin(string currency, float amount, int userID)
+        {
+            using (var db = new SqliteConnection($"Data Source=database.db"))
+            {
+                db.Open();
+
+                SqliteCommand updateCommand;
+                updateCommand = new SqliteCommand($"UPDATE CryptoWallet SET coin_amount = coin_amount + '{amount}'   WHERE userID = '{userID}' AND coin = '{currency}'", db);
+                updateCommand.ExecuteNonQuery();
+            }
+
+        }
+
+        public static float GetCoinAmount(string currency, int userID)
+        {
+            using (var db = new SqliteConnection($"Data Source=database.db"))
+            {
+                db.Open();
+
+                SqliteCommand selectCommand;
+                selectCommand = new SqliteCommand($"SELECT coin_amount from Cryptowallet WHERE userID = '{userID}' AND coin = '{currency}'", db);
+                SqliteDataReader query = selectCommand.ExecuteReader();
+                //addCurrency("bitcoin", App.UserID);
+                float amount = 0;
+
+                
+
+                while (query.Read())
+                {
+                    amount = query.GetFloat(0);
+                }
+
+                return amount;
+            }
+        }
+
+        private static void addCurrency(string currency, int userID)
+        {
+            using (var db = new SqliteConnection($"Data Source=database.db"))
+            {
+                db.Open();
+
+                SqliteCommand selectCommand;
+                selectCommand = new SqliteCommand($"INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES ('bitcoin', 20, 1)", db);
+                SqliteDataReader query = selectCommand.ExecuteReader();
+
+
+            }
         }
 
         public static bool RegisterUser(string username, string password)

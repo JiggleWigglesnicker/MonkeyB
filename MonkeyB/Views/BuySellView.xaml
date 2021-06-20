@@ -5,24 +5,41 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MonkeyB.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Background="red">
+             d:DesignHeight="450" d:DesignWidth="800" Background="Gray">
     <Grid>
-        <StackPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        
+        
+
+        
+        <StackPanel Grid.Column="1">
+            
+            
 
             <Label Content="Currency :" 
-                   Margin="0,100,0,5" 
+                   Margin="0,25,0,5" 
                    HorizontalAlignment="Center" 
                    Width="100" 
                    Height="30" 
                    FontSize="15"/>
+            <ListBox  x:Name="listBox"
+                
+                SelectedItem="{Binding CurrencyName}"
+                ItemsSource="{Binding CurrencyNames}"
+                Margin="0,0,0,5" 
+                HorizontalAlignment="Center"
+                Width="100"
+                Height="100"
+                FontSize="15" 
+                Background="PaleVioletRed" IsTextSearchEnabled="True"
+                      >
 
-            <TextBox Background="LightGray"
-                     Text="{Binding Username}"
-                     Margin="0,0,0,10" 
-                     HorizontalAlignment="Center" 
-                     Width="100" 
-                     Height="30" 
-                     FontSize="15"/>
+            </ListBox>
 
             <Label Content="Amount :" 
                    Margin="0,0,0,5" 
@@ -32,26 +49,79 @@
                    FontSize="15"/>
 
             <TextBox Background="LightGray"
-                     Text="{Binding Password}"
+                     Text="{Binding Amount}"
                      Margin="0,0,0,20" 
                      HorizontalAlignment="Center" 
                      Width="100" 
                      Height="30" 
                      FontSize="15"/>
 
-            <Button Background="LightGray"
+            <Button Background="ForestGreen"
                     Content="Buy"
+                    Margin="0,0,0,20"
+                    HorizontalAlignment="Center"
+                    Width="100"
+                    Height="30"
+                    FontSize="15"
+                    Command="{Binding BuyCoinCommand}"/>
+
+            <Button Background="Red"
+                    Content="Sell"
                     Margin="0,0,0,20" 
                     HorizontalAlignment="Center" 
                     Width="100" 
                     Height="30" 
                     FontSize="15" 
-                    Command="{Binding BuyCommand}"/>
+                    Command="{Binding SellCommand}"/>
 
 
         </StackPanel>
 
-        <Button Content="Back" Command="{Binding DashBoardCommand}" HorizontalAlignment="left" Margin="20,300,0,10" Height="30" Width="200"/>
+
+
+        <StackPanel Grid.Column="2">
+            <Label x:Name="WalletHeader" Content="Wallet" 
+                   Margin="0,30,0,5" FontSize="16" FontWeight="Bold" 
+                />
+            <Label Content="Euro" 
+                   Margin="0,0,0,5" 
+                   
+                />
+            <Label Content="{Binding EurRate}" 
+                   Margin="0,0,0,5" 
+                />
+            <Label Content="Bitcoin" 
+                   Margin="0,0,0,5" 
+                />
+            <Label Content="{Binding BitcoinRate}" 
+                   Margin="0,0,0,5" 
+                />
+            <Label Content="Dogecoin" 
+                   Margin="0,0,0,5" 
+                />
+            <Label Content="{Binding DogeCoinRate}" 
+                   Margin="0,0,0,5" 
+                />
+            <Label Content="Litecoin" 
+                   Margin="0,0,0,5" 
+                />
+            <Label Content="{Binding LiteCoinRate}" 
+                   Margin="0,0,0,5" 
+                />
+            <Button Background="LightGray"
+                    Content="Refresh"
+                    Margin="0,0,0,20"
+                    HorizontalAlignment="Center"
+                    Width="100"
+                    Height="30"
+                    FontSize="15"
+                    Command="{Binding RefreshCommand}"/>
+        </StackPanel>
+
+
+        <StackPanel>
+            <Button Grid.Column="0" Content="Back" Command="{Binding DashBoardCommand}" HorizontalAlignment="left" Margin="20,300,0,10" Height="30" Width="200"/>
+        </StackPanel>
 
     </Grid>
 
