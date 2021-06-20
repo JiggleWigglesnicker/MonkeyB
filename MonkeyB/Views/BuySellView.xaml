@@ -72,7 +72,7 @@
                     Width="100" 
                     Height="30" 
                     FontSize="15" 
-                    Command="{Binding SellCommand}"/>
+                    Command="{Binding SellCoinCommand}"/>
 
 
         </StackPanel>
