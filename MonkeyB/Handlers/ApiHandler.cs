@@ -1,10 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using MonkeyB.Models;
 using Microsoft.Data.Sqlite;
@@ -13,7 +10,7 @@ namespace MonkeyB
 {
     class ApiHandler
     {
-        public static readonly Uri ApiEndPoint = new Uri("https://api.coingecko.com/api/v3/");
+        public static readonly Uri ApiEndPoint = new("https://api.coingecko.com/api/v3/");
         public static readonly string Coins = "coins";
         public static readonly string CoinList = "coins/list";
         public static readonly string CoinMarkets = "coins/markets";
@@ -27,7 +24,7 @@ namespace MonkeyB
         /// <param name="days">amount of days for data, data is hourly til 90 days</param>
         /// <returns></returns>
         public static string MarketChartByCoinId(string id, string currency, int days) =>
-            AddCoinsIdUrl(id) + "/market_chart?vs_currency=" + currency + "&days=" + days;
+            AddCoinsIdUrl(id) + "/market_chart?vs_currency=" + currency + "&days=" + days + "&interval=daily";
         public static string MarketChartRangeByCoinId(string id, string currency, int startdate, int enddate) =>
             AddCoinsIdUrl(id) + "/market_chart/range?vs_currency=" + currency + "&from=" + startdate + "&to=" + enddate;
 
@@ -35,7 +32,7 @@ namespace MonkeyB
 
         public async Task<CryptoCurrencyModel> GetApiData()
         {
-            string url = "https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false";
+            string url = "https://api.coingecko.com/api/EuroAmount/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false";
             HttpClient httpclient = new HttpClient();
             var response = await httpclient.GetStringAsync(url);
 
@@ -71,8 +68,8 @@ namespace MonkeyB
             }
             return await Task.FromResult(ccm);
         }
-        
-        public MarketGraph Marketgraph = new MarketGraph();
+
+        private MarketGraph Marketgraph = new ();
         public async Task<MarketGraph> GetMarketData(string id, String currency, int days)
         {
             Uri url = new Uri(ApiEndPoint, MarketChartByCoinId(id, currency,days));
@@ -91,7 +88,6 @@ namespace MonkeyB
             
             // Trace.Write(Marketgraph.prices[0][1]);
             return await Task.FromResult(Marketgraph);
-
         }
 
 

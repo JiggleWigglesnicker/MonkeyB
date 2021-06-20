@@ -24,6 +24,9 @@
                 <DataTemplate DataType="{x:Type viewmodels:LoginViewModel}">
                     <views:LoginView/>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:RegisterViewModel}">
+                    <views:RegisterView/>
+                </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:NewsViewModel}">
                     <views:NewsView/>
                 </DataTemplate>
@@ -32,6 +35,9 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:SettingViewModel}">
                     <views:SettingView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:OrderViewModel}">
+                    <views:OrderView/>
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
