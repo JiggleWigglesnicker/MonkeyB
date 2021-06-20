@@ -93,7 +93,10 @@ namespace MonkeyB.ViewModels
         {
             FillSelectBox();
             FillListViewWithOrders();
-            EuroAmountLabel = $"Total amount of euro: {CryptoWalletCoins[0].euroAmount}";
+            if (CryptoWalletCoins == null) {
+                EuroAmountLabel = $"Total amount of euro: {CryptoWalletCoins[0].euroAmount}";
+            }
+            
             BuyCommand = new RelayCommand(o =>
             {
                 if (CryptoWalletCoins[0].euroAmount > selectedBuyOrder.EuroAmount)
