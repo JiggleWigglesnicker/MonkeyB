@@ -33,13 +33,13 @@
 
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="200px" />
+                <RowDefinition  />
             </Grid.RowDefinitions>
 
             <ScrollViewer
             Grid.Column="0" VerticalScrollBarVisibility="Hidden">
 
-                <StackPanel Grid.Column="1" Background="LightBlue" >
+                <StackPanel Grid.Column="1" Background="LightBlue">
 
                     <Label Content="Latest news -" 
                        HorizontalAlignment="Right" 
