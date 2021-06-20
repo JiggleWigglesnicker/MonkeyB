@@ -39,12 +39,12 @@
             <ScrollViewer
             Grid.Column="0" VerticalScrollBarVisibility="Hidden">
 
-                <StackPanel Grid.Column="1" Background="LightBlue" >
+                <StackPanel Grid.Column="1"  >
 
                     <Label Content="Latest news -" 
                        HorizontalAlignment="Right" 
                        FontSize="25"
-                       Foreground="White" />
+                       />
 
                     <ItemsControl ItemsSource="{Binding RSSList}" HorizontalAlignment="Left">
                         <ItemsControl.ItemTemplate>
@@ -53,14 +53,12 @@
 
                                     <TextBlock Text="{Binding Title}" 
                                                FontSize="20" 
-                                               Foreground="White" 
                                                TextWrapping="WrapWithOverflow"
                                                TextDecorations="Underline" 
                                                Margin="30,0,0,0"/>
 
                                     <TextBlock Text="{Binding Description}" 
                                                FontSize="16"
-                                               Foreground="White"
                                                TextWrapping="WrapWithOverflow"
                                                Margin="30,0,0,0"/>
                                 </StackPanel>
