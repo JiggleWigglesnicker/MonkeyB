@@ -24,7 +24,7 @@ namespace MonkeyB
         /// <param name="days">amount of days for data, data is hourly til 90 days</param>
         /// <returns></returns>
         public static string MarketChartByCoinId(string id, string currency, int days) =>
-            AddCoinsIdUrl(id) + "/market_chart?vs_currency=" + currency + "&days=" + days + "&interval=daily";
+            $"coins/{id}/market_chart?vs_currency={currency}&days={days}&interval=daily"; //  URL WAS CHANGED BECAUSE KAPUT POSSIBLY A REBASE CONFLICT PLEASE CHECK DENNIS
         public static string MarketChartRangeByCoinId(string id, string currency, int startdate, int enddate) =>
             AddCoinsIdUrl(id) + "/market_chart/range?vs_currency=" + currency + "&from=" + startdate + "&to=" + enddate;
 
