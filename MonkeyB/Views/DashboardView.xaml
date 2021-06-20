@@ -33,7 +33,7 @@
 
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="200px" />
+                <RowDefinition  />
             </Grid.RowDefinitions>
 
             <ScrollViewer
