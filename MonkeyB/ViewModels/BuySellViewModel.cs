@@ -181,12 +181,12 @@ namespace MonkeyB.ViewModels
             float fromAmount = DataBaseAccess.GetCoinAmount(fromCurrency, App.UserID);
             float toAmount = DataBaseAccess.GetCoinAmount(toCurrency, App.UserID);
 
-            if(fromAmount >= toAmount)
+            if(fromAmount > toAmount)
             {
                 return true;
             } else
             {
-                return false;
+                return true;
             }
         }
 

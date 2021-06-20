@@ -69,13 +69,7 @@ namespace MonkeyB.Database
                     string bitcoinCommand = "INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES ('bitcoin', 0, 1)";
                     string dogeCommand = "INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES ('dogecoin', 0, 1)";
 
-                    SqliteCommand createTable1 = new SqliteCommand(tableCommand1, db);
-                    SqliteCommand createTable2 = new SqliteCommand(tableCommand2, db);
-                    SqliteCommand createTable3 = new SqliteCommand(tableCommand3, db);
-                    SqliteCommand createAdmin = new SqliteCommand(adminCommand, db);
-
-
-
+                   
                     SqliteCommand createTable1  = new SqliteCommand(tableCommand1, db);
                     SqliteCommand createTable2  = new SqliteCommand(tableCommand2, db);
                     SqliteCommand createTable3  = new SqliteCommand(tableCommand3, db);
@@ -100,6 +94,7 @@ namespace MonkeyB.Database
 
                     addBitcoin.ExecuteReader();
                     addEur.ExecuteReader();
+                    addDoge.ExecuteReader();
                 }
             });
         }
