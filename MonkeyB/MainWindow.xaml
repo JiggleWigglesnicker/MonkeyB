@@ -153,9 +153,9 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:WalletViewModel}">
                     <views:WalletView Style="{StaticResource UserControleStyle}"/>
-                <DataTemplate DataType="{x:Type viewmodels:RegisterViewModel}">
-                    <views:RegisterView/>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:RegisterViewModel}">
+                    <views:RegisterView Style="{StaticResource UserControleStyle}"/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:AchievementViewModel}">
                     <views:AchievementView Style="{StaticResource UserControleStyle}"/>

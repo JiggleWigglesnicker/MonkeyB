@@ -15,7 +15,7 @@
                    Height="30" 
                    FontSize="15"/>
 
-            <TextBox Background="LightGray"
+            <TextBox
                      Text="{Binding Username}"
                      Margin="0,0,0,10" 
                      HorizontalAlignment="Center" 
@@ -30,7 +30,7 @@
                    Height="30" 
                    FontSize="15"/>
 
-            <TextBox Background="LightGray"
+            <TextBox 
                      Text="{Binding Password}"
                      Margin="0,0,0,20" 
                      HorizontalAlignment="Center" 
@@ -47,7 +47,7 @@
                     FontSize="15" 
                     Command="{Binding LoginCommand}"/>
             
-            <Button Background="LightGray"
+            <Button
                     Content="Register"
                     Margin="0,0,0,20" 
                     HorizontalAlignment="Center" 
