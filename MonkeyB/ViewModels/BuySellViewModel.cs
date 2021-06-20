@@ -32,6 +32,17 @@ namespace MonkeyB.ViewModels
             }
         }
 
+        public string warningLabel;
+        public string WarningLabel
+        {
+            get => warningLabel;
+            set
+            {
+                warningLabel = value;
+                OnPropertyChanged("WarningLabel");
+            }
+        }
+
         public float eurRate;
         public float EurRate
         {
@@ -111,13 +122,14 @@ namespace MonkeyB.ViewModels
 
             BuyCoinCommand = new RelayCommand(o =>
             {
+                Debug.WriteLine(CurrencyName);
                 BuyCrypto(CurrencyName, Amount);
                 RefreshCoinRates();
             });
 
             SellCoinCommand = new RelayCommand(o =>
             {
-                SellCrypto("bitcoin", Amount);
+                SellCrypto(CurrencyName, Amount);
                 RefreshCoinRates();
             });
 
@@ -165,9 +177,11 @@ namespace MonkeyB.ViewModels
                 DataBaseAccess.SellEuro(amount * GetCoinRateInEuro(currency));
                 DataBaseAccess.BuyCoin(currency, amount, App.UserID);
 
+                WarningLabel = "Bought " + amount + " " + currency;
                 return true;
             } else
             {
+                WarningLabel = "Not enought euro in wallet.";
                 return false;
             }
         }
@@ -179,10 +193,12 @@ namespace MonkeyB.ViewModels
                 DataBaseAccess.SellCoin(currency, amount, App.UserID);
                 DataBaseAccess.BuyEuro(amount * GetCoinRateInEuro(currency));
 
+                WarningLabel = "Sold " + amount + " " + currency;
                 return true;
             }
             else
             {
+                WarningLabel = "Not enought " +  currency + " in wallet.";
                 return false;
             }
         }
