@@ -30,6 +30,17 @@ namespace MonkeyB.ViewModels
             }
         }
 
+        public float eurRate;
+        public float EurRate
+        {
+            get => eurRate;
+            set
+            {
+                eurRate = value;
+                OnPropertyChanged("EurRate");
+            }
+        }
+
         public float bitcoinRate;
         public float BitcoinRate
         {
@@ -108,15 +119,16 @@ namespace MonkeyB.ViewModels
         {
             ApiHandler apiHandler = new ApiHandler();
 
+            CryptoCurrencyModel eurModel = await apiHandler.GetCoinValue("eur");
             CryptoCurrencyModel bitCoinModel = await apiHandler.GetCoinValue("bitcoin");
             CryptoCurrencyModel dogeCoinModel = await apiHandler.GetCoinValue("dogecoin");
             CryptoCurrencyModel liteCoinModel = await apiHandler.GetCoinValue("liteCoin");
 
 
-
-            BitcoinRate = GetCoinAmount("bitcoin");
-            DogeCoinRate = GetCoinAmount("dogecoin");
-            LiteCoinRate = GetCoinAmount("litecoin");
+            EurRate             = GetCoinAmount("eur");
+            BitcoinRate         = GetCoinAmount("bitcoin");
+            DogeCoinRate        = GetCoinAmount("dogecoin");
+            LiteCoinRate        = GetCoinAmount("litecoin");
         }
 
         
@@ -142,9 +154,10 @@ namespace MonkeyB.ViewModels
             }
         }
 
-        public static async bool BuyCrypto(string currency, float amount)
+        public static bool BuyCrypto(string currency, float amount)
         {
-            if (CheckIfTransactionIsValid() == true){
+            if (CheckIfTransactionIsValid() == true)
+            {
                 DataBaseAccess.SellCoin("eur", amount, App.UserID);
                 DataBaseAccess.BuyCoin(currency, amount, App.UserID);
 
@@ -153,11 +166,6 @@ namespace MonkeyB.ViewModels
             {
                 return false;
             }
-        }
-
-        private static bool CheckIfTransactionIsValid()
-        {
-            return true;
         }
 
         public static bool SellCrypto(string currency, float amount)
@@ -173,6 +181,11 @@ namespace MonkeyB.ViewModels
             {
                 return false;
             }
+        }
+
+        private static bool CheckIfTransactionIsValid()
+        {
+            return true;
         }
 
         public static float GetCoinAmount(string currency)

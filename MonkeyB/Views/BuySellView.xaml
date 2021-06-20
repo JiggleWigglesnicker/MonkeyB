@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MonkeyB.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Background="red">
+             d:DesignHeight="450" d:DesignWidth="800" Background="Gray">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -56,7 +56,7 @@
                      Height="30" 
                      FontSize="15"/>
 
-            <Button Background="LightGray"
+            <Button Background="ForestGreen"
                     Content="Buy"
                     Margin="0,0,0,20"
                     HorizontalAlignment="Center"
@@ -65,7 +65,7 @@
                     FontSize="15"
                     Command="{Binding BuyCoinCommand}"/>
 
-            <Button Background="LightGray"
+            <Button Background="Red"
                     Content="Sell"
                     Margin="0,0,0,20" 
                     HorizontalAlignment="Center" 
@@ -80,8 +80,15 @@
 
 
         <StackPanel Grid.Column="2">
-            <Label Content="Wallet" 
-                   Margin="0,30,0,5" 
+            <Label x:Name="WalletHeader" Content="Wallet" 
+                   Margin="0,30,0,5" FontSize="16" FontWeight="Bold" 
+                />
+            <Label Content="Euro" 
+                   Margin="0,0,0,5" 
+                   
+                />
+            <Label Content="{Binding EurRate}" 
+                   Margin="0,0,0,5" 
                 />
             <Label Content="Bitcoin" 
                    Margin="0,0,0,5" 

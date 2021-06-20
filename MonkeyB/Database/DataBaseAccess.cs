@@ -22,6 +22,7 @@ namespace MonkeyB.Database
             {
                 using (var db = new SqliteConnection($"Data Source=database.db"))
                 {
+                    System.Diagnostics.Debug.WriteLine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\n");
 
                     db.Open();
 
@@ -54,21 +55,29 @@ namespace MonkeyB.Database
                     "CREATE TABLE IF NOT EXISTS Transactions " +
                     "(ID INTEGER NOT NULL UNIQUE, " +
                     "currency_name STRING NOT NULL, " +
-                    "currency_amount FLOAT NOT NULL, " +
+                    "currency_amount FLOadAT NOT NULL, " +
                     "currency_value FLOAT NOT NULL, " +
                     "userID INTEGER NOT NULL," +
                     "FOREIGN KEY (userID) REFERENCES Users(userID))";
 
-                    string adminCommand = "INSERT OR IGNORE INTO Users (username,password, euro_amount) VALUES ('admin','admin',1000)";
-                    string bitcoinCommand ="INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES ('bitcoin', 20, 1)";
+                    string adminCommand = "INSERT OR IGNORE INTO Users (username,password) VALUES ('admin','admin')";
+                    string euroCommand = "INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES ('eur', 1000, 1)";
+                    string bitcoinCommand = "INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES ('bitcoin', 0, 1)";
+                    string dogeCommand = "INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES ('dogecoin', 0, 1)";
 
 
-                    SqliteCommand createTable1 = new SqliteCommand(tableCommand1, db);
-                    SqliteCommand createTable2 = new SqliteCommand(tableCommand2, db);
-                    SqliteCommand createTable3 = new SqliteCommand(tableCommand3, db);
-                    SqliteCommand createTable4 = new SqliteCommand(tableCommand4, db);
-                    SqliteCommand createAdmin = new SqliteCommand(adminCommand, db);
-                    SqliteCommand addBitcoin = new SqliteCommand(bitcoinCommand, db);
+
+
+                    SqliteCommand createTable1  = new SqliteCommand(tableCommand1, db);
+                    SqliteCommand createTable2  = new SqliteCommand(tableCommand2, db);
+                    SqliteCommand createTable3  = new SqliteCommand(tableCommand3, db);
+                    SqliteCommand createTable4  = new SqliteCommand(tableCommand4, db);
+                    SqliteCommand createAdmin   = new SqliteCommand(adminCommand, db);
+                    SqliteCommand addBitcoin    = new SqliteCommand(bitcoinCommand, db);
+                    SqliteCommand addEur        = new SqliteCommand(euroCommand, db);
+                    SqliteCommand addDoge       = new SqliteCommand(dogeCommand, db);
+
+
 
 
                     createTable1.ExecuteReader();
@@ -77,6 +86,7 @@ namespace MonkeyB.Database
                     createTable4.ExecuteReader();
                     createAdmin.ExecuteReader();
                     addBitcoin.ExecuteReader();
+                    addEur.ExecuteReader();
                 }
             });
         }
@@ -143,7 +153,7 @@ namespace MonkeyB.Database
                 db.Open();
 
                 SqliteCommand selectCommand;
-                selectCommand = new SqliteCommand($"SELECT coin_amount from CryptoWallet WHERE userID = '{userID}' AND coin = '{currency}'", db);
+                selectCommand = new SqliteCommand($"SELECT coin_amount from Cryptowallet WHERE userID = '{userID}' AND coin = '{currency}'", db);
                 SqliteDataReader query = selectCommand.ExecuteReader();
                 //addCurrency("bitcoin", App.UserID);
                 float amount = 0;
