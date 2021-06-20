@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using MonkeyB.Database;
 using System.Collections.ObjectModel;
+using MonkeyB.Models;
 
 namespace MonkeyB.ViewModels
 {
@@ -91,7 +92,7 @@ namespace MonkeyB.ViewModels
 
         private CryptoCurrencyModel eurModel = new();
         private CryptoCurrencyModel bitCoinModel = new();
-        private  CryptoCurrencyModel dogeCoinModel = new();
+        private CryptoCurrencyModel dogeCoinModel = new();
         private CryptoCurrencyModel liteCoinModel = new();
 
         // Constructor
@@ -119,6 +120,7 @@ namespace MonkeyB.ViewModels
                 SellCrypto("bitcoin", Amount);
             });
 
+            DataBaseAccess.InitializeCoins();
             CurrencyNames = new ObservableCollection<string>() { "bitcoin", "dogecoin", "litecoin" };
             RefreshCoinRates();
             RefreshCryptoToEuro();
@@ -140,14 +142,24 @@ namespace MonkeyB.ViewModels
             liteCoinModel = await apiHandler.GetCoinValue("liteCoin");
         }
 
-        
-       // public async Task<float> GetCoinRateAsync(string CoinName)
-        //{
-            
+        public Task<float> GetCoinRateInEuro(string CoinName)
+        {
+            switch (CoinName)
+            {
+                case "bitcoin":
+                    return Task.FromResult(bitCoinModel.bitcoin.eur);
+                case "dogecoin":
+                    return Task.FromResult(bitCoinModel.bitcoin.eur);
+                case "litecoin":
+                    return Task.FromResult(bitCoinModel.bitcoin.eur);
+                case "ethereum":
+                    return Task.FromResult(bitCoinModel.bitcoin.eur);
+                default:
+                    return Task.FromResult(bitCoinModel.bitcoin.eur);
+            }
+        }
 
-        //}
-
-        public static bool BuyCrypto(string currency, float amount)
+        public bool BuyCrypto(string currency, float amount)
         {
             if (CheckIfTransactionIsValid(currency) == true)
             {
@@ -181,7 +193,11 @@ namespace MonkeyB.ViewModels
             float fromAmount = DataBaseAccess.GetCoinAmount(fromCurrency, App.UserID);
             float toAmount = DataBaseAccess.GetCoinAmount(toCurrency, App.UserID);
 
-            if(fromAmount > toAmount)
+            //float coinRate = GetCoinRateInEuro(fromCurrency);
+
+            //toAmount *= coinRate;
+
+            if (fromAmount >= toAmount)
             {
                 return true;
             } else

@@ -65,9 +65,6 @@ namespace MonkeyB.Database
                     "FOREIGN KEY (userID) REFERENCES Users(userID))";
 
                     string adminCommand = "INSERT OR IGNORE INTO Users (username,password) VALUES ('admin','admin')";
-                    string euroCommand = "INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES ('eur', 1000, 1)";
-                    string bitcoinCommand = "INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES ('bitcoin', 0, 1)";
-                    string dogeCommand = "INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES ('dogecoin', 0, 1)";
 
                    
                     SqliteCommand createTable1  = new SqliteCommand(tableCommand1, db);
@@ -75,28 +72,33 @@ namespace MonkeyB.Database
                     SqliteCommand createTable3  = new SqliteCommand(tableCommand3, db);
                     SqliteCommand createTable4  = new SqliteCommand(tableCommand4, db);
                     SqliteCommand createAdmin   = new SqliteCommand(adminCommand, db);
-                    SqliteCommand addBitcoin    = new SqliteCommand(bitcoinCommand, db);
-                    SqliteCommand addEur        = new SqliteCommand(euroCommand, db);
-                    SqliteCommand addDoge       = new SqliteCommand(dogeCommand, db);
 
 
-
+                    
 
                     createTable1.ExecuteReader();
                     createTable2.ExecuteReader();
                     createTable3.ExecuteReader();
                     createTable4.ExecuteReader();
-                    createAdmin.ExecuteReader();
-
-                    //createcoin1.ExecuteReader();
-                    //createcoin2.ExecuteReader();
-                    //createcoin3.ExecuteReader();
-
-                    addBitcoin.ExecuteReader();
-                    addEur.ExecuteReader();
-                    addDoge.ExecuteReader();
+                    createAdmin.ExecuteReader();    
                 }
             });
+        }
+
+        public static void InitializeCoins()
+        {
+            using (var db = new SqliteConnection($"Data Source=database.db"))
+            {
+                db.Open();
+
+                SqliteCommand euroCommand = new SqliteCommand($"INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES('eur', 1000, {App.UserID})", db);
+                SqliteCommand bitcoinCommand = new SqliteCommand($"INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES('bitcoin', 1000,{App.UserID})", db);
+                SqliteCommand dogecoinCommand = new SqliteCommand($"INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES('dogecoin', 1000,{App.UserID})", db);
+
+                euroCommand.ExecuteReader();
+                bitcoinCommand.ExecuteReader();
+                dogecoinCommand.ExecuteReader();
+            }
         }
 
         public static LoginModel RetrieveLogin(String username)
@@ -184,7 +186,7 @@ namespace MonkeyB.Database
                 db.Open();
 
                 SqliteCommand selectCommand;
-                selectCommand = new SqliteCommand($"INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES ('bitcoin', 20, 1)", db);
+                selectCommand = new SqliteCommand($"INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES ('{currency}', 0, {userID})", db);
                 SqliteDataReader query = selectCommand.ExecuteReader();
 
 
