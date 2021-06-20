@@ -23,7 +23,7 @@
                  Width="250"
                  Height="100"
                  FontSize="15" 
-                 Background="PaleVioletRed" IsTextSearchEnabled="True"
+                 IsTextSearchEnabled="True"
         />
         <StackPanel Grid.Row="1" Grid.Column="0">
             <Button
