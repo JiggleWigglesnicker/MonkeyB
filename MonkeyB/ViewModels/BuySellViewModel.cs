@@ -15,7 +15,6 @@ namespace MonkeyB.ViewModels
     class BuySellViewModel : BaseViewModel
     {
         public ICommand DashBoardCommand { get; set; }
-        public ICommand RefreshCommand { get; set; }
         public ICommand BuyCoinCommand { get; set; }
         public ICommand SellCoinCommand { get; set; }
 
@@ -113,11 +112,6 @@ namespace MonkeyB.ViewModels
             DashBoardCommand = new RelayCommand(o =>
             {
                 navigationStore.SelectedViewModel = new DashBoardViewModel(navigationStore);
-            });
-
-            RefreshCommand = new RelayCommand(o =>
-            {
-                RefreshCoinRates(); 
             });
 
             BuyCoinCommand = new RelayCommand(o =>
