@@ -38,7 +38,7 @@
                      Height="30" 
                      FontSize="15"/>
 
-            <Button Background="LightGray"
+            <Button 
                     Content="Login"
                     Margin="0,0,0,20" 
                     HorizontalAlignment="Center" 

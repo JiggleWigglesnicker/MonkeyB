@@ -48,8 +48,8 @@ namespace MonkeyB.ViewModels
 
         public void UpdateAppTheme(object parameter)
         {
-           string themename =  (string)parameter;
-           
+            Properties.Settings.Default.ThemeSetting = (string)parameter;
+            Properties.Settings.Default.Save();
         }
 
 

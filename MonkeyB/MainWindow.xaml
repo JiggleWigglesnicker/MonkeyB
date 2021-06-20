@@ -6,8 +6,32 @@
         xmlns:local="clr-namespace:MonkeyB"
         xmlns:views="clr-namespace:MonkeyB.Views"
         xmlns:viewmodels="clr-namespace:MonkeyB.ViewModels"
+        xmlns:properties="clr-namespace:MonkeyB.Properties"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}">
+
+            <Style.Triggers>
+
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Dark">
+
+                    <Setter Property="Background" Value="Black" />
+                    <Setter Property="Foreground" Value="White" />
+
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Light">
+
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="Foreground" Value="Black" />
+
+                </DataTrigger>
+
+            </Style.Triggers>
+
+        </Style>
+    </Window.Resources>
     <Grid>
 
         <ContentControl Content="{Binding SelectedViewModel}">
