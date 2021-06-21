@@ -93,22 +93,28 @@ namespace MonkeyB.ViewModels
         {
             FillSelectBox();
             FillListViewWithOrders();
-            if (CryptoWalletCoins == null) {
+            if (CryptoWalletCoins != null && CryptoWalletCoins.Count >0)
+            {
                 EuroAmountLabel = $"Total amount of euro: {CryptoWalletCoins[0].euroAmount}";
             }
-            
+
             BuyCommand = new RelayCommand(o =>
             {
                 if (CryptoWalletCoins[0].euroAmount > selectedBuyOrder.EuroAmount)
+                {
                     BuyOrder(App.UserID, SelectedBuyOrder.ID, SelectedBuyOrder);
-
+                    navigationStore.SelectedViewModel = new OrderViewModel(navigationStore);
+                }
             });
 
             SellCommand = new RelayCommand(o =>
             {
 
                 if (CoinAmount <= selectedItem.coinAmount)
+                {
                     PlaceSellOrder(SelectedItem.coinName, CoinAmount, EuroAmount, App.UserID);
+                    navigationStore.SelectedViewModel = new OrderViewModel(navigationStore);
+                }
 
             });
 
@@ -137,7 +143,7 @@ namespace MonkeyB.ViewModels
 
         public void BuyOrder(int userID, int orderID, OrderModel orderModel)
         {
-            DataBaseAccess.BuyOrder(userID, orderID, orderModel);
+            DataBaseAccess.BuyOrder(userID, orderModel);
         }
 
         public void FillListViewWithOrders()

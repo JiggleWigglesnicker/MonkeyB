@@ -15,7 +15,7 @@ namespace MonkeyB.Database
 
         private static string FolderPath { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         private static string DbPath { get; set; } = System.IO.Path.Combine(FolderPath, "database.db");
-       
+
 
         public static async void InitializeDatabase()
         {
@@ -66,21 +66,21 @@ namespace MonkeyB.Database
 
                     string adminCommand = "INSERT OR IGNORE INTO Users (username,password) VALUES ('admin','admin')";
 
-                   
-                    SqliteCommand createTable1  = new SqliteCommand(tableCommand1, db);
-                    SqliteCommand createTable2  = new SqliteCommand(tableCommand2, db);
-                    SqliteCommand createTable3  = new SqliteCommand(tableCommand3, db);
-                    SqliteCommand createTable4  = new SqliteCommand(tableCommand4, db);
-                    SqliteCommand createAdmin   = new SqliteCommand(adminCommand, db);
+
+                    SqliteCommand createTable1 = new SqliteCommand(tableCommand1, db);
+                    SqliteCommand createTable2 = new SqliteCommand(tableCommand2, db);
+                    SqliteCommand createTable3 = new SqliteCommand(tableCommand3, db);
+                    SqliteCommand createTable4 = new SqliteCommand(tableCommand4, db);
+                    SqliteCommand createAdmin = new SqliteCommand(adminCommand, db);
 
 
-                    
+
 
                     createTable1.ExecuteReader();
                     createTable2.ExecuteReader();
                     createTable3.ExecuteReader();
                     createTable4.ExecuteReader();
-                    createAdmin.ExecuteReader();    
+                    createAdmin.ExecuteReader();
                 }
             });
         }
@@ -168,7 +168,7 @@ namespace MonkeyB.Database
                 //addCurrency("bitcoin", App.UserID);
                 float amount = 0;
 
-                
+
 
                 while (query.Read())
                 {
@@ -250,7 +250,7 @@ namespace MonkeyB.Database
 
         public static void CreateNewSellOrder(string type, float coinAmount, float euroAmount, int id)
         {
-            
+
             using (var db = new SqliteConnection($"Data Source=database.db"))
             {
                 db.Open();
@@ -282,7 +282,7 @@ namespace MonkeyB.Database
                 SqliteCommand selectCommand;
 
                 selectCommand = new SqliteCommand
-                    ($"SELECT orderID, cointype, coin_amount , euro_amount , outstanding, userID FROM Orders WHERE userID = {id} AND outstanding = true", db);
+                    ($"SELECT orderID, cointype, coin_amount , euro_amount , outstanding, userID FROM Orders WHERE outstanding = true", db);
 
                 SqliteDataReader query = selectCommand.ExecuteReader();
                 while (query.Read())
@@ -295,67 +295,54 @@ namespace MonkeyB.Database
             return orderList;
         }
 
-        public static bool BuyOrder(int userID, int orderID, OrderModel orderModel)
+        public static bool BuyOrder(int userID, OrderModel orderModel)
         {
             List<CryptoWalletModel> cryptoWalletList = FetchCoinsInWallet(userID);
+
             using (var db = new SqliteConnection($"Data Source=database.db"))
             {
                 db.Open();
 
-                foreach (CryptoWalletModel wallet in cryptoWalletList)
+                if (userID == orderModel.UserID)
                 {
-                   
-                    
-                    if (wallet.coinName == orderModel.CoinName)
-                    {
-                        if (userID == orderModel.UserID)
-                        {
-                            SqliteCommand updateCommand8 = new SqliteCommand
-                            ($"UPDATE Cryptowallet SET coin_amount = coin_amount + {orderModel.Amount} WHERE userID = {userID} AND coin = '{orderModel.CoinName}'", db);
-                            SqliteCommand updateCommand9 = new SqliteCommand
-                            ($"DELETE FROM Orders WHERE orderID = {orderModel.ID}", db);
+                    SqliteCommand RevertSellOrderCommand = new SqliteCommand
+                    ($"UPDATE Cryptowallet SET coin_amount = coin_amount + {orderModel.Amount} WHERE userID = {userID} AND coin = '{orderModel.CoinName}'", db);
+                    SqliteCommand deleteCommand = new SqliteCommand
+                    ($"DELETE FROM Orders WHERE orderID = {orderModel.ID}", db);
 
-                            SqliteDataReader updateQuery8 = updateCommand8.ExecuteReader();
-                            SqliteDataReader updateQuery9 = updateCommand9.ExecuteReader();
+                    SqliteDataReader revertQuery = RevertSellOrderCommand.ExecuteReader();
+                    SqliteDataReader deleteQuery = deleteCommand.ExecuteReader();
 
-                            return true;
-                        }
-
-                        SqliteCommand updateCommand1 = new SqliteCommand
-                            ($"UPDATE Cryptowallet SET coin_amount = coin_amount + {orderModel.Amount} WHERE userID = {userID} AND coin = '{orderModel.CoinName}'", db);
-                        SqliteCommand updateCommand2 = new SqliteCommand
-                            ($"UPDATE Orders SET outstanding = false WHERE orderID = {orderID}", db);
-                        SqliteCommand updateCommand3 = new SqliteCommand
-                            ($"UPDATE Users SET euro_amount = euro_amount - {orderModel.EuroAmount} WHERE userID = {userID}", db);
-                        SqliteCommand updateCommand4 = new SqliteCommand
-                            ($"UPDATE Users SET euro_amount = euro_amount + {orderModel.EuroAmount} WHERE userID = {orderModel.UserID}", db);
-
-                        SqliteDataReader updateQuery1 = updateCommand1.ExecuteReader();
-                        SqliteDataReader updateQuery2 = updateCommand2.ExecuteReader();
-                        SqliteDataReader updateQuery3 = updateCommand3.ExecuteReader();
-                        SqliteDataReader updateQuery4 = updateCommand4.ExecuteReader();
-
-                        return true;
-
-                    }
-
+                    return true;
                 }
 
-                SqliteCommand insertCommand1 = new SqliteCommand
+                if (cryptoWalletList.Exists(e => e.coinName == orderModel.CoinName))
+                {
+                    SqliteCommand updateCryptoWalletCommand1 = new SqliteCommand
+                        ($"UPDATE Cryptowallet SET coin_amount = coin_amount + {orderModel.Amount} WHERE userID = {userID} AND coin = '{orderModel.CoinName}'", db);
+
+                    SqliteDataReader updateCryptoWalletQuery = updateCryptoWalletCommand1.ExecuteReader();
+                }
+                else
+                {
+                    SqliteCommand insertNewCryptoCommand = new SqliteCommand
                             ($"INSERT OR IGNORE INTO Cryptowallet (coin, coin_amount, userID) VALUES ('{orderModel.CoinName}',{orderModel.Amount},{userID})", db);
-                SqliteCommand updateCommand5 = new SqliteCommand
-                            ($"UPDATE Orders SET outstanding = false WHERE orderID = {orderID}", db);
-                SqliteCommand updateCommand6 = new SqliteCommand
+                    SqliteDataReader insertNewCryptoQuery = insertNewCryptoCommand.ExecuteReader();
+                }
+
+                SqliteCommand updateOrdersCommand = new SqliteCommand
+                           ($"UPDATE Orders SET outstanding = false WHERE orderID = {orderModel.ID}", db);
+                SqliteCommand updateUsersCommand = new SqliteCommand
                     ($"UPDATE Users SET euro_amount = euro_amount - {orderModel.EuroAmount} WHERE userID = {userID}", db);
-                SqliteCommand updateCommand7 = new SqliteCommand
+                SqliteCommand updateUsersEuroCommand = new SqliteCommand
                             ($"UPDATE Users SET euro_amount = euro_amount + {orderModel.EuroAmount} WHERE userID = {orderModel.UserID}", db);
 
-                SqliteDataReader insertQuery1 = insertCommand1.ExecuteReader();
-                SqliteDataReader updateQuery5 = updateCommand5.ExecuteReader();
-                SqliteDataReader updateQuery6 = updateCommand6.ExecuteReader();
-                SqliteDataReader updateQuery7 = updateCommand7.ExecuteReader();
+                SqliteDataReader updateOrderQuery = updateOrdersCommand.ExecuteReader();
+                SqliteDataReader updateUsersQuery6 = updateUsersCommand.ExecuteReader();
+                SqliteDataReader updateUsersEuroQuery7 = updateUsersEuroCommand.ExecuteReader();
 
                 return true;
+
 
             }
 
