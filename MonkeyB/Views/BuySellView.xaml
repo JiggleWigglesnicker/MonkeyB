@@ -36,7 +36,7 @@
                 Width="100"
                 Height="100"
                 FontSize="15" 
-                Background="PaleVioletRed" IsTextSearchEnabled="True"
+                IsTextSearchEnabled="True"
                       >
 
             </ListBox>
