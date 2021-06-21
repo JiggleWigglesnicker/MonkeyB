@@ -38,7 +38,7 @@ namespace MonkeyB.Database
                     string tableCommand2 =
                     "CREATE TABLE IF NOT EXISTS Cryptowallet " +
                     "(cryptowalletID INTEGER NOT NULL UNIQUE, " +
-                    "coin TEXT NOT NULL, " +
+                    "coin TEXT NOT NULL UNIQUE, " +
                     "coin_amount  FLOAT NOT NULL, " +
                     "userID INTEGER NOT NULL," +
                     "FOREIGN KEY (userID) REFERENCES Users(userID)," +
