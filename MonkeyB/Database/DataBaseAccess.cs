@@ -101,14 +101,6 @@ namespace MonkeyB.Database
                     if (result.HasRows || currency == String.Empty) return;
                     initCommand.ExecuteReader();
                 }
-                //
-                // SqliteCommand bitcoinCommand = new SqliteCommand($"INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES('bitcoin', 1000,{App.UserID})", db);
-                // SqliteCommand dogecoinCommand = new SqliteCommand($"INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES('dogecoin', 1000,{App.UserID})", db);
-                // SqliteCommand litcoinCommand = new SqliteCommand($"INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES('litecoin', 1000,{App.UserID})", db);
-                //
-                // bitcoinCommand.ExecuteReader();
-                // dogecoinCommand.ExecuteReader();
-                // litcoinCommand.ExecuteReader();
             }
         }
 
