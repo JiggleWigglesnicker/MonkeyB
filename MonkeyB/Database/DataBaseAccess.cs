@@ -38,7 +38,7 @@ namespace MonkeyB.Database
                     string tableCommand2 =
                     "CREATE TABLE IF NOT EXISTS Cryptowallet " +
                     "(cryptowalletID INTEGER NOT NULL UNIQUE, " +
-                    "coin TEXT NOT NULL UNIQUE, " +
+                    "coin TEXT NOT NULL, " +
                     "coin_amount  FLOAT NOT NULL, " +
                     "userID INTEGER NOT NULL," +
                     "FOREIGN KEY (userID) REFERENCES Users(userID)," +
@@ -59,7 +59,7 @@ namespace MonkeyB.Database
                     "CREATE TABLE IF NOT EXISTS Transactions " +
                     "(ID INTEGER NOT NULL UNIQUE, " +
                     "currency_name STRING NOT NULL, " +
-                    "currency_amount FLOadAT NOT NULL, " +
+                    "currency_amount FLOAT NOT NULL, " +
                     "currency_value FLOAT NOT NULL, " +
                     "userID INTEGER NOT NULL," +
                     "FOREIGN KEY (userID) REFERENCES Users(userID))";
@@ -89,15 +89,26 @@ namespace MonkeyB.Database
         {
             using (var db = new SqliteConnection($"Data Source=database.db"))
             {
+                List<string> CurrencyNames = new List<string>() { "bitcoin", "dogecoin", "litecoin" };
                 db.Open();
-
-                SqliteCommand bitcoinCommand = new SqliteCommand($"INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES('bitcoin', 1000,{App.UserID})", db);
-                SqliteCommand dogecoinCommand = new SqliteCommand($"INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES('dogecoin', 1000,{App.UserID})", db);
-                SqliteCommand litcoinCommand = new SqliteCommand($"INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES('litecoin', 1000,{App.UserID})", db);
-
-                bitcoinCommand.ExecuteReader();
-                dogecoinCommand.ExecuteReader();
-                litcoinCommand.ExecuteReader();
+                SqliteCommand selectCommand;
+                foreach (var currency in CurrencyNames)
+                {
+                    SqliteCommand initCommand = new SqliteCommand($"INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES('{currency}', 1000,{App.UserID})", db);
+                    selectCommand = new SqliteCommand
+                        ($"SELECT coin, userID FROM Cryptowallet WHERE userID = '{App.UserID}' AND coin = '{currency}'", db);
+                    var result = selectCommand.ExecuteReader();
+                    if (result.HasRows || currency == String.Empty) return;
+                    initCommand.ExecuteReader();
+                }
+                //
+                // SqliteCommand bitcoinCommand = new SqliteCommand($"INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES('bitcoin', 1000,{App.UserID})", db);
+                // SqliteCommand dogecoinCommand = new SqliteCommand($"INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES('dogecoin', 1000,{App.UserID})", db);
+                // SqliteCommand litcoinCommand = new SqliteCommand($"INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES('litecoin', 1000,{App.UserID})", db);
+                //
+                // bitcoinCommand.ExecuteReader();
+                // dogecoinCommand.ExecuteReader();
+                // litcoinCommand.ExecuteReader();
             }
         }
 
