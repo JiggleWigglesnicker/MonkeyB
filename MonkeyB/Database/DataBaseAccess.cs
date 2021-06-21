@@ -32,7 +32,7 @@ namespace MonkeyB.Database
                     "(userID INTEGER NOT NULL UNIQUE, " +
                     "username TEXT NOT NULL UNIQUE, " +
                     "password TEXT NOT NULL, " +
-                    "euro_amount FLOAT NOT NULL DEFAULT 0, " +
+                    "euro_amount FLOAT NOT NULL DEFAULT 1000, " +
                     "PRIMARY KEY(userID AUTOINCREMENT))";
 
                     string tableCommand2 =
