@@ -166,6 +166,7 @@ namespace MonkeyB.ViewModels
 
         public bool BuyCrypto(string currency, float amount)
         {
+            
             if (CheckIfBuyTransactionIsValid(currency, amount) == true)
             {
                 DataBaseAccess.SellEuro(amount * GetCoinRateInEuro(currency));
