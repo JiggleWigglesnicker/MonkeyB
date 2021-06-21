@@ -94,7 +94,7 @@ namespace MonkeyB.Database
                 SqliteCommand selectCommand;
                 foreach (var currency in CurrencyNames)
                 {
-                    SqliteCommand initCommand = new SqliteCommand($"INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES('{currency}', 1000,{App.UserID})", db);
+                    SqliteCommand initCommand = new SqliteCommand($"INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES('{currency}', 0,{App.UserID})", db);
                     selectCommand = new SqliteCommand
                         ($"SELECT coin, userID FROM Cryptowallet WHERE userID = '{App.UserID}' AND coin = '{currency}'", db);
                     var result = selectCommand.ExecuteReader();
