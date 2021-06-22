@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MonkeyB.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Background="White">
+             d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -44,16 +44,15 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <WrapPanel>
-                            <TextBlock Text="CoinType: " />
+                            <TextBlock Text="€ " />
+                            <TextBlock Text="{Binding EuroAmount}" FontWeight="Bold"/>
+                            <TextBlock Text=" for " />
+                            <TextBlock Text="{Binding Amount}" FontWeight="Bold"/>
+                            <TextBlock Text=" units of " />
                             <TextBlock Text="{Binding CoinName}" FontWeight="Bold" />
                             <TextBlock Text=", " />
-                            <TextBlock Text="Amount: " />
-                            <TextBlock Text="{Binding Amount}"  />
-                            <TextBlock Text=" ( Euro Amount: " />
-                            <TextBlock Text="{Binding EuroAmount}" />
-                            <TextBlock Text=", " />
-                            <TextBlock Text="{Binding Outstanding}" />
-                            <TextBlock Text=")" />
+                            
+                            
                         </WrapPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
