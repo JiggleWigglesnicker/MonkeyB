@@ -23,7 +23,7 @@
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="LGBTQ">
                     <Setter Property="Background" Value="Pink" />
-                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="Foreground" Value="Black" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -54,7 +54,7 @@
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="LGBTQ">
                     <Setter Property="Background" Value="PaleVioletRed" />
-                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="Foreground" Value="Black" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -82,7 +82,7 @@
                     <Setter Property="Foreground" Value="Black" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="LGBTQ">
-                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="Foreground" Value="Black" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -96,7 +96,7 @@
                     <Setter Property="Foreground" Value="Black" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="LGBTQ">
-                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="Foreground" Value="Black" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -111,7 +111,7 @@
                     <Setter Property="Foreground" Value="Black" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="LGBTQ">
-                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="Foreground" Value="Black" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -128,7 +128,7 @@
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="LGBTQ">
                     <Setter Property="Background" Value="LightCoral" />
-                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="Foreground" Value="Black" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
