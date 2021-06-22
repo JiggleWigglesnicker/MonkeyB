@@ -21,7 +21,7 @@ namespace MonkeyB.ViewModels
     {
         public ICommand IndexCommand { get; set; }
         public ICommand BuySellCommand { get; set; }
-        public ICommand NewsCommand { get; set; }
+        public ICommand WalletCommand { get; set; }
         public ICommand AchievementCommand { get; set; }
         public ICommand SettingCommand { get; set; }
         public ICommand OrderCommand { get; set; }
@@ -42,9 +42,9 @@ namespace MonkeyB.ViewModels
                 navigationStore.SelectedViewModel = new BuySellViewModel(navigationStore);
             });
 
-            NewsCommand = new RelayCommand(o =>
+            WalletCommand = new RelayCommand(o =>
             {
-                navigationStore.SelectedViewModel = new NewsViewModel(navigationStore);
+                navigationStore.SelectedViewModel = new WalletViewModel(navigationStore);
             });
 
             OrderCommand = new RelayCommand(o =>
