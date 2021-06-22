@@ -166,8 +166,9 @@ namespace MonkeyB.ViewModels
 
             BuyCommand = new RelayCommand(o =>
             {
-                if (CryptoWalletCoins != null)
+                if (CryptoWalletCoins != null && SelectedBuyOrder != null)
                 {
+
                     if (CryptoWalletCoins[0].euroAmount >= selectedBuyOrder.EuroAmount || App.UserID == SelectedBuyOrder.UserID)
                     {
                         BuyOrder(App.UserID, SelectedBuyOrder.ID, SelectedBuyOrder);
