@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -19,6 +21,10 @@ namespace MonkeyB
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
+            
             NavigationStore navigationStore = new NavigationStore();
 
             navigationStore.SelectedViewModel = new LoginViewModel(navigationStore);

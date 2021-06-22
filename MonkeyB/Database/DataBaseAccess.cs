@@ -136,13 +136,12 @@ namespace MonkeyB.Database
 
         public static void SellCoin(string currency, float amount, int userID)
         {
-            string stringAmount = amount.ToString(CultureInfo.InvariantCulture);
             using (var db = new SqliteConnection($"Data Source=database.db"))
             {
                 db.Open();
 
                 SqliteCommand updateCommand;
-                updateCommand = new SqliteCommand($"UPDATE CryptoWallet SET coin_amount= coin_amount - '{stringAmount}'   WHERE userID = '{userID}' AND coin = '{currency}'", db);
+                updateCommand = new SqliteCommand($"UPDATE CryptoWallet SET coin_amount= coin_amount - '{amount}'   WHERE userID = '{userID}' AND coin = '{currency}'", db);
                 updateCommand.ExecuteNonQuery();
             }
 
@@ -150,13 +149,12 @@ namespace MonkeyB.Database
 
         public static void BuyCoin(string currency, float amount, int userID)
         {
-            string stringAmount = amount.ToString(CultureInfo.InvariantCulture);
             using (var db = new SqliteConnection($"Data Source=database.db"))
             {
                 db.Open();
 
                 SqliteCommand updateCommand;
-                updateCommand = new SqliteCommand($"UPDATE CryptoWallet SET coin_amount = coin_amount + '{stringAmount}'   WHERE userID = '{userID}' AND coin = '{currency}'", db);
+                updateCommand = new SqliteCommand($"UPDATE CryptoWallet SET coin_amount = coin_amount + '{amount}'   WHERE userID = '{userID}' AND coin = '{currency}'", db);
                 updateCommand.ExecuteNonQuery();
             }
 
@@ -164,13 +162,12 @@ namespace MonkeyB.Database
 
         public static void BuyEuro(float amount)
         {
-            string stringAmount = amount.ToString(CultureInfo.InvariantCulture);
             using (var db = new SqliteConnection($"Data Source=database.db"))
             {
                 db.Open();
 
                 SqliteCommand updateCommand;
-                updateCommand = new SqliteCommand($"UPDATE users SET euro_amount = euro_amount + '{stringAmount}'   WHERE userID = '{App.UserID}'", db);
+                updateCommand = new SqliteCommand($"UPDATE users SET euro_amount = euro_amount + '{amount}'   WHERE userID = '{App.UserID}'", db);
                 updateCommand.ExecuteNonQuery();
             }
 
@@ -179,13 +176,12 @@ namespace MonkeyB.Database
 
         public static void SellEuro(float amount)
         {
-            string stringAmount = amount.ToString(CultureInfo.InvariantCulture);
             using (var db = new SqliteConnection($"Data Source=database.db"))
             {
                 db.Open();
 
                 SqliteCommand updateCommand;
-                updateCommand = new SqliteCommand($"UPDATE users SET euro_amount = euro_amount - '{stringAmount}'   WHERE userID = '{App.UserID}'", db);
+                updateCommand = new SqliteCommand($"UPDATE users SET euro_amount = euro_amount - '{amount}'   WHERE userID = '{App.UserID}'", db);
                 updateCommand.ExecuteNonQuery();
             }
 

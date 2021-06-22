@@ -193,7 +193,7 @@ namespace MonkeyB.ViewModels
             }
             else
             {
-                WarningLabel = "Not enought " +  currency + " in wallet.";
+                WarningLabel = "Not enough " +  currency + " in wallet.";
                 return false;
             }
         }
