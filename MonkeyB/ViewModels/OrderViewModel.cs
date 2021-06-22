@@ -21,6 +21,72 @@ namespace MonkeyB.ViewModels
         public ObservableCollection<CryptoWalletModel> CryptoWalletCoins { get; set; }
         public ObservableCollection<OrderModel> OrderList { get; set; }
 
+        private string sellOrderFeedbackText;
+        public string SellOrderFeedbackText
+        {
+            get => sellOrderFeedbackText;
+            set
+            {
+                sellOrderFeedbackText = value;
+                OnPropertyChanged("SellOrderFeedbackText");
+            }
+        }
+
+        private string sellOrderFeedbackColor;
+        public string SellOrderFeedbackColor
+        {
+            get => sellOrderFeedbackColor;
+            set
+            {
+                sellOrderFeedbackColor = value;
+                OnPropertyChanged("SellOrderFeedbackColor");
+            }
+        }
+
+        private bool sellOrderFeedbackVisible;
+        public bool SellOrderFeedbackVisible
+        {
+            get => sellOrderFeedbackVisible;
+            set
+            {
+                sellOrderFeedbackVisible = value;
+                OnPropertyChanged("SellOrderFeedbackVisible");
+            }
+        }
+
+        private string buyOrderFeedbackText;
+        public string BuyOrderFeedbackText
+        {
+            get => buyOrderFeedbackText;
+            set
+            {
+                buyOrderFeedbackText = value;
+                OnPropertyChanged("BuyOrderFeedbackText");
+            }
+        }
+
+        private string buyOrderFeedbackColor;
+        public string BuyOrderFeedbackColor
+        {
+            get => buyOrderFeedbackColor;
+            set
+            {
+                buyOrderFeedbackColor = value;
+                OnPropertyChanged("BuyOrderFeedbackColor");
+            }
+        }
+
+        private bool buyOrderFeedbackVisible;
+        public bool BuyOrderFeedbackVisible
+        {
+            get => buyOrderFeedbackVisible;
+            set
+            {
+                buyOrderFeedbackVisible = value;
+                OnPropertyChanged("BuyOrderFeedbackVisible");
+            }
+        }
+
         private OrderModel selectedBuyOrder;
         public OrderModel SelectedBuyOrder
         {
@@ -93,29 +159,64 @@ namespace MonkeyB.ViewModels
         {
             FillSelectBox();
             FillListViewWithOrders();
-            if (CryptoWalletCoins != null && CryptoWalletCoins.Count >0)
+            if (CryptoWalletCoins != null && CryptoWalletCoins.Count > 0)
             {
                 EuroAmountLabel = $"Total amount of euro: {CryptoWalletCoins[0].euroAmount}";
             }
 
             BuyCommand = new RelayCommand(o =>
             {
-                if (CryptoWalletCoins[0].euroAmount >= selectedBuyOrder.EuroAmount)
+                if (CryptoWalletCoins != null)
                 {
-                    BuyOrder(App.UserID, SelectedBuyOrder.ID, SelectedBuyOrder);
-                    navigationStore.SelectedViewModel = new OrderViewModel(navigationStore);
+                    if (CryptoWalletCoins[0].euroAmount >= selectedBuyOrder.EuroAmount || App.UserID == SelectedBuyOrder.UserID)
+                    {
+                        BuyOrder(App.UserID, SelectedBuyOrder.ID, SelectedBuyOrder);
+                        navigationStore.SelectedViewModel = new OrderViewModel(navigationStore);
+                    }
+                    else
+                    {
+                        BuyOrderFeedbackColor = "Red";
+                        BuyOrderFeedbackText = "Order could not be purchased, Insufficent funds";
+                        BuyOrderFeedbackVisible = true;
+                    }
+                }
+                else
+                {
+                    BuyOrderFeedbackColor = "Red";
+                    BuyOrderFeedbackText = "Order could not be purchased";
+                    BuyOrderFeedbackVisible = true;
                 }
             });
 
             SellCommand = new RelayCommand(o =>
             {
-
-                if (CoinAmount <= selectedItem.coinAmount)
+                if (SelectedItem != null)
                 {
-                    PlaceSellOrder(SelectedItem.coinName, CoinAmount, EuroAmount, App.UserID);
-                    navigationStore.SelectedViewModel = new OrderViewModel(navigationStore);
+                    if (CoinAmount <= selectedItem.coinAmount && CoinAmount != 0)
+                    {
+                        PlaceSellOrder(SelectedItem.coinName, CoinAmount, EuroAmount, App.UserID);
+                        navigationStore.SelectedViewModel = new OrderViewModel(navigationStore);
+                        
+                    }
+                    else if (CoinAmount == 0.0)
+                    {
+                        SellOrderFeedbackColor = "Red";
+                        SellOrderFeedbackText = "Sell order Could not be made, no crypto amount given";
+                        SellOrderFeedbackVisible = true;
+                    }
+                    else
+                    {
+                        SellOrderFeedbackColor = "Red";
+                        SellOrderFeedbackText = "Sell order Could not be made, Insufficent crypto";
+                        SellOrderFeedbackVisible = true;
+                    }
                 }
-
+                else
+                {
+                    SellOrderFeedbackColor = "Red";
+                    SellOrderFeedbackText = "Sell order Could not be made, empty input";
+                    SellOrderFeedbackVisible = true;
+                }
             });
 
             DashBoardCommand = new RelayCommand(o =>
