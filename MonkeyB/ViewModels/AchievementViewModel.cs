@@ -41,23 +41,7 @@ namespace MonkeyB.ViewModels
 
         public void checkIfAchievementCompleted()
         {
-            List<CryptoWalletModel> cWalletList = DataBaseAccess.FetchCoinsInWallet(App.UserID);
-            if (cWalletList.Exists(e => e.coinName == "bitcoin"))
-            {
-                AchievementList[0] = new AchievementModel("First Bitcoin", "Buying your first bitcoin", true);
-            }
-            else if (cWalletList.Exists(e => e.coinName == "etherium"))
-            {
-                AchievementList[1] = new AchievementModel("First Ethereum", "Buying your first Ethereum", true);
-            }
-            else if (cWalletList.Exists(e => e.coinName == "dogecoin"))
-            {
-                AchievementList[2] = new AchievementModel("First Dogecoin", "buying your first Dogecoin", true);
-            }
-            else if (cWalletList.Exists(e => e.euroAmount >= 10000))
-            {
-                AchievementList[3] = new AchievementModel("€€€ 10K €€€ CLUB", "Own € 10.000 ", true);
-            }
+            
 
         }
 
