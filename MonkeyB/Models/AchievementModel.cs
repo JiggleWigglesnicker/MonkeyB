@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace MonkeyB.Models
 {
-    class AchievementModel
+    public class AchievementModel
     {
 
-        public String Name { get; set; }
-        public String Description { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
         public bool IsCompleted { get; set; }
 
         public AchievementModel(string name, string description, bool completed)

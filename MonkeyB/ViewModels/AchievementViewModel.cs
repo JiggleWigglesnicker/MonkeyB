@@ -29,12 +29,13 @@ namespace MonkeyB.ViewModels
 
         public void addAchievementsToList()
         {
+            List<AchievementModel> list = DataBaseAccess.FetchAchievements(App.UserID);
             AchievementList = new ObservableCollection<AchievementModel>();
-            AchievementList.Add(new AchievementModel("First Bitcoin", "Buying your first bitcoin", false));
-            AchievementList.Add(new AchievementModel("First Ethereum", "Buying your first Ethereum", false));
-            AchievementList.Add(new AchievementModel("First Dogecoin", "buying your first Dogecoin", false));
-            AchievementList.Add(new AchievementModel("Make Profit", "Making profit on a stock", false));
-            checkIfAchievementCompleted();
+            foreach (var achievement in list)
+            {
+                AchievementList.Add(achievement);
+            }
+
             checkIfAchievementCompleted();
         }
 
@@ -43,7 +44,7 @@ namespace MonkeyB.ViewModels
             List<CryptoWalletModel> cWalletList = DataBaseAccess.FetchCoinsInWallet(App.UserID);
             if (cWalletList.Exists(e => e.coinName == "bitcoin"))
             {
-                AchievementList[0] = new AchievementModel("First Bitcoin", "Buying your first bitcoin", true); 
+                AchievementList[0] = new AchievementModel("First Bitcoin", "Buying your first bitcoin", true);
             }
             else if (cWalletList.Exists(e => e.coinName == "etherium"))
             {

@@ -65,6 +65,21 @@ namespace MonkeyB.Database
                     "userID INTEGER NOT NULL," +
                     "FOREIGN KEY (userID) REFERENCES Users(userID))";
 
+                    string tableCommand5 =
+                   "CREATE TABLE IF NOT EXISTS Achievements " +
+                   "(AchievementID INTEGER NOT NULL UNIQUE, " +
+                   "Name STRING NOT NULL, " +
+                   "Description FLOAT NOT NULL, " +
+                   "IsCompleted BOOLEAN NOT NULL, " +
+                   "PRIMARY KEY(AchievementID AUTOINCREMENT))";
+
+                    string tableCommand6 =
+                    "CREATE TABLE IF NOT EXISTS Users_Achievements " +
+                    "(AchievementID INTEGER NOT NULL," +
+                    "userID INTEGER NOT NULL," +
+                    "FOREIGN KEY (userID) REFERENCES Users(userID)," +
+                    "FOREIGN KEY(AchievementID) REFERENCES Achievements(AchievementID))";
+
                     string adminCommand = "INSERT OR IGNORE INTO Users (username,password) VALUES ('admin','admin')";
 
 
@@ -72,6 +87,8 @@ namespace MonkeyB.Database
                     SqliteCommand createTable2 = new SqliteCommand(tableCommand2, db);
                     SqliteCommand createTable3 = new SqliteCommand(tableCommand3, db);
                     SqliteCommand createTable4 = new SqliteCommand(tableCommand4, db);
+                    SqliteCommand createTable5 = new SqliteCommand(tableCommand5, db);
+                    SqliteCommand createTable6 = new SqliteCommand(tableCommand6, db);
                     SqliteCommand createAdmin = new SqliteCommand(adminCommand, db);
 
 
@@ -81,6 +98,8 @@ namespace MonkeyB.Database
                     createTable2.ExecuteReader();
                     createTable3.ExecuteReader();
                     createTable4.ExecuteReader();
+                    createTable5.ExecuteReader();
+                    createTable6.ExecuteReader();
                     createAdmin.ExecuteReader();
                 }
             });
@@ -350,6 +369,31 @@ namespace MonkeyB.Database
             }
 
             return orderList;
+        }
+
+        public static List<AchievementModel> FetchAchievements(int id)
+        {
+            List<AchievementModel> achievementList = new List<AchievementModel>();
+            using (var db = new SqliteConnection($"Data Source=database.db"))
+            {
+                db.Open();
+
+                SqliteCommand selectCommand;
+
+                selectCommand = new SqliteCommand
+                    ($"SELECT Achievements.Name, Achievements.Description, Achievements.IsCompleted FROM Achievements " +
+                    $"INNER JOIN Users_Achievements ON Achievements.AchievementID = Users_Achievements.AchievementID " +
+                    $"JOIN Users ON Users.userID = Users_Achievements.userID WHERE Users.userID = {id}", db);
+
+                SqliteDataReader query = selectCommand.ExecuteReader();
+                while (query.Read())
+                {
+                    achievementList.Add(new AchievementModel(query.GetString(0),query.GetString(1),query.GetBoolean(2)));
+                }
+
+            }
+
+            return achievementList;
         }
 
         public static bool BuyOrder(int userID, OrderModel orderModel)
