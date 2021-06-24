@@ -71,14 +71,10 @@ namespace MonkeyB.Database
                    "Name STRING NOT NULL, " +
                    "Description FLOAT NOT NULL, " +
                    "IsCompleted BOOLEAN NOT NULL, " +
-                   "PRIMARY KEY(AchievementID AUTOINCREMENT))";
+                   "userID INTEGER NOT NULL, " +
+                   "PRIMARY KEY(AchievementID AUTOINCREMENT)," +
+                   "FOREIGN KEY(userID) REFERENCES Users(userID))";
 
-                    string tableCommand6 =
-                    "CREATE TABLE IF NOT EXISTS Users_Achievements " +
-                    "(AchievementID INTEGER NOT NULL," +
-                    "userID INTEGER NOT NULL," +
-                    "FOREIGN KEY (userID) REFERENCES Users(userID)," +
-                    "FOREIGN KEY(AchievementID) REFERENCES Achievements(AchievementID))";
 
                     string adminCommand = "INSERT OR IGNORE INTO Users (username,password) VALUES ('admin','admin')";
 
@@ -88,19 +84,19 @@ namespace MonkeyB.Database
                     SqliteCommand createTable3 = new SqliteCommand(tableCommand3, db);
                     SqliteCommand createTable4 = new SqliteCommand(tableCommand4, db);
                     SqliteCommand createTable5 = new SqliteCommand(tableCommand5, db);
-                    SqliteCommand createTable6 = new SqliteCommand(tableCommand6, db);
                     SqliteCommand createAdmin = new SqliteCommand(adminCommand, db);
-
-
-
 
                     createTable1.ExecuteReader();
                     createTable2.ExecuteReader();
                     createTable3.ExecuteReader();
                     createTable4.ExecuteReader();
                     createTable5.ExecuteReader();
-                    createTable6.ExecuteReader();
+
+
+
                     createAdmin.ExecuteReader();
+                        
+
                 }
             });
         }
@@ -120,6 +116,37 @@ namespace MonkeyB.Database
                     var result = selectCommand.ExecuteReader();
                     if (result.HasRows || currency == String.Empty) return;
                     initCommand.ExecuteReader();
+                }
+            }
+        }
+
+        public static void InitializeAchievements()
+        {
+            using (var db = new SqliteConnection($"Data Source=database.db"))
+            {
+                List<string> AchievementNames = new List<string>() { "10 Doge", "10 bit", "10 Etherium","10k CLUB" };
+                db.Open();
+                SqliteCommand selectCommand;
+
+                foreach (var achievements in AchievementNames)
+                {
+                    string insertCommandAchievements1 = $"INSERT INTO Achievements (Name, Description, IsCompleted, userID) VALUES ('10 Doge', 'Buy 10 Dogecoin', false, {App.UserID})";
+                    string insertCommandAchievements2 = $"INSERT INTO Achievements (Name, Description, IsCompleted, userID) VALUES ('10 bit', 'Buy 10 bitcoin', false, {App.UserID})";
+                    string insertCommandAchievements3 = $"INSERT INTO Achievements (Name, Description, IsCompleted, userID) VALUES ('10 Etherium', 'Buy 10 Etherium', false, {App.UserID})";
+                    string insertCommandAchievements4 = $"INSERT INTO Achievements (Name, Description, IsCompleted, userID) VALUES ('10k CLUB', 'have 10.000 in funds', false, {App.UserID})";
+
+                    selectCommand = new SqliteCommand
+                        ($"SELECT Name, userID FROM Achievements WHERE userID = '{App.UserID}' AND Name = '{achievements}'", db);
+                    var result = selectCommand.ExecuteReader();
+                    if (result.HasRows) return;
+                    SqliteCommand insertCreateCommandAchievements1 = new SqliteCommand(insertCommandAchievements1, db);
+                    SqliteCommand insertCreateCommandAchievements2 = new SqliteCommand(insertCommandAchievements2, db);
+                    SqliteCommand insertCreateCommandAchievements3 = new SqliteCommand(insertCommandAchievements3, db);
+                    SqliteCommand insertCreateCommandAchievements4 = new SqliteCommand(insertCommandAchievements4, db);
+                    insertCreateCommandAchievements1.ExecuteReader();
+                    insertCreateCommandAchievements2.ExecuteReader();
+                    insertCreateCommandAchievements3.ExecuteReader();
+                    insertCreateCommandAchievements4.ExecuteReader();
                 }
             }
         }
@@ -381,9 +408,7 @@ namespace MonkeyB.Database
                 SqliteCommand selectCommand;
 
                 selectCommand = new SqliteCommand
-                    ($"SELECT Achievements.Name, Achievements.Description, Achievements.IsCompleted FROM Achievements " +
-                    $"INNER JOIN Users_Achievements ON Achievements.AchievementID = Users_Achievements.AchievementID " +
-                    $"JOIN Users ON Users.userID = Users_Achievements.userID WHERE Users.userID = {id}", db);
+                    ($"SELECT Name, Description, IsCompleted FROM Achievements WHERE userID = {id}", db);
 
                 SqliteDataReader query = selectCommand.ExecuteReader();
                 while (query.Read())

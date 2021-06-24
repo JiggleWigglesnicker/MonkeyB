@@ -1,4 +1,5 @@
 ﻿using MonkeyB.Commands;
+using MonkeyB.Database;
 using MonkeyB.Models;
 using Newtonsoft.Json;
 using System;
@@ -32,6 +33,8 @@ namespace MonkeyB.ViewModels
 
         public DashBoardViewModel(NavigationStore navigationStore)
         {
+            DataBaseAccess.InitializeAchievements();
+
             IndexCommand = new RelayCommand(o =>
             {
                 navigationStore.SelectedViewModel = new IndexViewModel(navigationStore);
