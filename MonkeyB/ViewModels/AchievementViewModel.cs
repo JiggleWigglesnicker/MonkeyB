@@ -33,15 +33,35 @@ namespace MonkeyB.ViewModels
             AchievementList = new ObservableCollection<AchievementModel>();
             foreach (var achievement in list)
             {
+                checkIfAchievementCompleted(achievement);
                 AchievementList.Add(achievement);
             }
 
-            checkIfAchievementCompleted();
+
         }
 
-        public void checkIfAchievementCompleted()
+        public void checkIfAchievementCompleted(AchievementModel model)
         {
-            
+            switch (model.Name)
+            {
+                case "10 Doge":
+                    if (DataBaseAccess.GetCoinAmount("dogecoin", App.UserID) >= 10)
+                        model.IsCompleted = true;
+                    break;
+                case "10 Etherium":
+                    if (DataBaseAccess.GetCoinAmount("etherium", App.UserID) >= 10)
+                        model.IsCompleted = true;
+                    break;
+                case "10 bit":
+                    if (DataBaseAccess.GetCoinAmount("bitcoin", App.UserID) >= 10)
+                        model.IsCompleted = true;
+                    break;
+                case "10k CLUB":
+                    if (DataBaseAccess.GetEuroAmount() >= 10000)
+                        model.IsCompleted = true;
+                    break;
+
+            }
 
         }
 
