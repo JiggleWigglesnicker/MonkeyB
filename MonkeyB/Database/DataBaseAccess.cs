@@ -63,7 +63,7 @@ namespace MonkeyB.Database
                     "userID INTEGER NOT NULL," +
                     "FOREIGN KEY (userID) REFERENCES Users(userID))";
 
-                    string tableCommand5 =
+                    string AchievementTable =
                    "CREATE TABLE IF NOT EXISTS Achievements " +
                    "(AchievementID INTEGER NOT NULL UNIQUE, " +
                    "Name STRING NOT NULL, " +
@@ -80,7 +80,7 @@ namespace MonkeyB.Database
                     SqliteCommand createTable2 = new SqliteCommand(CryptoWalletTable, db);
                     SqliteCommand createTable3 = new SqliteCommand(OrderTable, db);
                     SqliteCommand createTable4 = new SqliteCommand(TransactionHistoryTable, db);
-                    SqliteCommand createTable5 = new SqliteCommand(tableCommand5, db);
+                    SqliteCommand createTable5 = new SqliteCommand(AchievementTable, db);
                     SqliteCommand createAdmin = new SqliteCommand(adminCommand, db);
 
                     createTable1.ExecuteReader();
