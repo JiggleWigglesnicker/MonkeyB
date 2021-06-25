@@ -80,6 +80,7 @@ namespace MonkeyB.Database
                     SqliteCommand createTable2 = new SqliteCommand(CryptoWalletTable, db);
                     SqliteCommand createTable3 = new SqliteCommand(OrderTable, db);
                     SqliteCommand createTable4 = new SqliteCommand(TransactionHistoryTable, db);
+                    SqliteCommand createTable5 = new SqliteCommand(tableCommand5, db);
                     SqliteCommand createAdmin = new SqliteCommand(adminCommand, db);
 
                     createTable1.ExecuteReader();
