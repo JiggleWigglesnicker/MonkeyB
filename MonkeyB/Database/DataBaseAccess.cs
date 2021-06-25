@@ -13,10 +13,8 @@ namespace MonkeyB.Database
 {
     public static class DataBaseAccess
     {
-
         private static string FolderPath { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         private static string DbPath { get; set; } = System.IO.Path.Combine(FolderPath, "database.db");
-
 
         public static async void InitializeDatabase()
         {
@@ -28,7 +26,7 @@ namespace MonkeyB.Database
 
                     db.Open();
 
-                    string tableCommand1 =
+                    string UserTable =
                     "CREATE TABLE IF NOT EXISTS Users " +
                     "(userID INTEGER NOT NULL UNIQUE, " +
                     "username TEXT NOT NULL UNIQUE, " +
@@ -36,7 +34,7 @@ namespace MonkeyB.Database
                     "euro_amount FLOAT NOT NULL DEFAULT 1000, " +
                     "PRIMARY KEY(userID AUTOINCREMENT))";
 
-                    string tableCommand2 =
+                    string CryptoWalletTable =
                     "CREATE TABLE IF NOT EXISTS Cryptowallet " +
                     "(cryptowalletID INTEGER NOT NULL UNIQUE, " +
                     "coin TEXT NOT NULL, " +
@@ -45,7 +43,7 @@ namespace MonkeyB.Database
                     "FOREIGN KEY (userID) REFERENCES Users(userID)," +
                     "PRIMARY KEY(cryptowalletID AUTOINCREMENT))";
 
-                    string tableCommand3 =
+                    string OrderTable =
                     "CREATE TABLE IF NOT EXISTS Orders " +
                     "(orderID INTEGER NOT NULL UNIQUE, " +
                     "cointype TEXT NOT NULL, " +
@@ -56,8 +54,8 @@ namespace MonkeyB.Database
                     "FOREIGN KEY (userID) REFERENCES Users(userID)," +
                     "PRIMARY KEY(orderID AUTOINCREMENT))";
 
-                    string tableCommand4 =
-                    "CREATE TABLE IF NOT EXISTS Transactions " +
+                    string TransactionHistoryTable =
+                    "CREATE TABLE IF NOT EXISTS TransactionHistory " +
                     "(ID INTEGER NOT NULL UNIQUE, " +
                     "currency_name STRING NOT NULL, " +
                     "currency_amount FLOAT NOT NULL, " +
@@ -78,12 +76,10 @@ namespace MonkeyB.Database
 
                     string adminCommand = "INSERT OR IGNORE INTO Users (username,password) VALUES ('admin','admin')";
 
-
-                    SqliteCommand createTable1 = new SqliteCommand(tableCommand1, db);
-                    SqliteCommand createTable2 = new SqliteCommand(tableCommand2, db);
-                    SqliteCommand createTable3 = new SqliteCommand(tableCommand3, db);
-                    SqliteCommand createTable4 = new SqliteCommand(tableCommand4, db);
-                    SqliteCommand createTable5 = new SqliteCommand(tableCommand5, db);
+                    SqliteCommand createTable1 = new SqliteCommand(UserTable, db);
+                    SqliteCommand createTable2 = new SqliteCommand(CryptoWalletTable, db);
+                    SqliteCommand createTable3 = new SqliteCommand(OrderTable, db);
+                    SqliteCommand createTable4 = new SqliteCommand(TransactionHistoryTable, db);
                     SqliteCommand createAdmin = new SqliteCommand(adminCommand, db);
 
                     createTable1.ExecuteReader();
@@ -190,7 +186,6 @@ namespace MonkeyB.Database
                 updateCommand = new SqliteCommand($"UPDATE CryptoWallet SET coin_amount= coin_amount - '{amount}'   WHERE userID = '{userID}' AND coin = '{currency}'", db);
                 updateCommand.ExecuteNonQuery();
             }
-
         }
 
         public static void BuyCoin(string currency, float amount, int userID)
@@ -203,7 +198,6 @@ namespace MonkeyB.Database
                 updateCommand = new SqliteCommand($"UPDATE CryptoWallet SET coin_amount = coin_amount + '{amount}'   WHERE userID = '{userID}' AND coin = '{currency}'", db);
                 updateCommand.ExecuteNonQuery();
             }
-
         }
 
         public static void BuyEuro(float amount)
@@ -216,9 +210,7 @@ namespace MonkeyB.Database
                 updateCommand = new SqliteCommand($"UPDATE users SET euro_amount = euro_amount + '{amount}'   WHERE userID = '{App.UserID}'", db);
                 updateCommand.ExecuteNonQuery();
             }
-
         }
-
 
         public static void SellEuro(float amount)
         {
@@ -230,7 +222,6 @@ namespace MonkeyB.Database
                 updateCommand = new SqliteCommand($"UPDATE users SET euro_amount = euro_amount - '{amount}'   WHERE userID = '{App.UserID}'", db);
                 updateCommand.ExecuteNonQuery();
             }
-
         }
 
         public static float GetCoinAmount(string currency, int userID)
@@ -244,8 +235,6 @@ namespace MonkeyB.Database
                 SqliteDataReader query = selectCommand.ExecuteReader();
                 //addCurrency("bitcoin", App.UserID);
                 float amount = 0;
-
-
 
                 while (query.Read())
                 {
@@ -265,8 +254,6 @@ namespace MonkeyB.Database
                 SqliteCommand selectCommand;
                 selectCommand = new SqliteCommand($"INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES ('{currency}', 0, {userID})", db);
                 SqliteDataReader query = selectCommand.ExecuteReader();
-
-
             }
         }
 
@@ -298,11 +285,8 @@ namespace MonkeyB.Database
                 updateCommand = new SqliteCommand
                     ($"UPDATE Users SET euro_amount = {amount} WHERE userID = '{App.UserID}'", db);
                 updateCommand.ExecuteReader();
-
             }
-
         }
-
 
         /// <summary>
         /// Returns the amount of euro's a user has
@@ -318,7 +302,6 @@ namespace MonkeyB.Database
                 selectCommand = new SqliteCommand($"SELECT euro_amount from users WHERE userID = '{App.UserID}' ", db);
                 SqliteDataReader query = selectCommand.ExecuteReader();
 
-
                 float amount = 0;
                 while (query.Read())
                 {
@@ -328,7 +311,6 @@ namespace MonkeyB.Database
                 return amount;
             }
         }
-
 
         public static List<CryptoWalletModel> FetchCoinsInWallet(int id)
         {
@@ -345,6 +327,30 @@ namespace MonkeyB.Database
                 while (query.Read())
                 {
                     coinList.Add(new CryptoWalletModel(query.GetString(0), query.GetFloat(1), query.GetFloat(2)));
+                }
+            }
+
+            return coinList;
+        }
+
+        public static List<TransactionHistoryModel> FetchTransactionHistory(int id)
+        {
+            List<TransactionHistoryModel> coinList = new List<TransactionHistoryModel>();
+            using (var db = new SqliteConnection($"Data Source=database.db"))
+            {
+                db.Open();
+
+                SqliteCommand selectCommand;
+
+                selectCommand = new SqliteCommand
+                    ($"SELECT Cryptowallet.coin , Cryptowallet.coin_amount FROM Cryptowallet WHERE userID = {id}", db);
+                SqliteDataReader query = selectCommand.ExecuteReader();
+                
+                // elke coin in wallet de waarde van ophalen
+                
+                while (query.Read())
+                {
+                    coinList.Add(new TransactionHistoryModel(query.GetString(0), query.GetFloat(1)));
                 }
             }
 
@@ -392,7 +398,6 @@ namespace MonkeyB.Database
                 {
                     orderList.Add(new OrderModel(query.GetInt32(0), query.GetString(1), query.GetFloat(2), query.GetFloat(3), query.GetBoolean(4), query.GetInt32(5)));
                 }
-
             }
 
             return orderList;
@@ -468,11 +473,8 @@ namespace MonkeyB.Database
                 SqliteDataReader updateUsersEuroQuery7 = updateUsersEuroCommand.ExecuteReader();
 
                 return true;
-
-
             }
-
         }
-
     }
 }
+

@@ -14,6 +14,16 @@
                       Width="415" 
                       Series="{Binding SeriesCollection}" />
 
+        <ItemsControl ItemsSource="{Binding CryptoWalletList}" HorizontalAlignment="Center">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="0,0,0,5">
+                        <TextBlock Text="{Binding coinName}" />
+                        <TextBlock Text="{Binding coinPercentage}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
         <Button Content="Back" Command="{Binding DashBoardCommand}" HorizontalAlignment="left" Margin="20,50,0,10" Height="30" Width="200"/>
 
