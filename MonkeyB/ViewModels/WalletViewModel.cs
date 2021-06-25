@@ -8,8 +8,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace MonkeyB.ViewModels
 {
@@ -37,32 +40,37 @@ namespace MonkeyB.ViewModels
 
             CryptoWalletList = new ObservableCollection<TransactionHistoryModel>();
 
-
             ApiHandler apiHandler = new ApiHandler();
 
             CryptoCurrencyModel model;
 
-            foreach (var crypto in cryptoWallet)
+            Task.Run(() =>
             {
-                model = apiHandler.GetCoinValue(crypto.coinName).Result;
-
-                switch (crypto.coinName)
+                foreach (var crypto in cryptoWallet)
                 {
-                    case "bitcoin":
-                        crypto.coinValue = model.bitcoin.eur;
-                        break;
-                    case "litecoin":
-                        crypto.coinValue = model.litecoin.eur;
-                        break;
-                    case "dogecoin":
-                        crypto.coinValue = model.dogecoin.eur;
-                        break;
+                    model = apiHandler.GetCoinValue(crypto.coinName).Result;
+
+                    switch (crypto.coinName)
+                    {
+                        case "bitcoin":
+                            crypto.coinValue = model.bitcoin.eur;
+                            break;
+                        case "litecoin":
+                            crypto.coinValue = model.litecoin.eur;
+                            break;
+                        case "dogecoin":
+                            crypto.coinValue = model.dogecoin.eur;
+                            break;
+                    }
+
+                    crypto.calculatePercentage();
+
+                    Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new ThreadStart(delegate
+                    {
+                        CryptoWalletList.Add(crypto);
+                    }));
                 }
-
-                crypto.calculatePercentage();
-
-                CryptoWalletList.Add(crypto);
-            }
+            });
 
             DashBoardCommand = new RelayCommand(o =>
             {

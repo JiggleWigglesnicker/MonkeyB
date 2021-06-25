@@ -23,8 +23,6 @@ namespace MonkeyB.Models
 
         public void calculatePercentage()
         {
-            
-            
             coinPercentage = 100 * ((coinValue - oldCoinValue) / oldCoinValue);
 
             //coinPercentage = 50;
