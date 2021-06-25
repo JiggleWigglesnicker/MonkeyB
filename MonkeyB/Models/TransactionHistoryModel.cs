@@ -13,6 +13,7 @@ namespace MonkeyB.Models
         public float coinValue { get; set; }
         public float coinPercentage { get; set; }
         public float oldCoinValue { get; set; }
+        public string percentageColor { get; set; }
 
         public TransactionHistoryModel(string coinName, float coinAmount)
         {
@@ -23,8 +24,15 @@ namespace MonkeyB.Models
 
         public void calculatePercentage()
         {
-            coinPercentage = 100 * ((coinValue - oldCoinValue) / oldCoinValue);
-
+            coinPercentage = (float)Math.Ceiling(100 * ((coinValue - oldCoinValue) / oldCoinValue));
+            if (coinPercentage < 0 || coinPercentage < 0.0)
+            {
+                percentageColor = "Red";
+            }
+            else
+            {
+                percentageColor = "Green";
+            }
             //coinPercentage = 50;
         }
     }
