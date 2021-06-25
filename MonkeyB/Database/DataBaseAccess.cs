@@ -124,7 +124,7 @@ namespace MonkeyB.Database
         {
             using (var db = new SqliteConnection($"Data Source=database.db"))
             {
-                List<string> AchievementNames = new List<string>() { "10 Doge", "10 bit", "10 Etherium","10k CLUB" };
+                List<string> AchievementNames = new List<string>() { "10 Doge", "10 bit", "10 ethereum", "10k CLUB" };
                 db.Open();
                 SqliteCommand selectCommand;
 
@@ -132,7 +132,7 @@ namespace MonkeyB.Database
                 {
                     string insertCommandAchievements1 = $"INSERT INTO Achievements (Name, Description, IsCompleted, userID) VALUES ('10 Doge', 'Buy 10 Dogecoin', false, {App.UserID})";
                     string insertCommandAchievements2 = $"INSERT INTO Achievements (Name, Description, IsCompleted, userID) VALUES ('10 bit', 'Buy 10 bitcoin', false, {App.UserID})";
-                    string insertCommandAchievements3 = $"INSERT INTO Achievements (Name, Description, IsCompleted, userID) VALUES ('10 Etherium', 'Buy 10 Etherium', false, {App.UserID})";
+                    string insertCommandAchievements3 = $"INSERT INTO Achievements (Name, Description, IsCompleted, userID) VALUES ('10 Etherium', 'Buy 10 ethereum', false, {App.UserID})";
                     string insertCommandAchievements4 = $"INSERT INTO Achievements (Name, Description, IsCompleted, userID) VALUES ('10k CLUB', 'have 10.000 in funds', false, {App.UserID})";
 
                     selectCommand = new SqliteCommand

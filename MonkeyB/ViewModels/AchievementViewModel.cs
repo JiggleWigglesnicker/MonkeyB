@@ -48,8 +48,8 @@ namespace MonkeyB.ViewModels
                     if (DataBaseAccess.GetCoinAmount("dogecoin", App.UserID) >= 10)
                         model.IsCompleted = true;
                     break;
-                case "10 Etherium":
-                    if (DataBaseAccess.GetCoinAmount("etherium", App.UserID) >= 10)
+                case "10 ethereum":
+                    if (DataBaseAccess.GetCoinAmount("ethereum", App.UserID) >= 10)
                         model.IsCompleted = true;
                     break;
                 case "10 bit":
