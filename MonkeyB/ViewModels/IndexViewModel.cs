@@ -5,6 +5,12 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Input;
 using LiveCharts;
+using MonkeyB.Models;
+using MonkeyB.Database;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
+using System.Threading;
 
 namespace MonkeyB.ViewModels
 {
@@ -14,6 +20,7 @@ namespace MonkeyB.ViewModels
         public ChartValues<double> CoinValue { get; set; }
         public ObservableCollection<string> CoinDate { get; set; }
         public ObservableCollection<string> CurrencyNames { get; set; }
+        public ObservableCollection<TransactionHistoryModel> CryptoWalletList { get; set; }
 
         private ApiHandler api = new ApiHandler();
         
@@ -23,7 +30,46 @@ namespace MonkeyB.ViewModels
         /// <param name="navigationStore"></param>
         public IndexViewModel(NavigationStore navigationStore)
         {
-            
+            List<TransactionHistoryModel> cryptoWallet = DataBaseAccess.FetchTransactionHistory(App.UserID);
+
+            CryptoWalletList = new ObservableCollection<TransactionHistoryModel>();
+            ApiHandler apiHandler = new ApiHandler();
+
+            CryptoCurrencyModel model;
+            MarketGraph marketModel;
+
+            Task.Run(() =>
+            {
+                foreach (var crypto in cryptoWallet)
+                {
+                    model = apiHandler.GetCoinValue(crypto.coinName).Result;
+                    marketModel = apiHandler.GetMarketData(crypto.coinName, "eur", 7).Result;
+                    switch (crypto.coinName)
+                    {
+                        case "bitcoin":
+                            crypto.coinValue = model.bitcoin.eur;
+                            crypto.oldCoinValue = (float)marketModel.prices[6][1];
+                            break;
+                        case "litecoin":
+                            crypto.coinValue = model.litecoin.eur;
+                            crypto.oldCoinValue = (float)marketModel.prices[6][1];
+                            break;
+                        case "dogecoin":
+                            crypto.coinValue = model.dogecoin.eur;
+                            crypto.oldCoinValue = (float)marketModel.prices[6][1];
+                            break;
+                    }
+
+
+                    crypto.calculatePercentage();
+
+                    Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new ThreadStart(delegate
+                    {
+                        CryptoWalletList.Add(crypto);
+                    }));
+                }
+            });
+
             CurrencyNames = new ObservableCollection<string>() { "bitcoin", "dogecoin", "litecoin" };
             GetMarketData(CurrencyNames[0]);
             DashBoardCommand = new RelayCommand(o =>

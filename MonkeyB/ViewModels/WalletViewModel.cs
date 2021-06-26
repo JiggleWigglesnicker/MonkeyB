@@ -19,7 +19,7 @@ namespace MonkeyB.ViewModels
     class WalletViewModel : BaseViewModel
     {
         public ICommand DashBoardCommand { get; set; }
-        public ObservableCollection<TransactionHistoryModel> CryptoWalletList { get; set; }
+        
 
 
         public SeriesCollection seriesCollection;
@@ -37,46 +37,6 @@ namespace MonkeyB.ViewModels
         public WalletViewModel(NavigationStore navigationStore)
         {
             LoadWalletIntoChart(App.UserID);
-            List<TransactionHistoryModel> cryptoWallet = DataBaseAccess.FetchTransactionHistory(App.UserID);
-
-            CryptoWalletList = new ObservableCollection<TransactionHistoryModel>();
-
-            ApiHandler apiHandler = new ApiHandler();
-
-            CryptoCurrencyModel model;
-            MarketGraph marketModel;
-
-            Task.Run(() =>
-            {
-                foreach (var crypto in cryptoWallet)
-                {
-                    model = apiHandler.GetCoinValue(crypto.coinName).Result;
-                    marketModel = apiHandler.GetMarketData(crypto.coinName, "eur", 7).Result;
-                    switch (crypto.coinName)
-                    {
-                        case "bitcoin":
-                            crypto.coinValue = model.bitcoin.eur;
-                            crypto.oldCoinValue = (float)marketModel.prices[6][1];
-                            break;
-                        case "litecoin":
-                            crypto.coinValue = model.litecoin.eur;
-                            crypto.oldCoinValue = (float)marketModel.prices[6][1];
-                            break;
-                        case "dogecoin":
-                            crypto.coinValue = model.dogecoin.eur;
-                            crypto.oldCoinValue = (float)marketModel.prices[6][1];
-                            break;
-                    }
-
-
-                    crypto.calculatePercentage();
-                   
-                    Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new ThreadStart(delegate
-                    {
-                        CryptoWalletList.Add(crypto);
-                    }));
-                }
-            });
 
             DashBoardCommand = new RelayCommand(o =>
             {
