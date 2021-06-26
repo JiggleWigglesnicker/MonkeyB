@@ -135,10 +135,10 @@ namespace MonkeyB.ViewModels
 
         private void RefreshCoinRates()
         {
-            EurRate             = GetCoinAmount("eur");
-            BitcoinRate         = GetCoinAmount("bitcoin");
-            DogeCoinRate        = GetCoinAmount("dogecoin");
-            LiteCoinRate        = GetCoinAmount("litecoin");
+            EurRate = GetCoinAmount("eur");
+            BitcoinRate = GetCoinAmount("bitcoin");
+            DogeCoinRate = GetCoinAmount("dogecoin");
+            LiteCoinRate = GetCoinAmount("litecoin");
         }
 
         private async void RefreshCryptoToEuro()
@@ -166,19 +166,24 @@ namespace MonkeyB.ViewModels
 
         public bool BuyCrypto(string currency, float amount)
         {
-            
-            if (CheckIfBuyTransactionIsValid(currency, amount) == true)
+            if (currency != null && currency != "")
             {
-                DataBaseAccess.SellEuro(amount * GetCoinRateInEuro(currency));
-                DataBaseAccess.BuyCoin(currency, amount, App.UserID);
+                if (CheckIfBuyTransactionIsValid(currency, amount) == true)
+                {
+                    DataBaseAccess.SellEuro(amount * GetCoinRateInEuro(currency));
+                    DataBaseAccess.BuyCoin(currency, amount, App.UserID);
 
-                WarningLabel = "Bought " + amount + " " + currency;
-                return true;
-            } else
-            {
-                WarningLabel = "Not enought euro in wallet.";
-                return false;
+                    WarningLabel = "Bought " + amount + " " + currency;
+                    return true;
+                }
+                else
+                {
+                    WarningLabel = "Not enought euro in wallet.";
+                    return false;
+                }
+                
             }
+            return false;
         }
 
         public bool SellCrypto(string currency, float amount)
@@ -193,7 +198,7 @@ namespace MonkeyB.ViewModels
             }
             else
             {
-                WarningLabel = "Not enough " +  currency + " in wallet.";
+                WarningLabel = "Not enough " + currency + " in wallet.";
                 return false;
             }
         }
@@ -201,7 +206,7 @@ namespace MonkeyB.ViewModels
         private bool CheckIfBuyTransactionIsValid(string ToCurrency, float amount)
         {
             float euroAmount = DataBaseAccess.GetEuroAmount();
-            
+
 
             float rate = GetCoinRateInEuro(ToCurrency);
 
@@ -210,7 +215,8 @@ namespace MonkeyB.ViewModels
             if (euroAmount >= cost)
             {
                 return true;
-            } else
+            }
+            else
             {
                 return false;
             }
