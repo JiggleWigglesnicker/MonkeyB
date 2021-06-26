@@ -61,7 +61,8 @@ namespace MonkeyB.Database
                     "currency_amount FLOAT NOT NULL, " +
                     "currency_value FLOAT NOT NULL, " +
                     "userID INTEGER NOT NULL," +
-                    "FOREIGN KEY (userID) REFERENCES Users(userID))";
+                    "FOREIGN KEY (userID) REFERENCES Users(userID)," +
+                    "PRIMARY KEY(ID AUTOINCREMENT))";
 
                     string AchievementTable =
                    "CREATE TABLE IF NOT EXISTS Achievements " +
@@ -189,56 +190,53 @@ namespace MonkeyB.Database
             }
         }
 
-        public static void BuyCoin(string currency, float amount, int userID)
+        public static async void BuyCoin(string currency, float amount, int userID)
         {
             CryptoCurrencyModel model;
             ApiHandler apiHandler = new ApiHandler();
+            
+            model = await apiHandler.GetCoinValue(currency);
 
 
-            model = apiHandler.GetCoinValue(currency).Result;
+            await using var db = new SqliteConnection($"Data Source=database.db");
+            db.Open();
 
+            SqliteCommand updateCommand;
+            updateCommand = new SqliteCommand($"UPDATE CryptoWallet SET coin_amount = coin_amount + '{amount}'   WHERE userID = '{userID}' AND coin = '{currency}'", db);
+            updateCommand.ExecuteNonQuery();
 
-            using (var db = new SqliteConnection($"Data Source=database.db"))
+            await Task.Run( async () =>
             {
-                db.Open();
-
-                SqliteCommand updateCommand;
-                updateCommand = new SqliteCommand($"UPDATE CryptoWallet SET coin_amount = coin_amount + '{amount}'   WHERE userID = '{userID}' AND coin = '{currency}'", db);
-                updateCommand.ExecuteNonQuery();
-
-                Task.Run( async () =>
+                model = await apiHandler.GetCoinValue(currency);
+                SqliteCommand insertCommand;
+                float currentprice = 0.0F;
+                switch (currency)
                 {
-                    model = apiHandler.GetCoinValue(currency).Result;
-                    SqliteCommand insertCommand;
-                    float currentprice = 0.0F;
-                    switch (currency)
-                    {
-                        case "bitcoin":
-                            currentprice = model.bitcoin.eur;
-                            break;
-                        case "litecoin":
-                            currentprice = model.litecoin.eur;
-                            break;
-                        case "dogecoin":
-                            currentprice = model.dogecoin.eur;
-                            break;
-                    }
+                    case "bitcoin":
+                        currentprice = model.bitcoin.eur;
+                        break;
+                    case "litecoin":
+                        currentprice = model.litecoin.eur;
+                        break;
+                    case "dogecoin":
+                        currentprice = model.dogecoin.eur;
+                        break;
+                }
 
-                    if (FetchTransactionHistory(userID).Exists(trans => trans.coinName == currency))
-                    {
-                        updateCommand = new SqliteCommand($"UPDATE TransactionHistory SET currency_amount = {GetCoinAmount(currency, userID)}, currency_value = {currentprice} WHERE userID = '{userID}' AND currency_name = '{currency}' ", db);
-                        updateCommand.ExecuteNonQuery();
+                if (FetchTransactionHistory(userID).Exists(trans => trans.coinName == currency))
+                {
+                    updateCommand = new SqliteCommand($"UPDATE TransactionHistory SET currency_amount = {GetCoinAmount(currency, userID)}, currency_value = {currentprice} WHERE userID = '{userID}' AND currency_name = '{currency}' ", db);
+                    updateCommand.ExecuteNonQuery();
 
-                    }
-                    else
-                    {
-                        insertCommand = new SqliteCommand($"INSERT OR IGNORE INTO TransactionHistory(currency_name, currency_amount,currency_value, userID) VALUES ('{currency}', {amount},{currentprice} ,{userID})", db);
-                        insertCommand.ExecuteNonQuery();
-                    }
+                }
+                else
+                {
+                    insertCommand = new SqliteCommand($"INSERT INTO TransactionHistory(currency_name, currency_amount,currency_value, userID) VALUES ('{currency}', {amount},{currentprice} ,{userID})", db);
+                    insertCommand.ExecuteNonQuery();
+                }
                    
 
-                });
-            }
+            });
         }
 
         public static void BuyEuro(float amount)

@@ -53,11 +53,11 @@ namespace MonkeyB.ViewModels
 
             CryptoCurrencyModel model;
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 foreach (var transaction in transactionHistoryList)
                 {
-                    model = apiHandler.GetCoinValue(transaction.coinName).Result;
+                    model = await apiHandler.GetCoinValue(transaction.coinName);
                     switch (transaction.coinName)
                     {
                         case "bitcoin":

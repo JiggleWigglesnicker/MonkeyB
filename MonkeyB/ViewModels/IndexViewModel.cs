@@ -80,12 +80,12 @@ namespace MonkeyB.ViewModels
             CryptoCurrencyModel model;
             MarketGraph marketModel;
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 foreach (var crypto in cryptoWallet)
                 {
-                    model = apiHandler.GetCoinValue(crypto.coinName).Result;
-                    marketModel = apiHandler.GetMarketData(crypto.coinName, "eur", 7).Result;
+                    model = await apiHandler.GetCoinValue(crypto.coinName);
+                    marketModel = await apiHandler.GetMarketData(crypto.coinName, "eur", 7);
                     switch (crypto.coinName)
                     {
                         case "bitcoin":
