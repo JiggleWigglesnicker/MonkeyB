@@ -27,9 +27,51 @@ namespace MonkeyB.ViewModels
         /// <summary>
         /// Constructor for the IndexViewModel
         /// </summary>
-        /// <param name="navigationStore"></param>
+        /// <param name="navigationStore">Object which stores the currently selected view</param>
         public IndexViewModel(NavigationStore navigationStore)
         {
+            DisplayGrowthDeclinePercentage();
+            CurrencyNames = new ObservableCollection<string>() { "bitcoin", "dogecoin", "litecoin" };
+            GetMarketData(CurrencyNames[0]);
+            DashBoardCommand = new RelayCommand(o =>
+            {
+                navigationStore.SelectedViewModel = new DashBoardViewModel(navigationStore);
+            });
+        }
+        
+        /// <summary>
+        /// Gets current data from the api and splices them into 2 seperate lists, dates get converted from unxitime to
+        /// DateTime. The lists are then put in their respective collections.
+        /// </summary>
+        /// <param name="id"></param>
+        private async void GetMarketData(string id)
+        {
+            MarketGraph marketGraph = await api.GetMarketData(id, "eur", 91);
+            List<string> dates = new();
+            List<double> prices = new();
+            foreach (var price in marketGraph.prices)
+            {
+                prices.Add(price[1]);
+                dates.Add(ToDateTime((long)price[0]).ToString(CultureInfo.CurrentCulture));
+            }
+            CoinValue = new ChartValues<double>(prices);
+            CoinDate = new ObservableCollection<string>(dates);
+            OnPropertyChanged(nameof(CoinValue));
+        }
+
+        /// <summary>
+        /// Takes a unixtime value and returns a DateTime
+        /// </summary>
+        /// <param name="unixTime"></param>
+        /// <returns>A new DateTime object</returns>
+        private static DateTime ToDateTime(long unixTime) {  
+            return new DateTime(1970, 1, 1).Add(TimeSpan.FromMilliseconds(unixTime));  
+        }
+
+        /// <summary>
+        /// Displays and calculates growth and decline rate of stock
+        /// </summary>
+        public void DisplayGrowthDeclinePercentage() {
             List<TransactionHistoryModel> cryptoWallet = DataBaseAccess.FetchTransactionHistory(App.UserID);
 
             CryptoWalletList = new ObservableCollection<TransactionHistoryModel>();
@@ -69,42 +111,6 @@ namespace MonkeyB.ViewModels
                     }));
                 }
             });
-
-            CurrencyNames = new ObservableCollection<string>() { "bitcoin", "dogecoin", "litecoin" };
-            GetMarketData(CurrencyNames[0]);
-            DashBoardCommand = new RelayCommand(o =>
-            {
-                navigationStore.SelectedViewModel = new DashBoardViewModel(navigationStore);
-            });
-        }
-        
-        /// <summary>
-        /// Gets current data from the api and splices them into 2 seperate lists, dates get converted from unxitime to
-        /// DateTime. The lists are then put in their respective collections.
-        /// </summary>
-        /// <param name="id"></param>
-        private async void GetMarketData(string id)
-        {
-            MarketGraph marketGraph = await api.GetMarketData(id, "eur", 91);
-            List<string> dates = new();
-            List<double> prices = new();
-            foreach (var price in marketGraph.prices)
-            {
-                prices.Add(price[1]);
-                dates.Add(ToDateTime((long)price[0]).ToString(CultureInfo.CurrentCulture));
-            }
-            CoinValue = new ChartValues<double>(prices);
-            CoinDate = new ObservableCollection<string>(dates);
-            OnPropertyChanged(nameof(CoinValue));
-        }
-
-        /// <summary>
-        /// Takes a unixtime value and returns a DateTime
-        /// </summary>
-        /// <param name="unixTime"></param>
-        /// <returns></returns>
-        private static DateTime ToDateTime(long unixTime) {  
-            return new DateTime(1970, 1, 1).Add(TimeSpan.FromMilliseconds(unixTime));  
         }
         
         /// <summary>
