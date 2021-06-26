@@ -76,23 +76,28 @@ namespace MonkeyB.ViewModels
 
             await Task.Run(async () =>
             {
-
-                string url = "https://www.nu.nl/rss/Economie";
-                XmlReader reader = XmlReader.Create(url);
-                SyndicationFeed feed = SyndicationFeed.Load(reader);
-                reader.Close();
-                foreach (SyndicationItem item in feed.Items)
+                try
                 {
-                    String subject = item.Title.Text;
-                    String summary = item.Summary.Text;
-                    int index = summary.IndexOf("<");
-                    if (index >= 0)
-                        summary = summary.Substring(0, index);
-                    Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new ThreadStart(delegate
+                    string url = "https://www.nu.nl/rss/Economie";
+                    XmlReader reader = XmlReader.Create(url);
+                    SyndicationFeed feed = SyndicationFeed.Load(reader);
+                    reader.Close();
+                    foreach (SyndicationItem item in feed.Items)
                     {
-                        RSSList.Add(new RSSModel(subject, summary));
-                    }));
+                        String subject = item.Title.Text;
+                        String summary = item.Summary.Text;
+                        int index = summary.IndexOf("<");
+                        if (index >= 0)
+                            summary = summary.Substring(0, index);
+                        Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new ThreadStart(delegate
+                        {
+                            RSSList.Add(new RSSModel(subject, summary));
+                        }));
 
+                    }
+                }
+                catch (Exception e) {
+                    _ = e.StackTrace;
                 }
 
             });

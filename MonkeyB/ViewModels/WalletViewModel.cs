@@ -19,7 +19,7 @@ namespace MonkeyB.ViewModels
     class WalletViewModel : BaseViewModel
     {
         public ICommand DashBoardCommand { get; set; }
-        
+        public ObservableCollection<TransactionHistoryModel> CryptoWalletList { get; set; }
 
 
         public SeriesCollection seriesCollection;
@@ -37,10 +37,48 @@ namespace MonkeyB.ViewModels
         public WalletViewModel(NavigationStore navigationStore)
         {
             LoadWalletIntoChart(App.UserID);
-
+            DisplayProfitLose();
             DashBoardCommand = new RelayCommand(o =>
             {
                 navigationStore.SelectedViewModel = new DashBoardViewModel(navigationStore);
+            });
+        }
+
+        public void DisplayProfitLose()
+        {
+            List<TransactionHistoryModel> transactionHistoryList = DataBaseAccess.FetchTransactionHistory(App.UserID);
+
+            CryptoWalletList = new ObservableCollection<TransactionHistoryModel>();
+            ApiHandler apiHandler = new ApiHandler();
+
+            CryptoCurrencyModel model;
+
+            Task.Run(() =>
+            {
+                foreach (var transaction in transactionHistoryList)
+                {
+                    model = apiHandler.GetCoinValue(transaction.coinName).Result;
+                    switch (transaction.coinName)
+                    {
+                        case "bitcoin":
+                            transaction.coinValue = model.bitcoin.eur;
+                            break;
+                        case "litecoin":
+                            transaction.coinValue = model.litecoin.eur;
+                            break;
+                        case "dogecoin":
+                            transaction.coinValue = model.dogecoin.eur;
+                            break;
+                    }
+
+
+                    transaction.calculateProfitOrLoss();
+
+                    Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new ThreadStart(delegate
+                    {
+                        CryptoWalletList.Add(transaction);
+                    }));
+                }
             });
         }
 

@@ -92,7 +92,7 @@ namespace MonkeyB.Database
 
 
                     createAdmin.ExecuteReader();
-                        
+
 
                 }
             });
@@ -191,6 +191,13 @@ namespace MonkeyB.Database
 
         public static void BuyCoin(string currency, float amount, int userID)
         {
+            CryptoCurrencyModel model;
+            ApiHandler apiHandler = new ApiHandler();
+
+
+            model = apiHandler.GetCoinValue(currency).Result;
+
+
             using (var db = new SqliteConnection($"Data Source=database.db"))
             {
                 db.Open();
@@ -198,6 +205,39 @@ namespace MonkeyB.Database
                 SqliteCommand updateCommand;
                 updateCommand = new SqliteCommand($"UPDATE CryptoWallet SET coin_amount = coin_amount + '{amount}'   WHERE userID = '{userID}' AND coin = '{currency}'", db);
                 updateCommand.ExecuteNonQuery();
+
+                Task.Run( async () =>
+                {
+                    model = apiHandler.GetCoinValue(currency).Result;
+                    SqliteCommand insertCommand;
+                    float currentprice = 0.0F;
+                    switch (currency)
+                    {
+                        case "bitcoin":
+                            currentprice = model.bitcoin.eur;
+                            break;
+                        case "litecoin":
+                            currentprice = model.litecoin.eur;
+                            break;
+                        case "dogecoin":
+                            currentprice = model.dogecoin.eur;
+                            break;
+                    }
+
+                    if (FetchTransactionHistory(userID).Exists(trans => trans.coinName == currency))
+                    {
+                        updateCommand = new SqliteCommand($"UPDATE TransactionHistory SET currency_amount = {GetCoinAmount(currency, userID)}, currency_value = {currentprice} WHERE userID = '{userID}' AND currency_name = '{currency}' ", db);
+                        updateCommand.ExecuteNonQuery();
+
+                    }
+                    else
+                    {
+                        insertCommand = new SqliteCommand($"INSERT OR IGNORE INTO TransactionHistory(currency_name, currency_amount,currency_value, userID) VALUES ('{currency}', {amount},{currentprice} ,{userID})", db);
+                        insertCommand.ExecuteNonQuery();
+                    }
+                   
+
+                });
             }
         }
 
@@ -344,11 +384,32 @@ namespace MonkeyB.Database
                 SqliteCommand selectCommand;
 
                 selectCommand = new SqliteCommand
+                    ($"SELECT currency_name, currency_amount,currency_value FROM TransactionHistory WHERE userID = {id}", db);
+                SqliteDataReader query = selectCommand.ExecuteReader();
+                while (query.Read())
+                {
+                    coinList.Add(new TransactionHistoryModel(query.GetString(0), query.GetFloat(1), query.GetFloat(2)));
+                }
+            }
+
+            return coinList;
+        }
+
+        public static List<TransactionHistoryModel> FetchcoinAndAmount(int id)
+        {
+            List<TransactionHistoryModel> coinList = new List<TransactionHistoryModel>();
+            using (var db = new SqliteConnection($"Data Source=database.db"))
+            {
+                db.Open();
+
+                SqliteCommand selectCommand;
+
+                selectCommand = new SqliteCommand
                     ($"SELECT Cryptowallet.coin , Cryptowallet.coin_amount FROM Cryptowallet WHERE userID = {id}", db);
                 SqliteDataReader query = selectCommand.ExecuteReader();
-                
+
                 // elke coin in wallet de waarde van ophalen
-                
+
                 while (query.Read())
                 {
                     coinList.Add(new TransactionHistoryModel(query.GetString(0), query.GetFloat(1)));
@@ -419,7 +480,7 @@ namespace MonkeyB.Database
                 SqliteDataReader query = selectCommand.ExecuteReader();
                 while (query.Read())
                 {
-                    achievementList.Add(new AchievementModel(query.GetString(0),query.GetString(1),query.GetBoolean(2)));
+                    achievementList.Add(new AchievementModel(query.GetString(0), query.GetString(1), query.GetBoolean(2)));
                 }
 
             }

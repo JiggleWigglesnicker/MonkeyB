@@ -13,13 +13,35 @@ namespace MonkeyB.Models
         public float coinValue { get; set; }
         public float coinPercentage { get; set; }
         public float oldCoinValue { get; set; }
+        public float profitLossValue { get; set; }
         public string percentageColor { get; set; }
+
+
+        public TransactionHistoryModel(string coinName, float coinAmount, float oldCoinValue)
+        {
+            this.coinName = coinName;
+            this.coinAmount = coinAmount;
+            this.oldCoinValue = oldCoinValue;
+        }
 
         public TransactionHistoryModel(string coinName, float coinAmount)
         {
             this.coinName = coinName;
             this.coinAmount = coinAmount;
-            //this.coinValue = coinValue;
+        }
+
+        public void calculateProfitOrLoss()
+        {
+            profitLossValue = (float)Math.Ceiling((oldCoinValue - coinValue) * coinAmount);
+            if (profitLossValue < 0 || profitLossValue < 0.0)
+            {
+                percentageColor = "Red";
+            }
+            else
+            {
+                percentageColor = "Green";
+            }
+
         }
 
         public void calculatePercentage()
@@ -33,7 +55,7 @@ namespace MonkeyB.Models
             {
                 percentageColor = "Green";
             }
-            //coinPercentage = 50;
+            
         }
     }
 }
