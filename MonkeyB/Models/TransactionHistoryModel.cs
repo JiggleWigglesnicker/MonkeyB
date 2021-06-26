@@ -32,8 +32,8 @@ namespace MonkeyB.Models
 
         public void calculateProfitOrLoss()
         {
-            profitLossValue = (float)Math.Ceiling((oldCoinValue - coinValue) * coinAmount);
-            if (profitLossValue < 0 || profitLossValue < 0.0)
+            profitLossValue = (oldCoinValue - coinValue) * coinAmount;
+            if (profitLossValue < 0 || profitLossValue < 0.0 || profitLossValue == 0)
             {
                 percentageColor = "Red";
             }
@@ -46,8 +46,8 @@ namespace MonkeyB.Models
 
         public void calculatePercentage()
         {
-            coinPercentage = (float)Math.Ceiling(100 * ((coinValue - oldCoinValue) / oldCoinValue));
-            if (coinPercentage < 0 || coinPercentage < 0.0)
+            coinPercentage = 100 * (coinValue - oldCoinValue) / oldCoinValue;
+            if (coinPercentage < 0 || coinPercentage < 0.0 || coinPercentage == 0)
             {
                 percentageColor = "Red";
             }

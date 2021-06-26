@@ -20,9 +20,8 @@
                 <DataTemplate>
                     <WrapPanel Margin="0,0,200,0">
                         <TextBlock Text="{Binding coinName}" FontWeight="Bold"/>
-                        <TextBlock Text=": €" />
+                        <TextBlock Text=": € " />
                         <TextBlock Text="{Binding profitLossValue}" FontWeight="Bold"  Foreground="{Binding percentageColor}"/>
-                        <TextBlock Text="%" />
                     </WrapPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
