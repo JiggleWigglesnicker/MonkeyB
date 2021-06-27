@@ -1,17 +1,17 @@
 ﻿<UserControl x:Class="MonkeyB.Views.DashboardView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:MonkeyB.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" >
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0">
@@ -20,47 +20,52 @@
                 <TextBlock Text="Monkey Business" TextWrapping="WrapWithOverflow" FontSize="35" />
             </Label>
 
-            <Button Content="Indexes" Command="{Binding IndexCommand}" HorizontalAlignment="Center" Margin="0,20,0,10" Height="30" Width="200"/>
-            <Button Content="Buy/Sell" Command="{Binding BuySellCommand}" HorizontalAlignment="Center" Margin="0,10,0,10" Height="30" Width="200"/>
-            <Button Content="Wallet" Command="{Binding WalletCommand}" HorizontalAlignment="Center" Margin="0,10,0,10" Height="30" Width="200"/>
-            <Button Content="Orders" Command="{Binding OrderCommand}" HorizontalAlignment="Center" Margin="0,10,0,10" Height="30" Width="200"/>
-            <Button Content="Achievements" Command="{Binding AchievementCommand}" HorizontalAlignment="Center" Margin="0,10,0,10" Height="30" Width="200"/>
-            <Button Content="Settings" Command="{Binding SettingCommand}" HorizontalAlignment="Center" Margin="0,10,0,10" Height="30" Width="200"/>
+            <Button Content="Indexes" Command="{Binding IndexCommand}" HorizontalAlignment="Center" Margin="0,20,0,10"
+                    Height="30" Width="200" />
+            <Button Content="Buy/Sell" Command="{Binding BuySellCommand}" HorizontalAlignment="Center"
+                    Margin="0,10,0,10" Height="30" Width="200" />
+            <Button Content="Wallet" Command="{Binding WalletCommand}" HorizontalAlignment="Center" Margin="0,10,0,10"
+                    Height="30" Width="200" />
+            <Button Content="Orders" Command="{Binding OrderCommand}" HorizontalAlignment="Center" Margin="0,10,0,10"
+                    Height="30" Width="200" />
+            <Button Content="Achievements" Command="{Binding AchievementCommand}" HorizontalAlignment="Center"
+                    Margin="0,10,0,10" Height="30" Width="200" />
+            <Button Content="Settings" Command="{Binding SettingCommand}" HorizontalAlignment="Center"
+                    Margin="0,10,0,10" Height="30" Width="200" />
 
         </StackPanel>
 
-        <Grid  Grid.Column="1">
+        <Grid Grid.Column="1">
 
 
             <Grid.RowDefinitions>
-                <RowDefinition  />
+                <RowDefinition />
             </Grid.RowDefinitions>
 
             <ScrollViewer
-            Grid.Column="0" VerticalScrollBarVisibility="Hidden">
+                Grid.Column="0" VerticalScrollBarVisibility="Hidden">
 
-                <StackPanel Grid.Column="1"  >
+                <StackPanel Grid.Column="1">
 
-                    <Label Content="Latest news -" 
-                       HorizontalAlignment="Right" 
-                       FontSize="25"
-                       />
+                    <Label Content="Latest news -"
+                           HorizontalAlignment="Right"
+                           FontSize="25" />
 
                     <ItemsControl ItemsSource="{Binding RSSList}" HorizontalAlignment="Left">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="0,0,0,5">
 
-                                    <TextBlock Text="{Binding Title}" 
-                                               FontSize="20" 
+                                    <TextBlock Text="{Binding Title}"
+                                               FontSize="20"
                                                TextWrapping="WrapWithOverflow"
-                                               TextDecorations="Underline" 
-                                               Margin="30,0,0,0"/>
+                                               TextDecorations="Underline"
+                                               Margin="30,0,0,0" />
 
-                                    <TextBlock Text="{Binding Description}" 
+                                    <TextBlock Text="{Binding Description}"
                                                FontSize="16"
                                                TextWrapping="WrapWithOverflow"
-                                               Margin="30,0,0,0"/>
+                                               Margin="30,0,0,0" />
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

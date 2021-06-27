@@ -1,35 +1,16 @@
-﻿using MonkeyB.Commands;
+﻿using System.Windows.Input;
+using MonkeyB.Commands;
 using MonkeyB.Database;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace MonkeyB.ViewModels
 {
-    
     class SettingViewModel : BaseViewModel
     {
-        public ICommand DashBoardCommand { get; set; }
-        public ICommand ApplyCommand { get; set; }
-        public ICommand ThemeCommand { get; set; }
-
         public float settingText;
-        public float SettingText
-        {
-            get => settingText;
-            set
-            {
-                settingText = value;
-                OnPropertyChanged("SettingText");
-            }
-        }
 
         /// <summary>
-        /// Sets the dashboard and applybutton actions.
-        /// And allows users to set the money amount with which to start using the application.
+        ///     Sets the dashboard and applybutton actions.
+        ///     And allows users to set the money amount with which to start using the application.
         /// </summary>
         /// <param name="navigationStore">Stores the currently selected viewmodel which is used to display a view</param>
         public SettingViewModel(NavigationStore navigationStore)
@@ -43,25 +24,35 @@ namespace MonkeyB.ViewModels
 
             ApplyCommand = new RelayCommand(o =>
             {
-
                 if (SettingText >= 0)
                 {
                     DataBaseAccess.UpdateEuroAmount(SettingText);
                 }
-
             });
         }
 
+        public ICommand DashBoardCommand { get; set; }
+        public ICommand ApplyCommand { get; set; }
+        public ICommand ThemeCommand { get; set; }
+
+        public float SettingText
+        {
+            get => settingText;
+            set
+            {
+                settingText = value;
+                OnPropertyChanged("SettingText");
+            }
+        }
+
         /// <summary>
-        /// updates the selected theme when the users selects a theme in the view
+        ///     updates the selected theme when the users selects a theme in the view
         /// </summary>
         /// <param name="parameter"></param>
         public void UpdateAppTheme(object parameter)
         {
-            Properties.Settings.Default.ThemeSetting = (string)parameter;
+            Properties.Settings.Default.ThemeSetting = (string) parameter;
             Properties.Settings.Default.Save();
         }
-
-
     }
 }

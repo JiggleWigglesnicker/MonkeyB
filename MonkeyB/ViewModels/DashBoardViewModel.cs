@@ -1,37 +1,22 @@
-﻿using MonkeyB.Commands;
-using MonkeyB.Database;
-using MonkeyB.Models;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net.Http;
 using System.ServiceModel.Syndication;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using System.Xml;
+using MonkeyB.Commands;
+using MonkeyB.Database;
+using MonkeyB.Models;
 
 namespace MonkeyB.ViewModels
 {
     class DashBoardViewModel : BaseViewModel
     {
-        public ICommand IndexCommand { get; set; }
-        public ICommand BuySellCommand { get; set; }
-        public ICommand WalletCommand { get; set; }
-        public ICommand AchievementCommand { get; set; }
-        public ICommand SettingCommand { get; set; }
-        public ICommand OrderCommand { get; set; }
-
-        public ObservableCollection<RSSModel> RSSList { get; set; }
-
-
         /// <summary>
-        /// Sets all of the actions of the buttons in the view and displays a RSS feed.
+        ///     Sets all of the actions of the buttons in the view and displays a RSS feed.
         /// </summary>
         /// <param name="navigationStore"></param>
         public DashBoardViewModel(NavigationStore navigationStore)
@@ -70,16 +55,22 @@ namespace MonkeyB.ViewModels
 
             RSSList = new ObservableCollection<RSSModel>();
             ReadRSSNodes();
-
-
         }
 
+        public ICommand IndexCommand { get; set; }
+        public ICommand BuySellCommand { get; set; }
+        public ICommand WalletCommand { get; set; }
+        public ICommand AchievementCommand { get; set; }
+        public ICommand SettingCommand { get; set; }
+        public ICommand OrderCommand { get; set; }
+
+        public ObservableCollection<RSSModel> RSSList { get; set; }
+
         /// <summary>
-        /// Reads the XML nodes in the RSS feed and displays it in the view.
+        ///     Reads the XML nodes in the RSS feed and displays it in the view.
         /// </summary>
         public async void ReadRSSNodes()
         {
-
             await Task.Run(() =>
             {
                 try
@@ -95,24 +86,15 @@ namespace MonkeyB.ViewModels
                         int index = summary.IndexOf("<");
                         if (index >= 0)
                             summary = summary.Substring(0, index);
-                        Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new ThreadStart(delegate
-                        {
-                            RSSList.Add(new RSSModel(subject, summary));
-                        }));
-
+                        Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
+                            new ThreadStart(delegate { RSSList.Add(new RSSModel(subject, summary)); }));
                     }
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     _ = e.StackTrace;
                 }
-
             });
-
-
         }
-
-
-
-
     }
 }
