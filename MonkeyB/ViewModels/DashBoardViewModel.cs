@@ -74,7 +74,7 @@ namespace MonkeyB.ViewModels
         public async void ReadRSSNodes()
         {
 
-            await Task.Run(async () =>
+            await Task.Run(() =>
             {
                 try
                 {
