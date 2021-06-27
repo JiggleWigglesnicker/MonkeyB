@@ -330,7 +330,7 @@ namespace MonkeyB.Database
                     new SqliteCommand(
                         $"SELECT coin_amount from Cryptowallet WHERE userID = '{userID}' AND coin = '{currency}'", db);
                 SqliteDataReader query = selectCommand.ExecuteReader();
-                //addCurrency("bitcoin", App.UserID);
+                
                 float amount = 0;
 
                 while (query.Read())
