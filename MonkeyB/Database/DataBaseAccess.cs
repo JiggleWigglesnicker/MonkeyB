@@ -548,6 +548,27 @@ namespace MonkeyB.Database
         }
 
         /// <summary>
+        /// Completes achievment when user fullfills requirement of achievement
+        /// </summary>
+        /// <param name="id">id of user</param>
+        /// <param name="achievementName"> name of the achievement to be completed</param>
+        public static void CompleteAchievement(int id, string achievementName)
+        {
+            using (var db = new SqliteConnection($"Data Source=database.db"))
+            {
+                db.Open();
+
+                SqliteCommand updateCommand;
+                updateCommand = new SqliteCommand
+                    ($"UPDATE Achievements SET IsCompleted = true WHERE userID = '{id}' AND Name = '{achievementName}'", db);
+
+                SqliteDataReader updateQuery = updateCommand.ExecuteReader();
+
+            }
+
+        }
+
+        /// <summary>
         /// Buy an order
         /// </summary>
         /// <param name="userID"></param>
