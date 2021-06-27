@@ -17,12 +17,22 @@ namespace MonkeyB.ViewModels
     class IndexViewModel : BaseViewModel
     {
         public ICommand DashBoardCommand { get; set; }
+        
+        /// <summary>
+        /// Collection of all values of the coins
+        /// </summary>
         public ChartValues<double> CoinValue { get; set; }
+        /// <summary>
+        /// Collection of all coin dates
+        /// </summary>
         public ObservableCollection<string> CoinDate { get; set; }
+        /// <summary>
+        /// Collection of currency names
+        /// </summary>
         public ObservableCollection<string> CurrencyNames { get; set; }
         public ObservableCollection<TransactionHistoryModel> CryptoWalletList { get; set; }
 
-        private ApiHandler api = new ApiHandler();
+        private ApiHandler api = new();
         
         /// <summary>
         /// Constructor for the IndexViewModel
@@ -43,7 +53,7 @@ namespace MonkeyB.ViewModels
         /// Gets current data from the api and splices them into 2 seperate lists, dates get converted from unxitime to
         /// DateTime. The lists are then put in their respective collections.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">the id of the requested coin, eg: "bitcoin" "litecoin"</param>
         private async void GetMarketData(string id)
         {
             MarketGraph marketGraph = await api.GetMarketData(id, "eur", 91);
@@ -62,7 +72,7 @@ namespace MonkeyB.ViewModels
         /// <summary>
         /// Takes a unixtime value and returns a DateTime
         /// </summary>
-        /// <param name="unixTime"></param>
+        /// <param name="unixTime">unixtime in miliseconds</param>
         /// <returns>A new DateTime object</returns>
         private static DateTime ToDateTime(long unixTime) {  
             return new DateTime(1970, 1, 1).Add(TimeSpan.FromMilliseconds(unixTime));  

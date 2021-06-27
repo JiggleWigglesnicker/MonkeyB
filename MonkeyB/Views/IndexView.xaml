@@ -16,6 +16,8 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="100" />
         </Grid.RowDefinitions>
+        
+        <!-- Displays currencies -->
         <ListBox Grid.Row="0" Grid.Column="0"  x:Name="listBox"
                  SelectedItem="{Binding SelectedCurrencyName}"
                  ItemsSource="{Binding CurrencyNames}"
@@ -25,6 +27,8 @@
                  FontSize="15" 
                  IsTextSearchEnabled="True"
         />
+        
+        <!-- Back button -->
         <StackPanel Grid.Row="1" Grid.Column="0">
             <Button
                 Content="Back"
@@ -35,6 +39,8 @@
                 Height="30"
                 Width="200"/>
         </StackPanel>
+        
+        <!-- Displays chart -->
         <wpf:CartesianChart Grid.Row="0" Grid.Column="1">
             <wpf:CartesianChart.Series>
                 <wpf:LineSeries Title="Index" Values="{Binding CoinValue}"/>
@@ -46,7 +52,8 @@
                 <wpf:Axis Title="Value"/>
             </wpf:CartesianChart.AxisY>
         </wpf:CartesianChart>
-
+        
+        <!-- Stock decline growth -->
         <StackPanel Grid.Row="1" Grid.Column="1">
             <TextBlock Text="Stock growth/decline percentage (7 day period): " HorizontalAlignment="Center" Margin="0,0,200,0" FontWeight="Heavy"/>
             <ItemsControl ItemsSource="{Binding CryptoWalletList}" HorizontalAlignment="Center">

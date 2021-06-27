@@ -33,6 +33,10 @@ namespace MonkeyB.ViewModels
             }
         }
 
+        /// <summary>
+        /// Constructor for the RegisterViewModel
+        /// </summary>
+        /// <param name="navigationStore">Stores the currently selected viewmodel which is used to display a view</param>
         public RegisterViewModel(NavigationStore navigationStore)
         {
             ToLoginCommand = new RelayCommand(o =>
@@ -41,12 +45,14 @@ namespace MonkeyB.ViewModels
             });
             RegisterCommand = new RelayCommand(o =>
             {
+                //register user, if complete give message
                 if (DataBaseAccess.RegisterUser(username, password))
                 {
                     MessageBox.Show("User created!", "Success!", MessageBoxButton.OK, MessageBoxImage.Information);
                     navigationStore.SelectedViewModel = new LoginViewModel(navigationStore);
                     return;
                 }
+                //Give error when invalid input
                 MessageBox.Show("Invalid input, try again!", "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
             });
 
