@@ -104,7 +104,7 @@ namespace MonkeyB.ViewModels
         /// </summary>
         public void DisplayGrowthDeclinePercentage()
         {
-            var cryptoWallet = DataBaseAccess.FetchcoinAndAmount(App.UserID);
+            var cryptoWallet = DataBaseAccess.FetchCoinAndAmount(App.UserID);
 
             CryptoWalletList = new ObservableCollection<TransactionHistoryModel>();
             var apiHandler = new ApiHandler();
