@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace MonkeyB.ViewModels
 {
     /// <summary>
-    /// The baseviewmodel class which all viewmodels implement.
+    ///     The baseviewmodel class which all viewmodels implement.
     /// </summary>
     public class BaseViewModel : INotifyPropertyChanged
     {

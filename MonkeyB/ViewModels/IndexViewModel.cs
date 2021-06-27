@@ -16,12 +16,12 @@ namespace MonkeyB.ViewModels
 {
     internal class IndexViewModel : BaseViewModel
     {
+        private readonly ApiHandler api = new();
+
         /// <summary>
         ///     Gets called when a different value is selected in the listbox
         /// </summary>
         private string _selectedCurrencyName;
-
-        private readonly ApiHandler api = new();
 
         /// <summary>
         ///     Constructor for the IndexViewModel

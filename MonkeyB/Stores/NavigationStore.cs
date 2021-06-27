@@ -1,17 +1,12 @@
-﻿using MonkeyB.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using MonkeyB.ViewModels;
 
 namespace MonkeyB
 {
     public class NavigationStore
     {
-        public event Action SelectedViewModelChanged;
-
         private BaseViewModel selectedViewModel { get; set; }
+
         public BaseViewModel SelectedViewModel
         {
             get => selectedViewModel;
@@ -23,10 +18,11 @@ namespace MonkeyB
             }
         }
 
+        public event Action SelectedViewModelChanged;
+
         private void OnSelectedViewModelChanged()
         {
             SelectedViewModelChanged?.Invoke();
         }
-
     }
 }

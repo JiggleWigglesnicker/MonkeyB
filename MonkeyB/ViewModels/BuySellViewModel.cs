@@ -1,113 +1,36 @@
-﻿using MonkeyB.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
+using MonkeyB.Commands;
 using MonkeyB.Database;
-using System.Collections.ObjectModel;
-using MonkeyB.Models;
-using System.Diagnostics;
 
 namespace MonkeyB.ViewModels
 {
     class BuySellViewModel : BaseViewModel
     {
-        public ICommand DashBoardCommand { get; set; }
-        public ICommand BuyCoinCommand { get; set; }
-        public ICommand SellCoinCommand { get; set; }
-
-        public ObservableCollection<string> CurrencyNames { get; set; }
-
-        public string currencyName;
-        public string CurrencyName
-        {
-            get => currencyName;
-            set
-            {
-                currencyName = value;
-                OnPropertyChanged("CurrencyName");
-            }
-        }
-
-        public string warningLabel;
-        public string WarningLabel
-        {
-            get => warningLabel;
-            set
-            {
-                warningLabel = value;
-                OnPropertyChanged("WarningLabel");
-            }
-        }
-
-        public float eurRate;
-        public float EurRate
-        {
-            get => eurRate;
-            set
-            {
-                eurRate = value;
-                OnPropertyChanged("EurRate");
-            }
-        }
-
-        public float bitcoinRate;
-        public float BitcoinRate
-        {
-            get => bitcoinRate;
-            set
-            {
-                bitcoinRate = value;
-                OnPropertyChanged("BitcoinRate");
-            }
-        }
-
-        public float liteCoinRate;
-        public float LiteCoinRate
-        {
-            get => liteCoinRate;
-            set
-            {
-                liteCoinRate = value;
-                OnPropertyChanged("LiteCoinRate");
-            }
-        }
-
-        public float dogeCoinRate;
-        public float DogeCoinRate
-        {
-            get => dogeCoinRate;
-            set
-            {
-                dogeCoinRate = value;
-                OnPropertyChanged("DogeCoinRate");
-            }
-        }
-
-
         public float amount;
-        public float Amount
-        {
-            get => amount;
-            set
-            {
-                amount = value;
-                OnPropertyChanged("Amount");
-            }
-        }
 
 
         private ApiHandler apiHandler = new ApiHandler();
+        private CryptoCurrencyModel bitCoinModel = new();
+
+        public float bitcoinRate;
+
+        public string currencyName;
+        private CryptoCurrencyModel dogeCoinModel = new();
+
+        public float dogeCoinRate;
 
         private CryptoCurrencyModel eurModel = new();
-        private CryptoCurrencyModel bitCoinModel = new();
-        private CryptoCurrencyModel dogeCoinModel = new();
+
+        public float eurRate;
         private CryptoCurrencyModel liteCoinModel = new();
 
+        public float liteCoinRate;
+
+        public string warningLabel;
+
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="navigationStore">Stores the currently selected viewmodel which is used to display a view</param>
         public BuySellViewModel(NavigationStore navigationStore)
@@ -130,13 +53,89 @@ namespace MonkeyB.ViewModels
             });
 
             DataBaseAccess.InitializeCoins();
-            CurrencyNames = new ObservableCollection<string>() { "bitcoin", "dogecoin", "litecoin" };
+            CurrencyNames = new ObservableCollection<string>() {"bitcoin", "dogecoin", "litecoin"};
             RefreshCoinRates();
             RefreshCryptoToEuro();
         }
 
+        public ICommand DashBoardCommand { get; set; }
+        public ICommand BuyCoinCommand { get; set; }
+        public ICommand SellCoinCommand { get; set; }
+
+        public ObservableCollection<string> CurrencyNames { get; set; }
+
+        public string CurrencyName
+        {
+            get => currencyName;
+            set
+            {
+                currencyName = value;
+                OnPropertyChanged("CurrencyName");
+            }
+        }
+
+        public string WarningLabel
+        {
+            get => warningLabel;
+            set
+            {
+                warningLabel = value;
+                OnPropertyChanged("WarningLabel");
+            }
+        }
+
+        public float EurRate
+        {
+            get => eurRate;
+            set
+            {
+                eurRate = value;
+                OnPropertyChanged("EurRate");
+            }
+        }
+
+        public float BitcoinRate
+        {
+            get => bitcoinRate;
+            set
+            {
+                bitcoinRate = value;
+                OnPropertyChanged("BitcoinRate");
+            }
+        }
+
+        public float LiteCoinRate
+        {
+            get => liteCoinRate;
+            set
+            {
+                liteCoinRate = value;
+                OnPropertyChanged("LiteCoinRate");
+            }
+        }
+
+        public float DogeCoinRate
+        {
+            get => dogeCoinRate;
+            set
+            {
+                dogeCoinRate = value;
+                OnPropertyChanged("DogeCoinRate");
+            }
+        }
+
+        public float Amount
+        {
+            get => amount;
+            set
+            {
+                amount = value;
+                OnPropertyChanged("Amount");
+            }
+        }
+
         /// <summary>
-        /// Gets the amount of crypto from the database.
+        ///     Gets the amount of crypto from the database.
         /// </summary>
         private void RefreshCoinRates()
         {
@@ -147,7 +146,7 @@ namespace MonkeyB.ViewModels
         }
 
         /// <summary>
-        /// Refreshes the CryptoCurrency Object with the most recent exchange rate.
+        ///     Refreshes the CryptoCurrency Object with the most recent exchange rate.
         /// </summary>
         private async void RefreshCryptoToEuro()
         {
@@ -158,7 +157,7 @@ namespace MonkeyB.ViewModels
         }
 
         /// <summary>
-        /// Returns the exchange rate in euro
+        ///     Returns the exchange rate in euro
         /// </summary>
         /// <param name="CoinName"></param>
         /// <returns>Exchange rate in euro</returns>
@@ -178,7 +177,7 @@ namespace MonkeyB.ViewModels
         }
 
         /// <summary>
-        /// Add crypto to wallet and remove euro from wallet
+        ///     Add crypto to wallet and remove euro from wallet
         /// </summary>
         /// <param name="currency"></param>
         /// <param name="amount"></param>
@@ -200,13 +199,13 @@ namespace MonkeyB.ViewModels
                     WarningLabel = "Not enought euro in wallet.";
                     return false;
                 }
-                
             }
+
             return false;
         }
 
         /// <summary>
-        /// Add euro to wallet and remove crypto
+        ///     Add euro to wallet and remove crypto
         /// </summary>
         /// <param name="currency"></param>
         /// <param name="amount"></param>
@@ -229,7 +228,7 @@ namespace MonkeyB.ViewModels
         }
 
         /// <summary>
-        /// Check if user has enough euro to complete the transaction
+        ///     Check if user has enough euro to complete the transaction
         /// </summary>
         /// <param name="ToCurrency"></param>
         /// <param name="amount"></param>
@@ -254,7 +253,7 @@ namespace MonkeyB.ViewModels
         }
 
         /// <summary>
-        /// Check if user has enough crypto in the wallet to complete the transaction
+        ///     Check if user has enough crypto in the wallet to complete the transaction
         /// </summary>
         /// <param name="FromCurrency"></param>
         /// <param name="amount"></param>
@@ -274,7 +273,7 @@ namespace MonkeyB.ViewModels
         }
 
         /// <summary>
-        /// CGet the amount of coin that a user has from the database
+        ///     CGet the amount of coin that a user has from the database
         /// </summary>
         /// <param name="currency"></param>
         /// <returns>The amount as a float</returns>
@@ -289,6 +288,5 @@ namespace MonkeyB.ViewModels
                 return DataBaseAccess.GetCoinAmount(currency, App.UserID);
             }
         }
-
     }
 }

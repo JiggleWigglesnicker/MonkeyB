@@ -9,21 +9,23 @@
         xmlns:properties="clr-namespace:MonkeyB.Properties"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
-        MinHeight="450" MinWidth="800"
-        >
+        MinHeight="450" MinWidth="800">
     <Window.Resources>
 
         <Style TargetType="{x:Type UserControl}" x:Key="UserControleStyle">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Dark">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="Dark">
                     <Setter Property="Background" Value="Black" />
                     <Setter Property="Foreground" Value="White" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Light">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="Light">
                     <Setter Property="Background" Value="White" />
                     <Setter Property="Foreground" Value="Black" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="LGBTQ">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="LGBTQ">
                     <Setter Property="Background" Value="Pink" />
                     <Setter Property="Foreground" Value="Black" />
                 </DataTrigger>
@@ -32,13 +34,16 @@
 
         <Style TargetType="{x:Type Grid}">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Dark">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="Dark">
                     <Setter Property="Background" Value="Black" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Light">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="Light">
                     <Setter Property="Background" Value="White" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="LGBTQ">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="LGBTQ">
                     <Setter Property="Background" Value="Pink" />
                 </DataTrigger>
             </Style.Triggers>
@@ -46,15 +51,18 @@
 
         <Style TargetType="{x:Type ListBox}">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Dark">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="Dark">
                     <Setter Property="Background" Value="DarkGray" />
                     <Setter Property="Foreground" Value="White" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Light">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="Light">
                     <Setter Property="Background" Value="LightGray" />
                     <Setter Property="Foreground" Value="Black" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="LGBTQ">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="LGBTQ">
                     <Setter Property="Background" Value="PaleVioletRed" />
                     <Setter Property="Foreground" Value="Black" />
                 </DataTrigger>
@@ -63,13 +71,16 @@
 
         <Style TargetType="{x:Type StackPanel}">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Dark">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="Dark">
                     <Setter Property="Background" Value="Black" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Light">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="Light">
                     <Setter Property="Background" Value="White" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="LGBTQ">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="LGBTQ">
                     <Setter Property="Background" Value="Pink" />
                 </DataTrigger>
             </Style.Triggers>
@@ -77,13 +88,16 @@
 
         <Style TargetType="{x:Type Label}">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Dark">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="Dark">
                     <Setter Property="Foreground" Value="White" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Light">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="Light">
                     <Setter Property="Foreground" Value="Black" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="LGBTQ">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="LGBTQ">
                     <Setter Property="Foreground" Value="Black" />
                 </DataTrigger>
             </Style.Triggers>
@@ -91,28 +105,34 @@
 
         <Style TargetType="{x:Type TextBlock}">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Dark">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="Dark">
                     <Setter Property="Foreground" Value="White" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Light">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="Light">
                     <Setter Property="Foreground" Value="Black" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="LGBTQ">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="LGBTQ">
                     <Setter Property="Foreground" Value="Black" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        
+
 
         <Style TargetType="{x:Type RadioButton}">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Dark">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="Dark">
                     <Setter Property="Foreground" Value="White" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Light">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="Light">
                     <Setter Property="Foreground" Value="Black" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="LGBTQ">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="LGBTQ">
                     <Setter Property="Foreground" Value="Black" />
                 </DataTrigger>
             </Style.Triggers>
@@ -120,15 +140,18 @@
 
         <Style TargetType="{x:Type Button}">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Dark">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="Dark">
                     <Setter Property="Background" Value="Gray" />
                     <Setter Property="Foreground" Value="White" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="Light">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="Light">
                     <Setter Property="Background" Value="White" />
                     <Setter Property="Foreground" Value="Black" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}" Value="LGBTQ">
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ThemeSetting}"
+                             Value="LGBTQ">
                     <Setter Property="Background" Value="LightCoral" />
                     <Setter Property="Foreground" Value="Black" />
                 </DataTrigger>
@@ -142,31 +165,31 @@
         <ContentControl Content="{Binding SelectedViewModel}">
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type viewmodels:BuySellViewModel}">
-                    <views:BuySellView Style="{StaticResource UserControleStyle}"/>
+                    <views:BuySellView Style="{StaticResource UserControleStyle}" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:DashBoardViewModel}">
-                    <views:DashboardView Style="{StaticResource UserControleStyle}"/>
+                    <views:DashboardView Style="{StaticResource UserControleStyle}" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:IndexViewModel}">
-                    <views:IndexView Style="{StaticResource UserControleStyle}"/>
+                    <views:IndexView Style="{StaticResource UserControleStyle}" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:LoginViewModel}">
-                    <views:LoginView Style="{StaticResource UserControleStyle}"/>
+                    <views:LoginView Style="{StaticResource UserControleStyle}" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:WalletViewModel}">
-                    <views:WalletView Style="{StaticResource UserControleStyle}"/>
+                    <views:WalletView Style="{StaticResource UserControleStyle}" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:RegisterViewModel}">
-                    <views:RegisterView Style="{StaticResource UserControleStyle}"/>
+                    <views:RegisterView Style="{StaticResource UserControleStyle}" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:AchievementViewModel}">
-                    <views:AchievementView Style="{StaticResource UserControleStyle}"/>
+                    <views:AchievementView Style="{StaticResource UserControleStyle}" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:SettingViewModel}">
-                    <views:SettingView Style="{StaticResource UserControleStyle}"/>
+                    <views:SettingView Style="{StaticResource UserControleStyle}" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:OrderViewModel}">
-                    <views:OrderView Style="{StaticResource UserControleStyle}"/>
+                    <views:OrderView Style="{StaticResource UserControleStyle}" />
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>

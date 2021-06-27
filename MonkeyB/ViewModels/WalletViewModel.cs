@@ -1,42 +1,25 @@
-﻿using LiveCharts;
-using LiveCharts.Wpf;
-using MonkeyB.Commands;
-using MonkeyB.Database;
-using MonkeyB.Models;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using LiveCharts;
+using LiveCharts.Wpf;
+using MonkeyB.Commands;
+using MonkeyB.Database;
+using MonkeyB.Models;
 
 namespace MonkeyB.ViewModels
 {
     class WalletViewModel : BaseViewModel
     {
-        public ICommand DashBoardCommand { get; set; }
-        public ObservableCollection<TransactionHistoryModel> CryptoWalletList { get; set; }
-
-
         public SeriesCollection seriesCollection;
-        public SeriesCollection SeriesCollection
-        {
-            get => seriesCollection;
-
-            set
-            {
-                seriesCollection = value;
-                OnPropertyChanged("SeriesCollection");
-            }
-        }
 
         /// <summary>
-        ///  Sets the button of the dashboard button, and loads the cryptocurrencies 
-        ///  in the piechart and displays the profits/loss in the view
+        ///     Sets the button of the dashboard button, and loads the cryptocurrencies
+        ///     in the piechart and displays the profits/loss in the view
         /// </summary>
         /// <param name="navigationStore">Stores the currently selected viewmodel which is used to display a view</param>
         public WalletViewModel(NavigationStore navigationStore)
@@ -49,8 +32,23 @@ namespace MonkeyB.ViewModels
             });
         }
 
+        public ICommand DashBoardCommand { get; set; }
+        public ObservableCollection<TransactionHistoryModel> CryptoWalletList { get; set; }
+
+        public SeriesCollection SeriesCollection
+        {
+            get => seriesCollection;
+
+            set
+            {
+                seriesCollection = value;
+                OnPropertyChanged("SeriesCollection");
+            }
+        }
+
         /// <summary>
-        /// Retrieves the transactionhistory of the user from the database and displays the calculated profit or loss realtime in the view.
+        ///     Retrieves the transactionhistory of the user from the database and displays the calculated profit or loss realtime
+        ///     in the view.
         /// </summary>
         public void DisplayProfitLose()
         {
@@ -82,21 +80,18 @@ namespace MonkeyB.ViewModels
 
                     transaction.calculateProfitOrLoss();
 
-                    Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new ThreadStart(delegate
-                    {
-                        CryptoWalletList.Add(transaction);
-                    }));
+                    Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
+                        new ThreadStart(delegate { CryptoWalletList.Add(transaction); }));
                 }
             });
         }
 
         /// <summary>
-        /// Loads the cryptocurrencies from the users cryptowallet into the piechart in the view
+        ///     Loads the cryptocurrencies from the users cryptowallet into the piechart in the view
         /// </summary>
         /// <param name="id"> id of the current user</param>
         public void LoadWalletIntoChart(int id)
         {
-
             List<CryptoWalletModel> walletList = DataBaseAccess.FetchCoinsInWallet(id);
             SeriesCollection = new SeriesCollection();
             foreach (CryptoWalletModel model in walletList)
@@ -104,13 +99,10 @@ namespace MonkeyB.ViewModels
                 SeriesCollection.Add(new PieSeries()
                 {
                     Title = model.coinName,
-                    Values = new ChartValues<float> { model.coinAmount },
+                    Values = new ChartValues<float> {model.coinAmount},
                     DataLabels = true
                 });
-
             }
-
         }
-
     }
 }

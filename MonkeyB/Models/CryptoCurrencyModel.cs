@@ -1,11 +1,9 @@
-﻿
-public class CryptoCurrencyModel
+﻿public class CryptoCurrencyModel
 {
     public Bitcoin bitcoin { get; set; }
     public Dogecoin dogecoin { get; set; }
     public Dogecoin litecoin { get; set; }
     public Ethereum ethereum { get; set; }
-
 }
 
 public class Bitcoin
@@ -27,4 +25,3 @@ public class Ethereum
 {
     public float ethereum { get; set; }
 }
-
