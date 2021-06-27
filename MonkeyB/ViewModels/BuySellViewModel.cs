@@ -119,7 +119,6 @@ namespace MonkeyB.ViewModels
 
             BuyCoinCommand = new RelayCommand(o =>
             {
-                Debug.WriteLine(CurrencyName);
                 BuyCrypto(CurrencyName, Amount);
                 RefreshCoinRates();
             });
