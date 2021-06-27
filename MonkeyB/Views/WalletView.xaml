@@ -14,7 +14,7 @@
                       Width="415" 
                       Series="{Binding SeriesCollection}" />
 
-        <TextBlock Text="profit/lose percentage: " HorizontalAlignment="Right" Margin="0,0,200,0" FontWeight="Heavy"/>
+        <TextBlock Text="profit/lose euro amount: " HorizontalAlignment="Right" Margin="0,0,200,0" FontWeight="Heavy"/>
         <ItemsControl ItemsSource="{Binding CryptoWalletList}" HorizontalAlignment="Right">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
