@@ -53,25 +53,28 @@ namespace MonkeyB.ViewModels
         /// <param name="model">AchievementModel which holds the achievement data</param>
         public void checkIfAchievementCompleted(AchievementModel model)
         {
-            switch (model.Name)
+            if (model.IsCompleted != true)
             {
-                case "10 Doge":
-                    if (DataBaseAccess.GetCoinAmount("dogecoin", App.UserID) >= 10)
-                        model.IsCompleted = true;
-                    break;
-                case "10 litecoin":
-                    if (DataBaseAccess.GetCoinAmount("litecoin", App.UserID) >= 10)
-                        model.IsCompleted = true;
-                    break;
-                case "10 bit":
-                    if (DataBaseAccess.GetCoinAmount("bitcoin", App.UserID) >= 10)
-                        model.IsCompleted = true;
-                    break;
-                case "10k CLUB":
-                    if (DataBaseAccess.GetEuroAmount() >= 10000)
-                        model.IsCompleted = true;
-                    break;
+                switch (model.Name)
+                {
+                    case "10 Doge":
+                        if (DataBaseAccess.GetCoinAmount("dogecoin", App.UserID) >= 10)
+                            model.IsCompleted = true;
+                        break;
+                    case "10 litecoin":
+                        if (DataBaseAccess.GetCoinAmount("litecoin", App.UserID) >= 10)
+                            model.IsCompleted = true;
+                        break;
+                    case "10 bit":
+                        if (DataBaseAccess.GetCoinAmount("bitcoin", App.UserID) >= 10)
+                            model.IsCompleted = true;
+                        break;
+                    case "10k CLUB":
+                        if (DataBaseAccess.GetEuroAmount() >= 10000)
+                            model.IsCompleted = true;
+                        break;
 
+                }
             }
 
         }
