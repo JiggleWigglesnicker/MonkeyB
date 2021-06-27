@@ -1,40 +1,18 @@
 using System.Windows;
-using MonkeyB.Commands;
 using System.Windows.Input;
+using MonkeyB.Commands;
 using MonkeyB.Database;
 
 namespace MonkeyB.ViewModels
 {
-    class RegisterViewModel : BaseViewModel
+    internal class RegisterViewModel : BaseViewModel
     {
-        public ICommand ToLoginCommand { get; set; }
-        
-        public ICommand RegisterCommand { get; set; }
-        
-        private string username;
-        public string Username
-        {
-            get => username;
-            set
-            {
-                username = value;
-                OnPropertyChanged("Username");
-            }
-        }
-
         private string password;
-        public string Password
-        {
-            get => password;
-            set
-            {
-                password = value;
-                OnPropertyChanged("Password");
-            }
-        }
+
+        private string username;
 
         /// <summary>
-        /// Constructor for the RegisterViewModel
+        ///     Constructor for the RegisterViewModel
         /// </summary>
         /// <param name="navigationStore">Stores the currently selected viewmodel which is used to display a view</param>
         public RegisterViewModel(NavigationStore navigationStore)
@@ -52,11 +30,34 @@ namespace MonkeyB.ViewModels
                     navigationStore.SelectedViewModel = new LoginViewModel(navigationStore);
                     return;
                 }
+
                 //Give error when invalid input
                 MessageBox.Show("Invalid input, try again!", "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
             });
-
         }
 
+        public ICommand ToLoginCommand { get; set; }
+
+        public ICommand RegisterCommand { get; set; }
+
+        public string Username
+        {
+            get => username;
+            set
+            {
+                username = value;
+                OnPropertyChanged("Username");
+            }
+        }
+
+        public string Password
+        {
+            get => password;
+            set
+            {
+                password = value;
+                OnPropertyChanged("Password");
+            }
+        }
     }
 }
