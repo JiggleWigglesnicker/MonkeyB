@@ -1,4 +1,5 @@
 ﻿using MonkeyB.Commands;
+using MonkeyB.Database;
 using MonkeyB.Models;
 using Newtonsoft.Json;
 using System;
@@ -29,9 +30,14 @@ namespace MonkeyB.ViewModels
         public ObservableCollection<RSSModel> RSSList { get; set; }
 
 
-
+        /// <summary>
+        /// Sets all of the actions of the buttons in the view and displays a RSS feed.
+        /// </summary>
+        /// <param name="navigationStore"></param>
         public DashBoardViewModel(NavigationStore navigationStore)
         {
+            DataBaseAccess.InitializeAchievements();
+
             IndexCommand = new RelayCommand(o =>
             {
                 navigationStore.SelectedViewModel = new IndexViewModel(navigationStore);
@@ -68,28 +74,36 @@ namespace MonkeyB.ViewModels
 
         }
 
+        /// <summary>
+        /// Reads the XML nodes in the RSS feed and displays it in the view.
+        /// </summary>
         public async void ReadRSSNodes()
         {
 
-            await Task.Run(async () =>
+            await Task.Run(() =>
             {
-
-                string url = "https://www.nu.nl/rss/Economie";
-                XmlReader reader = XmlReader.Create(url);
-                SyndicationFeed feed = SyndicationFeed.Load(reader);
-                reader.Close();
-                foreach (SyndicationItem item in feed.Items)
+                try
                 {
-                    String subject = item.Title.Text;
-                    String summary = item.Summary.Text;
-                    int index = summary.IndexOf("<");
-                    if (index >= 0)
-                        summary = summary.Substring(0, index);
-                    Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new ThreadStart(delegate
+                    string url = "https://www.nu.nl/rss/Economie";
+                    XmlReader reader = XmlReader.Create(url);
+                    SyndicationFeed feed = SyndicationFeed.Load(reader);
+                    reader.Close();
+                    foreach (SyndicationItem item in feed.Items)
                     {
-                        RSSList.Add(new RSSModel(subject, summary));
-                    }));
+                        String subject = item.Title.Text;
+                        String summary = item.Summary.Text;
+                        int index = summary.IndexOf("<");
+                        if (index >= 0)
+                            summary = summary.Substring(0, index);
+                        Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new ThreadStart(delegate
+                        {
+                            RSSList.Add(new RSSModel(subject, summary));
+                        }));
 
+                    }
+                }
+                catch (Exception e) {
+                    _ = e.StackTrace;
                 }
 
             });

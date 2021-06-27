@@ -1,70 +1,62 @@
-﻿using MonkeyB.Commands;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using LiveCharts;
+using MonkeyB.Commands;
+using MonkeyB.Database;
+using MonkeyB.Models;
 
 namespace MonkeyB.ViewModels
 {
-    class IndexViewModel : BaseViewModel
+    internal class IndexViewModel : BaseViewModel
     {
-        public ICommand DashBoardCommand { get; set; }
-        public ChartValues<double> CoinValue { get; set; }
-        public ObservableCollection<string> CoinDate { get; set; }
-        public ObservableCollection<string> CurrencyNames { get; set; }
-
-        private ApiHandler api = new ApiHandler();
-        
         /// <summary>
-        /// Constructor for the IndexViewModel
+        ///     Gets called when a different value is selected in the listbox
         /// </summary>
-        /// <param name="navigationStore"></param>
+        private string _selectedCurrencyName;
+
+        private readonly ApiHandler api = new();
+
+        /// <summary>
+        ///     Constructor for the IndexViewModel
+        /// </summary>
+        /// <param name="navigationStore">Object which stores the currently selected view</param>
         public IndexViewModel(NavigationStore navigationStore)
         {
-            
-            CurrencyNames = new ObservableCollection<string>() { "bitcoin", "dogecoin", "litecoin" };
+            DisplayGrowthDeclinePercentage();
+            CurrencyNames = new ObservableCollection<string> {"bitcoin", "dogecoin", "litecoin"};
             GetMarketData(CurrencyNames[0]);
             DashBoardCommand = new RelayCommand(o =>
             {
                 navigationStore.SelectedViewModel = new DashBoardViewModel(navigationStore);
             });
         }
-        
-        /// <summary>
-        /// Gets current data from the api and splices them into 2 seperate lists, dates get converted from unxitime to
-        /// DateTime. The lists are then put in their respective collections.
-        /// </summary>
-        /// <param name="id"></param>
-        private async void GetMarketData(string id)
-        {
-            MarketGraph marketGraph = await api.GetMarketData(id, "eur", 91);
-            List<string> dates = new();
-            List<double> prices = new();
-            foreach (var price in marketGraph.prices)
-            {
-                prices.Add(price[1]);
-                dates.Add(ToDateTime((long)price[0]).ToString(CultureInfo.CurrentCulture));
-            }
-            CoinValue = new ChartValues<double>(prices);
-            CoinDate = new ObservableCollection<string>(dates);
-            OnPropertyChanged(nameof(CoinValue));
-        }
+
+        public ICommand DashBoardCommand { get; set; }
 
         /// <summary>
-        /// Takes a unixtime value and returns a DateTime
+        ///     Collection of all values of the coins
         /// </summary>
-        /// <param name="unixTime"></param>
-        /// <returns></returns>
-        private static DateTime ToDateTime(long unixTime) {  
-            return new DateTime(1970, 1, 1).Add(TimeSpan.FromMilliseconds(unixTime));  
-        }
-        
+        public ChartValues<double> CoinValue { get; set; }
+
         /// <summary>
-        /// Gets called when a different value is selected in the listbox
+        ///     Collection of all coin dates
         /// </summary>
-        private string _selectedCurrencyName;
+        public ObservableCollection<string> CoinDate { get; set; }
+
+        /// <summary>
+        ///     Collection of currency names
+        /// </summary>
+        public ObservableCollection<string> CurrencyNames { get; set; }
+
+        public ObservableCollection<TransactionHistoryModel> CryptoWalletList { get; set; }
+
         public string SelectedCurrencyName
         {
             get => _selectedCurrencyName;
@@ -74,6 +66,81 @@ namespace MonkeyB.ViewModels
                 _selectedCurrencyName = value;
                 GetMarketData(_selectedCurrencyName);
             }
+        }
+
+        /// <summary>
+        ///     Gets current data from the api and splices them into 2 seperate lists, dates get converted from unxitime to
+        ///     DateTime. The lists are then put in their respective collections.
+        /// </summary>
+        /// <param name="id">the id of the requested coin, eg: "bitcoin" "litecoin"</param>
+        private async void GetMarketData(string id)
+        {
+            var marketGraph = await api.GetMarketData(id, "eur", 91);
+            List<string> dates = new();
+            List<double> prices = new();
+            foreach (var price in marketGraph.prices)
+            {
+                prices.Add(price[1]);
+                dates.Add(ToDateTime((long) price[0]).ToString(CultureInfo.CurrentCulture));
+            }
+
+            CoinValue = new ChartValues<double>(prices);
+            CoinDate = new ObservableCollection<string>(dates);
+            OnPropertyChanged(nameof(CoinValue));
+        }
+
+        /// <summary>
+        ///     Takes a unixtime value and returns a DateTime
+        /// </summary>
+        /// <param name="unixTime">unixtime in miliseconds</param>
+        /// <returns>A new DateTime object</returns>
+        private static DateTime ToDateTime(long unixTime)
+        {
+            return new DateTime(1970, 1, 1).Add(TimeSpan.FromMilliseconds(unixTime));
+        }
+
+        /// <summary>
+        ///     Displays and calculates growth and decline rate of cryptos
+        /// </summary>
+        public void DisplayGrowthDeclinePercentage()
+        {
+            var cryptoWallet = DataBaseAccess.FetchCoinAndAmount(App.UserID);
+
+            CryptoWalletList = new ObservableCollection<TransactionHistoryModel>();
+            var apiHandler = new ApiHandler();
+
+            CryptoCurrencyModel model;
+            MarketGraph marketModel;
+
+            Task.Run(async () =>
+            {
+                foreach (var crypto in cryptoWallet)
+                {
+                    model = await apiHandler.GetCoinValue(crypto.coinName);
+                    marketModel = await apiHandler.GetMarketData(crypto.coinName, "eur", 7);
+                    switch (crypto.coinName)
+                    {
+                        case "bitcoin":
+                            crypto.coinValue = model.bitcoin.eur;
+                            crypto.oldCoinValue = (float) marketModel.prices[6][1];
+                            break;
+                        case "litecoin":
+                            crypto.coinValue = model.litecoin.eur;
+                            crypto.oldCoinValue = (float) marketModel.prices[6][1];
+                            break;
+                        case "dogecoin":
+                            crypto.coinValue = model.dogecoin.eur;
+                            crypto.oldCoinValue = (float) marketModel.prices[6][1];
+                            break;
+                    }
+
+
+                    crypto.calculatePercentage();
+
+                    Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
+                        new ThreadStart(delegate { CryptoWalletList.Add(crypto); }));
+                }
+            });
         }
     }
 }

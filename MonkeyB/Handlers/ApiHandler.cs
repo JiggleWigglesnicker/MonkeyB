@@ -24,32 +24,17 @@ namespace MonkeyB
         /// <param name="days">amount of days for data, data is hourly til 90 days</param>
         /// <returns></returns>
         public static string MarketChartByCoinId(string id, string currency, int days) =>
-            $"coins/{id}/market_chart?vs_currency={currency}&days={days}&interval=daily"; //  URL WAS CHANGED BECAUSE KAPUT POSSIBLY A REBASE CONFLICT PLEASE CHECK DENNIS
+            $"coins/{id}/market_chart?vs_currency={currency}&days={days}&interval=daily"; 
         public static string MarketChartRangeByCoinId(string id, string currency, int startdate, int enddate) =>
             AddCoinsIdUrl(id) + "/market_chart/range?vs_currency=" + currency + "&from=" + startdate + "&to=" + enddate;
 
         public CryptoCurrencyModel model = new CryptoCurrencyModel();
 
-        public async Task<CryptoCurrencyModel> GetApiData()
-        {
-            string url = "https://api.coingecko.com/api/EuroAmount/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false";
-            HttpClient httpclient = new HttpClient();
-            var response = await httpclient.GetStringAsync(url);
-
-            try
-            {
-                model = JsonConvert.DeserializeObject<CryptoCurrencyModel>(response);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.StackTrace);
-            }
-
-            return await Task.FromResult(model);
-        }
-
-
-
+        /// <summary>
+        /// Retrieves the coinvalue of a certain cryptocurrency and stores it in a CryptoCurrencyModel
+        /// </summary>
+        /// <param name="coincode">name of cryptocurrency</param>
+        /// <returns>returns a CryptoCurrencyModel</returns>
         public async Task<CryptoCurrencyModel> GetCoinValue(string coincode)
         {
             CryptoCurrencyModel ccm = new();
@@ -69,6 +54,9 @@ namespace MonkeyB
             return await Task.FromResult(ccm);
         }
 
+        /// <summary>
+        /// Retrieves the market data (price points) for a specific cryptocurrency over a certain period of days
+        /// </summary>
         private MarketGraph Marketgraph = new ();
         public async Task<MarketGraph> GetMarketData(string id, String currency, int days)
         {
@@ -86,7 +74,6 @@ namespace MonkeyB
                 Debug.WriteLine(e.StackTrace);
             }
             
-            // Trace.Write(Marketgraph.prices[0][1]);
             return await Task.FromResult(Marketgraph);
         }
 

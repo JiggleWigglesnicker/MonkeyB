@@ -19,6 +19,10 @@ namespace MonkeyB
     {
         public static int UserID { get; set; }
 
+        /// <summary>
+        /// Sets the culture, navigationstore, database initialization and startview of the application at startup
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");

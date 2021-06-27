@@ -154,7 +154,10 @@ namespace MonkeyB.ViewModels
             }
         }
 
-
+        /// <summary>
+        /// Sets the buy, sell and dashboardbuttons of the view and fills the selectbox and listbox of the view with the orders of all users and the crypto's in the current user wallet.
+        /// </summary>
+        /// <param name="navigationStore">Stores the currently selected viewmodel which is used to display a view</param>
         public OrderViewModel(NavigationStore navigationStore)
         {
             FillSelectBox();
@@ -166,8 +169,9 @@ namespace MonkeyB.ViewModels
 
             BuyCommand = new RelayCommand(o =>
             {
-                if (CryptoWalletCoins != null)
+                if (CryptoWalletCoins != null && SelectedBuyOrder != null && CryptoWalletCoins.Count > 0)
                 {
+
                     if (CryptoWalletCoins[0].euroAmount >= selectedBuyOrder.EuroAmount || App.UserID == SelectedBuyOrder.UserID)
                     {
                         BuyOrder(App.UserID, SelectedBuyOrder.ID, SelectedBuyOrder);
@@ -226,6 +230,9 @@ namespace MonkeyB.ViewModels
 
         }
 
+        /// <summary>
+        /// Fills the 'sell order' selectbox with the users currently owned cryptocurrency.
+        /// </summary>
         public void FillSelectBox()
         {
 
@@ -237,16 +244,32 @@ namespace MonkeyB.ViewModels
             }
         }
 
+        /// <summary>
+        /// creates a sell order and stores the order in the database.
+        /// </summary>
+        /// <param name="type"> type of cryptocurrency</param>
+        /// <param name="coinAmount">amount of cryptocurrency</param>
+        /// <param name="euroAmount">selling price</param>
+        /// <param name="id"> the id of the user</param>
         public void PlaceSellOrder(string type, float coinAmount, float euroAmount, int id)
         {
             DataBaseAccess.CreateNewSellOrder(type, coinAmount, euroAmount, id);
         }
 
+        /// <summary>
+        /// Allows a user to buy an order and updates the order in the database to no longer being an outstanding order.
+        /// </summary>
+        /// <param name="userID"> the id of the user</param>
+        /// <param name="orderID">the id of the order</param>
+        /// <param name="orderModel"> the order object which is currently selected in the listview</param>
         public void BuyOrder(int userID, int orderID, OrderModel orderModel)
         {
             DataBaseAccess.BuyOrder(userID, orderModel);
         }
 
+        /// <summary>
+        /// Fills the listview with the currently outstanding orders in the database.
+        /// </summary>
         public void FillListViewWithOrders()
         {
             OrderList = new ObservableCollection<OrderModel>();

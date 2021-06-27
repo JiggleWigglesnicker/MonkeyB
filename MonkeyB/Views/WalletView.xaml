@@ -10,12 +10,25 @@
         <Label HorizontalAlignment="Center" Content="CryptoWallet Overview" Margin="10" FontSize="30" ></Label>
 
         <wpf:PieChart LegendLocation="Right" 
-                      Height="239" 
+                      Height="200" 
                       Width="415" 
                       Series="{Binding SeriesCollection}" />
 
+        <TextBlock Text="profit/lose euro amount: " HorizontalAlignment="Right" Margin="0,0,200,0" FontWeight="Heavy"/>
+        <ItemsControl ItemsSource="{Binding CryptoWalletList}" HorizontalAlignment="Right">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <WrapPanel Margin="0,0,200,0">
+                        <TextBlock Text="{Binding coinName}" FontWeight="Bold"/>
+                        <TextBlock Text=": € " />
+                        <TextBlock Text="{Binding profitLossValue}" FontWeight="Bold"  Foreground="{Binding percentageColor}"/>
+                    </WrapPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
-        <Button Content="Back" Command="{Binding DashBoardCommand}" HorizontalAlignment="left" Margin="20,50,0,10" Height="30" Width="200"/>
+
+        <Button Content="Back" Command="{Binding DashBoardCommand}" HorizontalAlignment="left" Margin="20,50,0,30" Height="30" Width="200" VerticalAlignment="Bottom"/>
 
     </StackPanel>
 </UserControl>

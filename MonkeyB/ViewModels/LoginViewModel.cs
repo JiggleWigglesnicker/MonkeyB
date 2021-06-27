@@ -10,6 +10,7 @@ using System.Windows.Input;
 
 namespace MonkeyB.ViewModels
 {
+    
     class LoginViewModel : BaseViewModel
     {
 
@@ -40,6 +41,11 @@ namespace MonkeyB.ViewModels
             }
         }
 
+        /// <summary>
+        /// Sets the actions of the login button and the Register user button. 
+        /// And also checks if a login is valid when the button is pressed.
+        /// </summary>
+        /// <param name="navigationStore"> Stores the currently selected viewmodel which is used to display a view</param>
         public LoginViewModel(NavigationStore navigationStore)
         {
             LoginCommand = new RelayCommand(o =>
@@ -56,6 +62,10 @@ namespace MonkeyB.ViewModels
             });
         }
 
+        /// <summary>
+        /// Checks if login credentails are  valid by looking it up in the database. 
+        /// </summary>
+        /// <returns> returns a bool which is true when login is successfull and false when not</returns>
         public bool login()
         {
             LoginModel model = DataBaseAccess.RetrieveLogin(Username);

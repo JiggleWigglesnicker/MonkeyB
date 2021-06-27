@@ -106,7 +106,10 @@ namespace MonkeyB.ViewModels
         private CryptoCurrencyModel dogeCoinModel = new();
         private CryptoCurrencyModel liteCoinModel = new();
 
-        // Constructor
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="navigationStore">Stores the currently selected viewmodel which is used to display a view</param>
         public BuySellViewModel(NavigationStore navigationStore)
         {
             DashBoardCommand = new RelayCommand(o =>
@@ -116,7 +119,6 @@ namespace MonkeyB.ViewModels
 
             BuyCoinCommand = new RelayCommand(o =>
             {
-                Debug.WriteLine(CurrencyName);
                 BuyCrypto(CurrencyName, Amount);
                 RefreshCoinRates();
             });
@@ -133,14 +135,20 @@ namespace MonkeyB.ViewModels
             RefreshCryptoToEuro();
         }
 
+        /// <summary>
+        /// Gets the amount of crypto from the database.
+        /// </summary>
         private void RefreshCoinRates()
         {
-            EurRate             = GetCoinAmount("eur");
-            BitcoinRate         = GetCoinAmount("bitcoin");
-            DogeCoinRate        = GetCoinAmount("dogecoin");
-            LiteCoinRate        = GetCoinAmount("litecoin");
+            EurRate = GetCoinAmount("eur");
+            BitcoinRate = GetCoinAmount("bitcoin");
+            DogeCoinRate = GetCoinAmount("dogecoin");
+            LiteCoinRate = GetCoinAmount("litecoin");
         }
 
+        /// <summary>
+        /// Refreshes the CryptoCurrency Object with the most recent exchange rate.
+        /// </summary>
         private async void RefreshCryptoToEuro()
         {
             eurModel = await apiHandler.GetCoinValue("eur");
@@ -149,6 +157,11 @@ namespace MonkeyB.ViewModels
             liteCoinModel = await apiHandler.GetCoinValue("liteCoin");
         }
 
+        /// <summary>
+        /// Returns the exchange rate in euro
+        /// </summary>
+        /// <param name="CoinName"></param>
+        /// <returns>Exchange rate in euro</returns>
         public float GetCoinRateInEuro(string CoinName)
         {
             switch (CoinName)
@@ -164,23 +177,40 @@ namespace MonkeyB.ViewModels
             }
         }
 
+        /// <summary>
+        /// Add crypto to wallet and remove euro from wallet
+        /// </summary>
+        /// <param name="currency"></param>
+        /// <param name="amount"></param>
+        /// <returns>Bool that indicates if successfull</returns>
         public bool BuyCrypto(string currency, float amount)
         {
-            
-            if (CheckIfBuyTransactionIsValid(currency, amount) == true)
+            if (currency != null && currency != "")
             {
-                DataBaseAccess.SellEuro(amount * GetCoinRateInEuro(currency));
-                DataBaseAccess.BuyCoin(currency, amount, App.UserID);
+                if (CheckIfBuyTransactionIsValid(currency, amount) == true)
+                {
+                    DataBaseAccess.SellEuro(amount * GetCoinRateInEuro(currency));
+                    DataBaseAccess.BuyCoin(currency, amount, App.UserID);
 
-                WarningLabel = "Bought " + amount + " " + currency;
-                return true;
-            } else
-            {
-                WarningLabel = "Not enought euro in wallet.";
-                return false;
+                    WarningLabel = "Bought " + amount + " " + currency;
+                    return true;
+                }
+                else
+                {
+                    WarningLabel = "Not enought euro in wallet.";
+                    return false;
+                }
+                
             }
+            return false;
         }
 
+        /// <summary>
+        /// Add euro to wallet and remove crypto
+        /// </summary>
+        /// <param name="currency"></param>
+        /// <param name="amount"></param>
+        /// <returns>Bool that indicates if succesfull</returns>
         public bool SellCrypto(string currency, float amount)
         {
             if (CheckIfSellTransactionIsValid(currency, amount) == true)
@@ -193,15 +223,21 @@ namespace MonkeyB.ViewModels
             }
             else
             {
-                WarningLabel = "Not enough " +  currency + " in wallet.";
+                WarningLabel = "Not enough " + currency + " in wallet.";
                 return false;
             }
         }
 
+        /// <summary>
+        /// Check if user has enough euro to complete the transaction
+        /// </summary>
+        /// <param name="ToCurrency"></param>
+        /// <param name="amount"></param>
+        /// <returns>Bool that indicates if transaction is valid</returns>
         private bool CheckIfBuyTransactionIsValid(string ToCurrency, float amount)
         {
             float euroAmount = DataBaseAccess.GetEuroAmount();
-            
+
 
             float rate = GetCoinRateInEuro(ToCurrency);
 
@@ -210,12 +246,19 @@ namespace MonkeyB.ViewModels
             if (euroAmount >= cost)
             {
                 return true;
-            } else
+            }
+            else
             {
                 return false;
             }
         }
 
+        /// <summary>
+        /// Check if user has enough crypto in the wallet to complete the transaction
+        /// </summary>
+        /// <param name="FromCurrency"></param>
+        /// <param name="amount"></param>
+        /// <returns>Bool that indicates if transaction is valid</returns>
         private static bool CheckIfSellTransactionIsValid(string FromCurrency, float amount)
         {
             float CryptoAmount = DataBaseAccess.GetCoinAmount(FromCurrency, App.UserID);
@@ -230,6 +273,11 @@ namespace MonkeyB.ViewModels
             }
         }
 
+        /// <summary>
+        /// CGet the amount of coin that a user has from the database
+        /// </summary>
+        /// <param name="currency"></param>
+        /// <returns>The amount as a float</returns>
         public static float GetCoinAmount(string currency)
         {
             if (currency == "eur")
