@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace MonkeyB.ViewModels
 {
+    /// <summary>
+    /// The baseviewmodel class which all viewmodels implement.
+    /// </summary>
     public class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

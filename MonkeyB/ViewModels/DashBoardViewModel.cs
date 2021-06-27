@@ -30,7 +30,10 @@ namespace MonkeyB.ViewModels
         public ObservableCollection<RSSModel> RSSList { get; set; }
 
 
-
+        /// <summary>
+        /// Sets all of the actions of the buttons in the view and displays a RSS feed.
+        /// </summary>
+        /// <param name="navigationStore"></param>
         public DashBoardViewModel(NavigationStore navigationStore)
         {
             DataBaseAccess.InitializeAchievements();
@@ -71,6 +74,9 @@ namespace MonkeyB.ViewModels
 
         }
 
+        /// <summary>
+        /// Reads the XML nodes in the RSS feed and displays it in the view.
+        /// </summary>
         public async void ReadRSSNodes()
         {
 

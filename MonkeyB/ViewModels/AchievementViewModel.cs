@@ -17,6 +17,10 @@ namespace MonkeyB.ViewModels
 
         public ObservableCollection<AchievementModel> AchievementList { get; set; }
 
+        /// <summary>
+        /// Sets the dashboard button of the view and loads the achievements from the database into the view of a specific user and sets the navigationstore
+        /// </summary>
+        /// <param name="navigationStore">Stores the currently selected viewmodel which is used to display a view</param>
         public AchievementViewModel(NavigationStore navigationStore)
         {
             DashBoardCommand = new RelayCommand(o =>
@@ -27,6 +31,9 @@ namespace MonkeyB.ViewModels
             addAchievementsToList();
         }
 
+        /// <summary>
+        /// Adds the achievements in the database to the listbox of the view
+        /// </summary>
         public void addAchievementsToList()
         {
             List<AchievementModel> list = DataBaseAccess.FetchAchievements(App.UserID);
@@ -40,6 +47,10 @@ namespace MonkeyB.ViewModels
 
         }
 
+        /// <summary>
+        /// Checks if a user has completed an achievement and stores the result in the database
+        /// </summary>
+        /// <param name="model">AchievementModel which holds the achievement data</param>
         public void checkIfAchievementCompleted(AchievementModel model)
         {
             switch (model.Name)

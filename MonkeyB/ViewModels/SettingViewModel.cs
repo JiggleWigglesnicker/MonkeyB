@@ -9,6 +9,7 @@ using System.Windows.Input;
 
 namespace MonkeyB.ViewModels
 {
+    
     class SettingViewModel : BaseViewModel
     {
         public ICommand DashBoardCommand { get; set; }
@@ -26,6 +27,11 @@ namespace MonkeyB.ViewModels
             }
         }
 
+        /// <summary>
+        /// Sets the dashboard and applybutton actions.
+        /// And allows users to set the money amount with which to start using the application.
+        /// </summary>
+        /// <param name="navigationStore">Stores the currently selected viewmodel which is used to display a view</param>
         public SettingViewModel(NavigationStore navigationStore)
         {
             ThemeCommand = new RelayCommand(UpdateAppTheme);
@@ -46,6 +52,10 @@ namespace MonkeyB.ViewModels
             });
         }
 
+        /// <summary>
+        /// updates the selected theme when the users selects a theme in the view
+        /// </summary>
+        /// <param name="parameter"></param>
         public void UpdateAppTheme(object parameter)
         {
             Properties.Settings.Default.ThemeSetting = (string)parameter;
