@@ -106,7 +106,10 @@ namespace MonkeyB.ViewModels
         private CryptoCurrencyModel dogeCoinModel = new();
         private CryptoCurrencyModel liteCoinModel = new();
 
-        // Constructor
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="navigationStore">Stores the currently selected viewmodel which is used to display a view</param>
         public BuySellViewModel(NavigationStore navigationStore)
         {
             DashBoardCommand = new RelayCommand(o =>
@@ -133,6 +136,9 @@ namespace MonkeyB.ViewModels
             RefreshCryptoToEuro();
         }
 
+        /// <summary>
+        /// Gets the amount of crypto from the database.
+        /// </summary>
         private void RefreshCoinRates()
         {
             EurRate = GetCoinAmount("eur");
@@ -141,6 +147,9 @@ namespace MonkeyB.ViewModels
             LiteCoinRate = GetCoinAmount("litecoin");
         }
 
+        /// <summary>
+        /// Refreshes the CryptoCurrency Object with the most recent exchange rate.
+        /// </summary>
         private async void RefreshCryptoToEuro()
         {
             eurModel = await apiHandler.GetCoinValue("eur");
@@ -149,6 +158,11 @@ namespace MonkeyB.ViewModels
             liteCoinModel = await apiHandler.GetCoinValue("liteCoin");
         }
 
+        /// <summary>
+        /// Returns the exchange rate in euro
+        /// </summary>
+        /// <param name="CoinName"></param>
+        /// <returns>Exchange rate in euro</returns>
         public float GetCoinRateInEuro(string CoinName)
         {
             switch (CoinName)
@@ -164,6 +178,12 @@ namespace MonkeyB.ViewModels
             }
         }
 
+        /// <summary>
+        /// Add crypto to wallet and remove euro from wallet
+        /// </summary>
+        /// <param name="currency"></param>
+        /// <param name="amount"></param>
+        /// <returns>Bool that indicates if successfull</returns>
         public bool BuyCrypto(string currency, float amount)
         {
             if (currency != null && currency != "")
@@ -186,6 +206,12 @@ namespace MonkeyB.ViewModels
             return false;
         }
 
+        /// <summary>
+        /// Add euro to wallet and remove crypto
+        /// </summary>
+        /// <param name="currency"></param>
+        /// <param name="amount"></param>
+        /// <returns>Bool that indicates if succesfull</returns>
         public bool SellCrypto(string currency, float amount)
         {
             if (CheckIfSellTransactionIsValid(currency, amount) == true)
@@ -203,6 +229,12 @@ namespace MonkeyB.ViewModels
             }
         }
 
+        /// <summary>
+        /// Check if user has enough euro to complete the transaction
+        /// </summary>
+        /// <param name="ToCurrency"></param>
+        /// <param name="amount"></param>
+        /// <returns>Bool that indicates if transaction is valid</returns>
         private bool CheckIfBuyTransactionIsValid(string ToCurrency, float amount)
         {
             float euroAmount = DataBaseAccess.GetEuroAmount();
@@ -222,6 +254,12 @@ namespace MonkeyB.ViewModels
             }
         }
 
+        /// <summary>
+        /// Check if user has enough crypto in the wallet to complete the transaction
+        /// </summary>
+        /// <param name="FromCurrency"></param>
+        /// <param name="amount"></param>
+        /// <returns>Bool that indicates if transaction is valid</returns>
         private static bool CheckIfSellTransactionIsValid(string FromCurrency, float amount)
         {
             float CryptoAmount = DataBaseAccess.GetCoinAmount(FromCurrency, App.UserID);
@@ -236,6 +274,11 @@ namespace MonkeyB.ViewModels
             }
         }
 
+        /// <summary>
+        /// CGet the amount of coin that a user has from the database
+        /// </summary>
+        /// <param name="currency"></param>
+        /// <returns>The amount as a float</returns>
         public static float GetCoinAmount(string currency)
         {
             if (currency == "eur")
