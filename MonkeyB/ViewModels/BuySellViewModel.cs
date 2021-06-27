@@ -98,10 +98,8 @@ namespace MonkeyB.ViewModels
             }
         }
 
-
         private ApiHandler apiHandler = new ApiHandler();
 
-        private CryptoCurrencyModel eurModel = new();
         private CryptoCurrencyModel bitCoinModel = new();
         private CryptoCurrencyModel dogeCoinModel = new();
         private CryptoCurrencyModel liteCoinModel = new();
@@ -119,7 +117,6 @@ namespace MonkeyB.ViewModels
 
             BuyCoinCommand = new RelayCommand(o =>
             {
-                Debug.WriteLine(CurrencyName);
                 BuyCrypto(CurrencyName, Amount);
                 RefreshCoinRates();
             });
