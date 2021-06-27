@@ -72,7 +72,7 @@ namespace MonkeyB.ViewModels
         /// Displays and calculates growth and decline rate of cryptos
         /// </summary>
         public void DisplayGrowthDeclinePercentage() {
-            List<TransactionHistoryModel> cryptoWallet = DataBaseAccess.FetchcoinAndAmount(App.UserID);
+            List<TransactionHistoryModel> cryptoWallet = DataBaseAccess.FetchCoinAndAmount(App.UserID);
 
             CryptoWalletList = new ObservableCollection<TransactionHistoryModel>();
             ApiHandler apiHandler = new ApiHandler();

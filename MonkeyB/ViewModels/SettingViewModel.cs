@@ -40,7 +40,7 @@ namespace MonkeyB.ViewModels
 
                 if (SettingText >= 0)
                 {
-                    DataBaseAccess.updateEuroAmount(SettingText);
+                    DataBaseAccess.UpdateEuroAmount(SettingText);
                 }
 
             });

@@ -2,11 +2,6 @@
 using MonkeyB.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MonkeyB.Database
@@ -16,6 +11,9 @@ namespace MonkeyB.Database
         private static string FolderPath { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         private static string DbPath { get; set; } = System.IO.Path.Combine(FolderPath, "database.db");
 
+        /// <summary>
+        /// Initilizes the DB
+        /// </summary>
         public static async void InitializeDatabase()
         {
             await Task.Run(() =>
@@ -26,6 +24,7 @@ namespace MonkeyB.Database
 
                     db.Open();
 
+                    // This table stores the users information
                     string UserTable =
                     "CREATE TABLE IF NOT EXISTS Users " +
                     "(userID INTEGER NOT NULL UNIQUE, " +
@@ -34,6 +33,7 @@ namespace MonkeyB.Database
                     "euro_amount FLOAT NOT NULL DEFAULT 1000, " +
                     "PRIMARY KEY(userID AUTOINCREMENT))";
 
+                    // This table stores all the owned crypto
                     string CryptoWalletTable =
                     "CREATE TABLE IF NOT EXISTS Cryptowallet " +
                     "(cryptowalletID INTEGER NOT NULL UNIQUE, " +
@@ -43,6 +43,7 @@ namespace MonkeyB.Database
                     "FOREIGN KEY (userID) REFERENCES Users(userID)," +
                     "PRIMARY KEY(cryptowalletID AUTOINCREMENT))";
 
+                    // This table stores all the order data
                     string OrderTable =
                     "CREATE TABLE IF NOT EXISTS Orders " +
                     "(orderID INTEGER NOT NULL UNIQUE, " +
@@ -54,6 +55,7 @@ namespace MonkeyB.Database
                     "FOREIGN KEY (userID) REFERENCES Users(userID)," +
                     "PRIMARY KEY(orderID AUTOINCREMENT))";
 
+                    // This table stores all the transaction data
                     string TransactionHistoryTable =
                     "CREATE TABLE IF NOT EXISTS TransactionHistory " +
                     "(ID INTEGER NOT NULL UNIQUE, " +
@@ -64,6 +66,7 @@ namespace MonkeyB.Database
                     "FOREIGN KEY (userID) REFERENCES Users(userID)," +
                     "PRIMARY KEY(ID AUTOINCREMENT))";
 
+                    // This tbale stores all the anchievements data
                     string AchievementTable =
                    "CREATE TABLE IF NOT EXISTS Achievements " +
                    "(AchievementID INTEGER NOT NULL UNIQUE, " +
@@ -74,31 +77,31 @@ namespace MonkeyB.Database
                    "PRIMARY KEY(AchievementID AUTOINCREMENT)," +
                    "FOREIGN KEY(userID) REFERENCES Users(userID))";
 
+                    // Insert admin user if not exsists
+                    string adminCommand = 
+                    "INSERT OR IGNORE INTO Users (username,password) " +
+                    "VALUES ('admin','admin')";
 
-                    string adminCommand = "INSERT OR IGNORE INTO Users (username,password) VALUES ('admin','admin')";
+                    SqliteCommand createUserTable           = new(UserTable, db);
+                    SqliteCommand createCryptoWalletTable   = new(CryptoWalletTable, db);
+                    SqliteCommand createOrderTable          = new(OrderTable, db);
+                    SqliteCommand createTransactionTable    = new(TransactionHistoryTable, db);
+                    SqliteCommand createAchievementTable    = new(AchievementTable, db);
+                    SqliteCommand createAdmin               = new(adminCommand, db);
 
-                    SqliteCommand createTable1 = new SqliteCommand(UserTable, db);
-                    SqliteCommand createTable2 = new SqliteCommand(CryptoWalletTable, db);
-                    SqliteCommand createTable3 = new SqliteCommand(OrderTable, db);
-                    SqliteCommand createTable4 = new SqliteCommand(TransactionHistoryTable, db);
-                    SqliteCommand createTable5 = new SqliteCommand(AchievementTable, db);
-                    SqliteCommand createAdmin = new SqliteCommand(adminCommand, db);
-
-                    createTable1.ExecuteReader();
-                    createTable2.ExecuteReader();
-                    createTable3.ExecuteReader();
-                    createTable4.ExecuteReader();
-                    createTable5.ExecuteReader();
-
-
-
+                    createUserTable.ExecuteReader();
+                    createCryptoWalletTable.ExecuteReader();
+                    createOrderTable.ExecuteReader();
+                    createTransactionTable.ExecuteReader();
+                    createAchievementTable.ExecuteReader();
                     createAdmin.ExecuteReader();
-
-
                 }
             });
         }
 
+        /// <summary>
+        /// Add the coins to a users wallet if not added set already
+        /// </summary>
         public static void InitializeCoins()
         {
             using (var db = new SqliteConnection($"Data Source=database.db"))
@@ -118,6 +121,9 @@ namespace MonkeyB.Database
             }
         }
 
+        /// <summary>
+        /// Add the achievements if not added set already
+        /// </summary>
         public static void InitializeAchievements()
         {
             using (var db = new SqliteConnection($"Data Source=database.db"))
@@ -149,6 +155,11 @@ namespace MonkeyB.Database
             }
         }
 
+        /// <summary>
+        /// Retrieve login data
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns>LoginModel with the users login data</returns>
         public static LoginModel RetrieveLogin(String username)
         {
             LoginModel model = new LoginModel();
@@ -173,11 +184,12 @@ namespace MonkeyB.Database
             return model;
         }
 
-        internal static float checkWalletAmount(string v)
-        {
-            throw new NotImplementedException();
-        }
-
+        /// <summary>
+        /// Lowers the amount of coin in the users wallet
+        /// </summary>
+        /// <param name="currency"></param>
+        /// <param name="amount"></param>
+        /// <param name="userID"></param>
         public static void SellCoin(string currency, float amount, int userID)
         {
             using (var db = new SqliteConnection($"Data Source=database.db"))
@@ -190,6 +202,12 @@ namespace MonkeyB.Database
             }
         }
 
+        /// <summary>
+        /// Increment the amount of coin in the users wallet
+        /// </summary>
+        /// <param name="currency"></param>
+        /// <param name="amount"></param>
+        /// <param name="userID"></param>
         public static async void BuyCoin(string currency, float amount, int userID)
         {
             CryptoCurrencyModel model;
@@ -239,6 +257,10 @@ namespace MonkeyB.Database
             });
         }
 
+        /// <summary>
+        /// Increments the amount of euro that a user owns
+        /// </summary>
+        /// <param name="amount"></param>
         public static void BuyEuro(float amount)
         {
             using (var db = new SqliteConnection($"Data Source=database.db"))
@@ -251,6 +273,10 @@ namespace MonkeyB.Database
             }
         }
 
+        /// <summary>
+        /// Lowers the amount of euro that a user owns
+        /// </summary>
+        /// <param name="amount"></param>
         public static void SellEuro(float amount)
         {
             using (var db = new SqliteConnection($"Data Source=database.db"))
@@ -263,6 +289,12 @@ namespace MonkeyB.Database
             }
         }
 
+        /// <summary>
+        /// Gets the amount of coin that a users owns
+        /// </summary>
+        /// <param name="currency"></param>
+        /// <param name="userID"></param>
+        /// <returns>Float with the amount of currency</returns>
         public static float GetCoinAmount(string currency, int userID)
         {
             using (var db = new SqliteConnection($"Data Source=database.db"))
@@ -284,18 +316,12 @@ namespace MonkeyB.Database
             }
         }
 
-        private static void addCurrency(string currency, int userID)
-        {
-            using (var db = new SqliteConnection($"Data Source=database.db"))
-            {
-                db.Open();
-
-                SqliteCommand selectCommand;
-                selectCommand = new SqliteCommand($"INSERT OR IGNORE INTO CryptoWallet(coin, coin_amount, userID) VALUES ('{currency}', 0, {userID})", db);
-                SqliteDataReader query = selectCommand.ExecuteReader();
-            }
-        }
-
+        /// <summary>
+        /// Add a new user to the database
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns>bool that indicates if the registration is succesfull</returns>
         public static bool RegisterUser(string username, string password)
         {
             string registerCommand = ($"INSERT OR IGNORE INTO Users (username,password, euro_amount) VALUES ('{username}','{password}',1000)");
@@ -313,7 +339,11 @@ namespace MonkeyB.Database
             }
         }
 
-        public static void updateEuroAmount(float amount)
+        /// <summary>
+        /// Updates the amount of euro a user owns
+        /// </summary>
+        /// <param name="amount"></param>
+        public static void UpdateEuroAmount(float amount)
         {
 
             using (var db = new SqliteConnection($"Data Source=database.db"))
@@ -351,6 +381,11 @@ namespace MonkeyB.Database
             }
         }
 
+        /// <summary>
+        /// Gets amount of coin in the wallet from the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>List<CryptoWalletModel></returns>
         public static List<CryptoWalletModel> FetchCoinsInWallet(int id)
         {
             List<CryptoWalletModel> coinList = new List<CryptoWalletModel>();
@@ -372,6 +407,11 @@ namespace MonkeyB.Database
             return coinList;
         }
 
+        /// <summary>
+        /// Gets the transaction history from database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>List<TransactionHistoryModel></returns>
         public static List<TransactionHistoryModel> FetchTransactionHistory(int id)
         {
             List<TransactionHistoryModel> coinList = new List<TransactionHistoryModel>();
@@ -393,7 +433,12 @@ namespace MonkeyB.Database
             return coinList;
         }
 
-        public static List<TransactionHistoryModel> FetchcoinAndAmount(int id)
+        /// <summary>
+        /// Fetched the amount of of coin from the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static List<TransactionHistoryModel> FetchCoinAndAmount(int id)
         {
             List<TransactionHistoryModel> coinList = new List<TransactionHistoryModel>();
             using (var db = new SqliteConnection($"Data Source=database.db"))
@@ -406,8 +451,6 @@ namespace MonkeyB.Database
                     ($"SELECT Cryptowallet.coin , Cryptowallet.coin_amount FROM Cryptowallet WHERE userID = {id}", db);
                 SqliteDataReader query = selectCommand.ExecuteReader();
 
-                // elke coin in wallet de waarde van ophalen
-
                 while (query.Read())
                 {
                     coinList.Add(new TransactionHistoryModel(query.GetString(0), query.GetFloat(1)));
@@ -417,6 +460,14 @@ namespace MonkeyB.Database
             return coinList;
         }
 
+
+        /// <summary>
+        /// CreateNewSellOrder
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="coinAmount"></param>
+        /// <param name="euroAmount"></param>
+        /// <param name="id"></param>
         public static void CreateNewSellOrder(string type, float coinAmount, float euroAmount, int id)
         {
 
@@ -441,6 +492,11 @@ namespace MonkeyB.Database
 
         }
 
+        /// <summary>
+        /// Fetch orders
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>List<OrderModel></returns>
         public static List<OrderModel> FetchOrders(int id)
         {
             List<OrderModel> orderList = new List<OrderModel>();
@@ -463,6 +519,11 @@ namespace MonkeyB.Database
             return orderList;
         }
 
+        /// <summary>
+        /// Fetch achievements from database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>List<AchievementModel></returns>
         public static List<AchievementModel> FetchAchievements(int id)
         {
             List<AchievementModel> achievementList = new List<AchievementModel>();
@@ -486,6 +547,12 @@ namespace MonkeyB.Database
             return achievementList;
         }
 
+        /// <summary>
+        /// Buy an order
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="orderModel"></param>
+        /// <returns>bool</returns>
         public static bool BuyOrder(int userID, OrderModel orderModel)
         {
             List<CryptoWalletModel> cryptoWalletList = FetchCoinsInWallet(userID);
