@@ -3,59 +3,57 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:MonkeyB.Views"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <StackPanel>
+            <Label Content="Username :"
+                   Margin="0,100,0,5"
+                   HorizontalAlignment="Center"
+                   Width="100"
+                   Height="30"
+                   FontSize="15" />
 
-            <Label Content="Username :" 
-                   Margin="0,100,0,5" 
-                   HorizontalAlignment="Center" 
-                   Width="100" 
-                   Height="30" 
-                   FontSize="15"/>
+            <TextBox
+                Text="{Binding Username}"
+                Margin="0,0,0,10"
+                HorizontalAlignment="Center"
+                Width="100"
+                Height="30"
+                FontSize="15" />
 
-            <TextBox 
-                     Text="{Binding Username}"
-                     Margin="0,0,0,10" 
-                     HorizontalAlignment="Center" 
-                     Width="100" 
-                     Height="30" 
-                     FontSize="15"/>
+            <Label Content="Password :"
+                   Margin="0,0,0,5"
+                   HorizontalAlignment="Center"
+                   Width="100"
+                   Height="30"
+                   FontSize="15" />
 
-            <Label Content="Password :" 
-                   Margin="0,0,0,5" 
-                   HorizontalAlignment="Center" 
-                   Width="100" 
-                   Height="30" 
-                   FontSize="15"/>
-
-            <TextBox 
-                     Text="{Binding Password}"
-                     Margin="0,0,0,20" 
-                     HorizontalAlignment="Center" 
-                     Width="100" 
-                     Height="30" 
-                     FontSize="15"/>
+            <TextBox
+                Text="{Binding Password}"
+                Margin="0,0,0,20"
+                HorizontalAlignment="Center"
+                Width="100"
+                Height="30"
+                FontSize="15" />
 
             <Button
-                    Content="Register"
-                    Margin="0,0,0,20" 
-                    HorizontalAlignment="Center" 
-                    Width="100" 
-                    Height="30" 
-                    FontSize="15" 
-                    Command="{Binding RegisterCommand}"/>
-            
+                Content="Register"
+                Margin="0,0,0,20"
+                HorizontalAlignment="Center"
+                Width="100"
+                Height="30"
+                FontSize="15"
+                Command="{Binding RegisterCommand}" />
+
             <Button
-                    Content="Back"
-                    Margin="0,0,0,20" 
-                    HorizontalAlignment="Center" 
-                    Width="100" 
-                    Height="30" 
-                    FontSize="15" 
-                    Command="{Binding ToLoginCommand}"/>
+                Content="Back"
+                Margin="0,0,0,20"
+                HorizontalAlignment="Center"
+                Width="100"
+                Height="30"
+                FontSize="15"
+                Command="{Binding ToLoginCommand}" />
 
         </StackPanel>
     </Grid>

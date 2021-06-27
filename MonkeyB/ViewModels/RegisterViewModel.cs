@@ -1,17 +1,45 @@
 using System.Windows;
-using MonkeyB.Commands;
 using System.Windows.Input;
+using MonkeyB.Commands;
 using MonkeyB.Database;
 
 namespace MonkeyB.ViewModels
 {
-    class RegisterViewModel : BaseViewModel
+    internal class RegisterViewModel : BaseViewModel
     {
-        public ICommand ToLoginCommand { get; set; }
-        
-        public ICommand RegisterCommand { get; set; }
-        
+        private string password;
+
         private string username;
+
+        /// <summary>
+        ///     Constructor for the RegisterViewModel
+        /// </summary>
+        /// <param name="navigationStore">Stores the currently selected viewmodel which is used to display a view</param>
+        public RegisterViewModel(NavigationStore navigationStore)
+        {
+            ToLoginCommand = new RelayCommand(o =>
+            {
+                navigationStore.SelectedViewModel = new LoginViewModel(navigationStore);
+            });
+            RegisterCommand = new RelayCommand(o =>
+            {
+                //register user, if complete give message
+                if (DataBaseAccess.RegisterUser(username, password))
+                {
+                    MessageBox.Show("User created!", "Success!", MessageBoxButton.OK, MessageBoxImage.Information);
+                    navigationStore.SelectedViewModel = new LoginViewModel(navigationStore);
+                    return;
+                }
+
+                //Give error when invalid input
+                MessageBox.Show("Invalid input, try again!", "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
+            });
+        }
+
+        public ICommand ToLoginCommand { get; set; }
+
+        public ICommand RegisterCommand { get; set; }
+
         public string Username
         {
             get => username;
@@ -22,7 +50,6 @@ namespace MonkeyB.ViewModels
             }
         }
 
-        private string password;
         public string Password
         {
             get => password;
@@ -32,25 +59,5 @@ namespace MonkeyB.ViewModels
                 OnPropertyChanged("Password");
             }
         }
-
-        public RegisterViewModel(NavigationStore navigationStore)
-        {
-            ToLoginCommand = new RelayCommand(o =>
-            {
-                navigationStore.SelectedViewModel = new LoginViewModel(navigationStore);
-            });
-            RegisterCommand = new RelayCommand(o =>
-            {
-                if (DataBaseAccess.RegisterUser(username, password))
-                {
-                    MessageBox.Show("User created!", "Success!", MessageBoxButton.OK, MessageBoxImage.Information);
-                    navigationStore.SelectedViewModel = new LoginViewModel(navigationStore);
-                    return;
-                }
-                MessageBox.Show("Invalid input, try again!", "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
-            });
-
-        }
-
     }
 }
