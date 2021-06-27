@@ -34,6 +34,11 @@ namespace MonkeyB.ViewModels
             }
         }
 
+        /// <summary>
+        ///  Sets the button of the dashboard button, and loads the cryptocurrencies 
+        ///  in the piechart and displays the profits/loss in the view
+        /// </summary>
+        /// <param name="navigationStore">Stores the currently selected viewmodel which is used to display a view</param>
         public WalletViewModel(NavigationStore navigationStore)
         {
             LoadWalletIntoChart(App.UserID);
@@ -44,6 +49,9 @@ namespace MonkeyB.ViewModels
             });
         }
 
+        /// <summary>
+        /// Retrieves the transactionhistory of the user from the database and displays the calculated profit or loss realtime in the view.
+        /// </summary>
         public void DisplayProfitLose()
         {
             List<TransactionHistoryModel> transactionHistoryList = DataBaseAccess.FetchTransactionHistory(App.UserID);
@@ -82,6 +90,10 @@ namespace MonkeyB.ViewModels
             });
         }
 
+        /// <summary>
+        /// Loads the cryptocurrencies from the users cryptowallet into the piechart in the view
+        /// </summary>
+        /// <param name="id"> id of the current user</param>
         public void LoadWalletIntoChart(int id)
         {
 
